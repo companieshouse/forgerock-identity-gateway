@@ -1,6 +1,7 @@
 # The ig-base Docker image is create in Concourse 
 # using the ForgeRock IG Dockerfile
-FROM ig-base
+ARG DOCKER_IMAGE=ig-base
+FROM ${DOCKER_IMAGE}
 
 COPY --chown=forgerock:root . /var/ig
 
