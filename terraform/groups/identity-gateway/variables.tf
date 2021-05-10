@@ -53,3 +53,8 @@ variable "domain_name" {
   type        = string
   description = "The domain name to use for the application"
 }
+
+variable "application_host" {
+  type = string
+  description = "Application that IG will be in front of"
+}

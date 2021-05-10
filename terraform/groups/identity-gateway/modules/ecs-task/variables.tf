@@ -53,3 +53,7 @@ variable "log_prefix" {
 variable "target_group_arn" {
   type = string
 }
+
+variable "application_host" {
+  type = string
+}

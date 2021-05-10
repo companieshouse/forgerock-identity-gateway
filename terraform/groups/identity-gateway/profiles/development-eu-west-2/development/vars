@@ -5,3 +5,4 @@ task_memory = 2048
 domain_name = "amido.aws.chdev.org"
 create_route53_record = true
 route53_zone = "aws.chdev.org"
+application_host = "ewf.companieshouse.gov.uk"

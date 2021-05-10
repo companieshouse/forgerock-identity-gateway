@@ -7,6 +7,7 @@ data "template_file" "container_definitions" {
     cloudwatch_log_group_name = var.log_group_name
     cloudwatch_log_prefix     = var.log_prefix
     region                    = var.region
+    application_host          = var.application_host
   }
 }
 
