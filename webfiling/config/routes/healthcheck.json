@@ -7,5 +7,5 @@
       "entity": "<html><body><p>Healthy</p></body></html>"
     }
   },
-  "condition": "${matches(request.uri.path, '^/healthchek')}"
+  "condition": "${matches(request.uri.path, '^/healthcheck')}"
 }

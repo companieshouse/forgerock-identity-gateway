@@ -57,3 +57,7 @@ variable "target_group_arn" {
 variable "application_host" {
   type = string
 }
+
+variable "application_ip" {
+  type = string
+}

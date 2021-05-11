@@ -5,3 +5,4 @@ task_memory = 2048
 domain_name = "company-information.service.gov.uk"
 create_route53_record = false
 application_host = "ewf.companieshouse.gov.uk"
+application_ip = "62.254.241.105"
