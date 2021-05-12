@@ -52,4 +52,6 @@ module "webfiling" {
   log_group_name          = "forgerock-monitoring"
   log_prefix              = "webfiling-ig"
   target_group_arn        = module.webfiling_lb.target_group_arn
+  application_host        = var.application_host
+  application_ip        = var.application_ip
 }

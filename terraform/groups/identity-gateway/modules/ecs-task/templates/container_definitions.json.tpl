@@ -2,7 +2,16 @@
   {
     "name": "${task_name}",
     "image": "${aws_ecr_url}:${tag}",
-    "environment": [],
+    "environment": [
+      {
+        "name": "APPLICATION_HOST",
+        "value": "${application_host}"
+      },
+      {
+        "name": "APPLICATION_IP",
+        "value": "${application_ip}"
+      }
+    ],
     "portMappings": [
       {
         "protocol": "tcp",
