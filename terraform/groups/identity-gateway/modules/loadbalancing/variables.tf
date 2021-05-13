@@ -29,3 +29,11 @@ variable "create_route53_record" {
 variable "route53_zone" {
   type = string
 }
+
+variable "create_certificate" {
+  type = bool
+}
+
+variable "certificate_domain" {
+  type = string
+}

@@ -3,6 +3,7 @@ vpc_name = "CHS"
 task_cpu = 1024
 task_memory = 2048
 domain_name = "company-information.service.gov.uk"
+create_certificate = true
 create_route53_record = true
 route53_zone = "company-information.service.gov.uk"
 application_host = "ewf.companieshouse.gov.uk"
