@@ -1,10 +1,32 @@
 data "aws_acm_certificate" "certificate" {
-  domain = var.domain_name
+  count = var.create_certificate ? 0 : 1
+  domain = var.certificate_domain
 }
 
 data "aws_route53_zone" "domain" {
   count = var.create_route53_record ? 1 : 0
   name  = var.route53_zone
+}
+
+resource "aws_acm_certificate" "certificate" {
+  count = var.create_certificate ? 1 : 0
+  domain_name       = "${var.service_name}.${var.domain_name}"
+  validation_method = "DNS"
+}
+
+resource "aws_route53_record" "certificate_validation" {
+  count = var.create_certificate ? 1 : 0
+  name    = element(aws_acm_certificate.certificate.0.domain_validation_options.*.resource_record_name, 0)
+  type    = element(aws_acm_certificate.certificate.0.domain_validation_options.*.resource_record_type, 0)
+  zone_id = data.aws_route53_zone.domain.0.id
+  records = [element(aws_acm_certificate.certificate.0.domain_validation_options.*.resource_record_value, 0)]
+  ttl     = 60
+}
+
+resource "aws_acm_certificate_validation" "certificate" {
+  count = var.create_certificate ? 1 : 0
+  certificate_arn         = aws_acm_certificate.certificate.0.arn
+  validation_record_fqdns = [aws_route53_record.certificate_validation.0.fqdn]
 }
 
 resource "aws_route53_record" "lb" {
@@ -48,7 +70,7 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.main.arn
   port              = 443
   protocol          = "HTTPS"
-  certificate_arn   = data.aws_acm_certificate.certificate.arn
+  certificate_arn   = var.create_certificate ? aws_acm_certificate_validation.certificate.0.certificate_arn : data.aws_acm_certificate.certificate.0.arn
 
   default_action {
     target_group_arn = aws_lb_target_group.main.arn

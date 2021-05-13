@@ -34,6 +34,8 @@ module "webfiling_lb" {
   domain_name           = var.domain_name
   create_route53_record = var.create_route53_record
   route53_zone          = var.route53_zone
+  create_certificate    = var.create_certificate
+  certificate_domain    = var.certificate_domain
 }
 
 module "webfiling" {

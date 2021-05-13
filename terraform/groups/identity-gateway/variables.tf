@@ -54,6 +54,17 @@ variable "domain_name" {
   description = "The domain name to use for the application"
 }
 
+variable "create_certificate" {
+  type        = bool
+  description = "Should a Amazon SSL certificate be created"
+}
+
+variable "certificate_domain" {
+  type        = string
+  description = "The domain used to look up existing certificates"
+  default     = "N/A"
+}
+
 variable "application_host" {
   type = string
   description = "Application that IG will be in front of"
