@@ -66,11 +66,11 @@ variable "certificate_domain" {
 }
 
 variable "application_host" {
-  type = string
+  type        = string
   description = "Application that IG will be in front of"
 }
 
 variable "application_ip" {
-  type = string
+  type        = string
   description = "Application public IP that IG will be in front of"
 }

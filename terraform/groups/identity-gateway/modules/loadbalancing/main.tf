@@ -1,5 +1,5 @@
 data "aws_acm_certificate" "certificate" {
-  count = var.create_certificate ? 0 : 1
+  count  = var.create_certificate ? 0 : 1
   domain = var.certificate_domain
 }
 
@@ -9,13 +9,15 @@ data "aws_route53_zone" "domain" {
 }
 
 resource "aws_acm_certificate" "certificate" {
-  count = var.create_certificate ? 1 : 0
+  count             = var.create_certificate ? 1 : 0
   domain_name       = "${var.service_name}.${var.domain_name}"
   validation_method = "DNS"
+
+  tags = var.tags
 }
 
 resource "aws_route53_record" "certificate_validation" {
-  count = var.create_certificate ? 1 : 0
+  count   = var.create_certificate ? 1 : 0
   name    = element(aws_acm_certificate.certificate.0.domain_validation_options.*.resource_record_name, 0)
   type    = element(aws_acm_certificate.certificate.0.domain_validation_options.*.resource_record_type, 0)
   zone_id = data.aws_route53_zone.domain.0.id
@@ -24,7 +26,7 @@ resource "aws_route53_record" "certificate_validation" {
 }
 
 resource "aws_acm_certificate_validation" "certificate" {
-  count = var.create_certificate ? 1 : 0
+  count                   = var.create_certificate ? 1 : 0
   certificate_arn         = aws_acm_certificate.certificate.0.arn
   validation_record_fqdns = [aws_route53_record.certificate_validation.0.fqdn]
 }
@@ -48,6 +50,8 @@ resource "aws_lb" "main" {
   internal                         = true
   subnets                          = var.subnet_ids
   security_groups                  = [aws_security_group.lb.id]
+
+  tags = var.tags
 }
 
 resource "aws_lb_listener" "http" {
@@ -92,6 +96,8 @@ resource "aws_lb_target_group" "main" {
     path                = "/healthcheck"
     interval            = 60
   }
+
+  tags = var.tags
 }
 
 resource "aws_security_group" "lb" {
@@ -120,4 +126,6 @@ resource "aws_security_group" "lb" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = var.tags
 }

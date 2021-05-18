@@ -61,3 +61,12 @@ variable "application_host" {
 variable "application_ip" {
   type = string
 }
+
+variable "tags" {
+  type = object({
+    Environment    = string
+    Service        = string
+    ServiceSubType = string
+    Team           = string
+  })
+}

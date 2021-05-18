@@ -22,6 +22,7 @@ module "ecs" {
   source       = "./modules/ecs"
   service_name = var.service_name
   vpc_id       = data.aws_vpc.vpc.id
+  tags         = local.common_tags
 }
 
 module "webfiling_lb" {
@@ -36,6 +37,7 @@ module "webfiling_lb" {
   route53_zone          = var.route53_zone
   create_certificate    = var.create_certificate
   certificate_domain    = var.certificate_domain
+  tags                  = local.common_tags
 }
 
 module "webfiling" {
@@ -55,5 +57,6 @@ module "webfiling" {
   log_prefix              = "webfiling-ig"
   target_group_arn        = module.webfiling_lb.target_group_arn
   application_host        = var.application_host
-  application_ip        = var.application_ip
+  application_ip          = var.application_ip
+  tags                    = local.common_tags
 }
