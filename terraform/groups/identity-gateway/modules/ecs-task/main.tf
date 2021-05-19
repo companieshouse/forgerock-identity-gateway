@@ -20,6 +20,8 @@ resource "aws_ecs_task_definition" "ig" {
   memory                   = var.task_memory
   requires_compatibilities = ["FARGATE"]
   container_definitions    = data.template_file.container_definitions.rendered
+
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "ig" {
@@ -40,6 +42,8 @@ resource "aws_ecs_service" "ig" {
     container_name   = var.service_name
     container_port   = 8080
   }
+
+  tags = var.tags
 }
 
 
@@ -62,4 +66,6 @@ resource "aws_security_group" "instance" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = var.tags
 }

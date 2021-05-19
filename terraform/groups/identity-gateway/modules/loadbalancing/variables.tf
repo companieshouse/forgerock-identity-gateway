@@ -37,3 +37,12 @@ variable "create_certificate" {
 variable "certificate_domain" {
   type = string
 }
+
+variable "tags" {
+  type = object({
+    Environment    = string
+    Service        = string
+    ServiceSubType = string
+    Team           = string
+  })
+}
