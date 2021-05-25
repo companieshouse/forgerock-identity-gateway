@@ -57,6 +57,5 @@ module "webfiling" {
   log_prefix              = "webfiling-ig"
   target_group_arn        = module.webfiling_lb.target_group_arn
   application_host        = var.application_host
-  application_ip          = var.application_ip
   tags                    = local.common_tags
 }

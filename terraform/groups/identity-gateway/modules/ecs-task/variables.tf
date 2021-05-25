@@ -58,10 +58,6 @@ variable "application_host" {
   type = string
 }
 
-variable "application_ip" {
-  type = string
-}
-
 variable "tags" {
   type = object({
     Environment    = string

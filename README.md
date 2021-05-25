@@ -32,7 +32,7 @@ aws ecr get-login-password --region eu-west-2 | docker login --username AWS --pa
 
 # Build and run IG Docker image
 docker build -t webfiling-ig --build-arg DOCKER_IMAGE={REPLACE_WITH_ECR_URL}:ig-base .
-docker run --rm -d --name webfiling-ig -e APPLICATION_HOST={REPLACE_WITH_EWF_HOSTNAME} -e APPLICATION_IP={REPLACE_WITH_EWF_IP} -p 8080:8080 webfiling-ig
+docker run --rm -d --name webfiling-ig -e APPLICATION_HOST={REPLACE_WITH_EWF_HOSTNAME} -p 8080:8080 webfiling-ig
 ```
 
 **Using Local Image**
@@ -50,7 +50,7 @@ docker build -t ig-base -f docker/Dockerfile .
 # Build and run IG Docker image
 # Run these commands in the webfiling directory
 docker build -t webfiling-ig .
-docker run --rm -d --name webfiling-ig -e APPLICATION_HOST={REPLACE_WITH_EWF_HOSTNAME} -e APPLICATION_IP={REPLACE_WITH_EWF_IP} -p 8080:8080 webfiling-ig
+docker run --rm -d --name webfiling-ig -e APPLICATION_HOST={REPLACE_WITH_EWF_HOSTNAME} -p 8080:8080 webfiling-ig
 ```
 
 ### Terraform
