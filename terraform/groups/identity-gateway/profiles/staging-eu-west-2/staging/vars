@@ -7,4 +7,3 @@ create_certificate = false
 certificate_domain = "*.companieshouse.gov.uk"
 create_route53_record = false
 application_host = "ewf.companieshouse.gov.uk"
-application_ip = "62.254.241.105"

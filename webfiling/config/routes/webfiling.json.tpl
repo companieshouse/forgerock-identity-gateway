@@ -21,7 +21,7 @@
       "handler": {
         "type": "ReverseProxyHandler",
         "capture": "all",
-        "baseURI": "http://{APPLICATION_IP}"
+        "baseURI": "https://{APPLICATION_HOST}"
       }
     }
   }
