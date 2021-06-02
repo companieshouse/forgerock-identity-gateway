@@ -1,4 +1,5 @@
 {
+  "condition": "${matches(request.uri.path, '^/healthcheck')}",
   "handler": {
     "type": "StaticResponseHandler",
     "config": {
@@ -6,6 +7,5 @@
       "reason": "OK",
       "entity": "<html><body><p>Healthy</p></body></html>"
     }
-  },
-  "condition": "${matches(request.uri.path, '^/healthcheck')}"
+  }  
 }

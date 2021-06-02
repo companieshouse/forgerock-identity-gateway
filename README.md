@@ -50,7 +50,12 @@ docker build -t ig-base -f docker/Dockerfile .
 # Build and run IG Docker image
 # Run these commands in the webfiling directory
 docker build -t webfiling-ig .
-docker run --rm -d --name webfiling-ig -e APPLICATION_HOST={REPLACE_WITH_EWF_HOSTNAME} -p 8080:8080 webfiling-ig
+docker run --rm -it --name webfiling-ig -e APPLICATION_HOST={REPLACE_WITH_EWF_HOSTNAME} \
+-e OIDC_CLIENT_ID={REPLACE_WITH_OIDC_CLIENT_ID} \
+-e OIDC_CLIENT_SECRET={REPLACE_WITH_OIDC_CLIENT_SECRET} \
+-e FIDC_REALM=alpha \
+-e AM_HOST={REPLACE_WITH_AM_HOSTNAME} \
+-p 8080:8080 webfiling-ig
 ```
 
 ### Terraform
