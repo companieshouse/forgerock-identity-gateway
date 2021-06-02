@@ -46,6 +46,30 @@
           }
         },
         {
+          "name": "OAuth2ClientFilter-FIDC",
+          "type": "OAuth2ClientFilter",
+          "config": {
+            "clientEndpoint": "/oidc",
+            "failureHandler": {
+              "type": "StaticResponseHandler",
+              "config": {
+                "status": 500,
+                "headers": {
+                  "Content-Type": [
+                    "text/plain"
+                  ]
+                },
+                "entity": "Error in OAuth 2.0 setup."
+              }
+            },
+            "registrations": [
+              "ClientRegistration-FIDC"
+            ],
+            "requireHttps": false,
+            "cacheExpiration": "disabled"
+          }
+        },
+        {
           "type": "PasswordReplayFilter",
           "config": {
             "loginPage": "${matches(request.uri.path,'^//seclogin')}",
