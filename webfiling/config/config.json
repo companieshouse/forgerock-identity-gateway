@@ -1,0 +1,121 @@
+{
+  "handler": "_router",
+  "heap": [
+    {
+      "name": "_router",
+      "type": "Router",
+      "config": {
+        "scanInterval": "30 seconds",
+        "directory": "${openig.configDirectory}/routes",
+        "defaultHandler": {
+          "type": "DispatchHandler",
+          "config": {
+            "bindings": [
+              {
+                "condition": "${request.method == 'GET' and request.uri.path == '/'}",
+                "handler": {
+                  "type": "WelcomeHandler"
+                }
+              },
+              {
+                "condition": "${request.uri.path == '/'}",
+                "handler": {
+                  "type": "StaticResponseHandler",
+                  "config": {
+                    "status": 405,
+                    "reason": "Method Not Allowed"
+                  }
+                }
+              },
+              {
+                "handler": {
+                  "type": "StaticResponseHandler",
+                  "config": {
+                    "status": 404,
+                    "reason": "Not Found"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler",
+      "capture": [
+        "request",
+        "response"
+      ],
+      "config": {
+        "tls": {
+          "type": "ClientTlsOptions",
+          "config": {
+            "trustManager": {
+              "type": "TrustAllManager"
+            }
+          }
+        },
+        "hostnameVerifier": "ALLOW_ALL"
+      }
+    },
+    {
+      "name": "JwtSession",
+      "type": "JwtSession"
+    },
+    {
+      "name": "capture",
+      "type": "CaptureDecorator",
+      "config": {
+        "captureEntity": true,
+        "captureContext": true
+      }
+    },
+    {
+      "name": "ClientHandler",
+      "type": "ClientHandler",
+      "capture": "all"
+    },
+    {
+      "name": "ForgeRockClientHandler",
+      "type": "Chain",
+      "config": {
+        "filters": [
+          "TransactionIdOutboundFilter"
+        ],
+        "handler": "ClientHandler",
+        "capture": "all"
+      }
+    },
+    {
+      "name": "SystemAndEnvSecretStore-FIDC",
+      "type": "SystemAndEnvSecretStore",
+      "config": {
+        "format": "PLAIN"
+      }
+    },
+    {
+      "name": "AmService-FIDC",
+      "type": "AmService",
+      "config": {
+        "url": "https://&{iam.fqdn}/am",
+        "realm": "/&{am.realm}",
+        "version": "6.5.1",
+        "agent": {
+          "username": "ig-agent",
+          "passwordSecretId": "ig.agent.password"
+        },
+        "secretsProvider": "SystemAndEnvSecretStore-FIDC",
+        "sessionCache": {
+          "enabled": false
+        },
+        "notifications": {
+          "enabled": false
+        },
+        "_amHandler": "ForgeRockClientHandler"
+      }
+    }
+  ],
+  "monitor": true
+}

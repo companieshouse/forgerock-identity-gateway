@@ -21,8 +21,20 @@
       "handler": {
         "type": "ReverseProxyHandler",
         "capture": "all",
-        "baseURI": "https://{APPLICATION_HOST}"
+        "baseURI": "https://{APPLICATION_IP}",
+        "config": {
+          "tls": {
+            "type": "ClientTlsOptions",
+            "config": {
+              "trustManager": {
+                "type": "TrustAllManager"
+              }
+            }
+          },
+          "hostnameVerifier": "ALLOW_ALL"
+        }
       }
     }
-  }
+  },
+  "condition": "${not matches(request.uri.path, '^//seclogin')}"
 }

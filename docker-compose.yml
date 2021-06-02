@@ -1,0 +1,28 @@
+version: '3'
+services:
+  reverseproxy:
+    image: nginx:alpine
+    volumes:
+      - ./nginx:/etc/nginx
+      - ./nginx/ewf-kermit.companieshouse.gov.uk.crt:/etc/nginx/ewf-kermit.companieshouse.gov.uk.crt
+      - ./nginx/ewf-kermit.companieshouse.gov.uk.key:/etc/nginx/ewf-kermit.companieshouse.gov.uk.key
+    ports:
+      - 443:443
+    restart: always
+
+  ig:
+    depends_on:
+      - reverseproxy
+    environment:
+      - APPLICATION_HOST=ewf-kermit.companieshouse.gov.uk
+      - APPLICATION_IP=192.168.60.208
+      - FIDC_FQDN=idam.amido.aws.chdev.org
+      - FIDC_REALM=alpha
+      - OIDC_CLIENT_ID=saul_test
+      - OIDC_CLIENT_SECRET='3mEf1V@1AY'
+      - IAM_FQDN=idam.amido.aws.chdev.org
+      - AM_REALM=alpha
+    build:
+      context: ./webfiling
+      args:
+        DOCKER_IMAGE: 169942020521.dkr.ecr.eu-west-2.amazonaws.com/forgerock-data:ig-base
