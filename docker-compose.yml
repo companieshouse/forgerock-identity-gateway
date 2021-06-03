@@ -14,15 +14,13 @@ services:
     depends_on:
       - reverseproxy
     environment:
-      - APPLICATION_HOST=ewf-kermit.companieshouse.gov.uk
-      - APPLICATION_IP=192.168.60.208
-      - FIDC_FQDN=idam.amido.aws.chdev.org
-      - FIDC_REALM=alpha
-      - OIDC_CLIENT_ID=saul_test
-      - OIDC_CLIENT_SECRET=3mEf1V@1AY
-      - IAM_FQDN=idam.amido.aws.chdev.org
-      - AM_REALM=alpha
+      - APPLICATION_HOST=${APPLICATION_HOST}
+      - APPLICATION_IP=${APPLICATION_IP}
+      - FIDC_FQDN=${FIDC_FQDN}
+      - FIDC_REALM=${FIDC_REALM}
+      - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
+      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
     build:
       context: ./webfiling
       args:
-        DOCKER_IMAGE: 169942020521.dkr.ecr.eu-west-2.amazonaws.com/forgerock-data:ig-base
+        DOCKER_IMAGE: ig-base
