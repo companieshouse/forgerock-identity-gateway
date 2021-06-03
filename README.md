@@ -9,6 +9,7 @@ This repository contains infrastructure script and configuration for deploying F
 The following need to be installed/configured for local use:
 
 - [Docker](https://www.docker.com/products/docker-desktop)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [yawsso](https://pypi.org/project/yawsso/)
 - [Terraform Runner](https://companieshouse.atlassian.net/wiki/spaces/DEVOPS/pages/1694236886/Terraform-runner)
@@ -30,9 +31,14 @@ yawsso
 # Login to container registry
 aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin {REPLACE_WITH_ECR_URL}
 
+# Create environment file
+cp .env.sample .env
+
+# Check/update .env values and set DOCKER_IMAGE
+DOCKER_IMAGE={REPLACE_WITH_ECR_URL}:ig-base
+
 # Build and run IG Docker image
-docker build -t webfiling-ig --build-arg DOCKER_IMAGE={REPLACE_WITH_ECR_URL}:ig-base .
-docker run --rm -d --name webfiling-ig -e APPLICATION_HOST={REPLACE_WITH_EWF_HOSTNAME} -p 8080:8080 webfiling-ig
+docker-compose up --build
 ```
 
 **Using Local Image**
@@ -47,10 +53,13 @@ unzip IG-7.0.2.zip
 cd identity-gateway
 docker build -t ig-base -f docker/Dockerfile .
 
+# Create environment file
+cp .env.sample .env
+
+# Check/update .env values
+
 # Build and run IG Docker image
-# Run these commands in the webfiling directory
-docker build -t webfiling-ig .
-docker run --rm -d --name webfiling-ig -e APPLICATION_HOST={REPLACE_WITH_EWF_HOSTNAME} -p 8080:8080 webfiling-ig
+docker-compose up --build
 ```
 
 ### Terraform
