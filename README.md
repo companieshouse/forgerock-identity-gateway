@@ -13,6 +13,7 @@ The following need to be installed/configured for local use:
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [yawsso](https://pypi.org/project/yawsso/)
 - [Terraform Runner](https://companieshouse.atlassian.net/wiki/spaces/DEVOPS/pages/1694236886/Terraform-runner)
+- Self-signed SSL cert and key in the `nginx` directory
 
 ### WebFiling Identity Gateway
 
@@ -37,6 +38,9 @@ cp .env.sample .env
 # Check/update .env values and set DOCKER_IMAGE
 DOCKER_IMAGE={REPLACE_WITH_ECR_URL}:ig-base
 
+# Update your host file
+127.0.0.1 {REPLACE_WITH_APPLICATION_HOST}
+
 # Build and run IG Docker image
 docker-compose up --build
 ```
@@ -57,6 +61,9 @@ docker build -t ig-base -f docker/Dockerfile .
 cp .env.sample .env
 
 # Check/update .env values
+
+# Update your host file
+127.0.0.1 {REPLACE_WITH_APPLICATION_HOST}
 
 # Build and run IG Docker image
 docker-compose up --build
