@@ -50,7 +50,8 @@
           "openid",
           "profile",
           "email"
-        ]
+        ],
+        "tokenEndpointAuthMethod": "client_secret_post"
       }
     }
   ],
