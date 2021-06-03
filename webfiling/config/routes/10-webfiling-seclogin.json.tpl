@@ -6,6 +6,25 @@
   },
   "heap": [
     {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler",
+      "capture": [
+        "request",
+        "response"
+      ],
+      "config": {
+        "tls": {
+          "type": "ClientTlsOptions",
+          "config": {
+            "trustManager": {
+              "type": "TrustAllManager"
+            }
+          }
+        },
+        "hostnameVerifier": "ALLOW_ALL"
+      }
+    },
+    {
       "name": "SystemAndEnvSecretStore-FIDC",
       "type": "SystemAndEnvSecretStore",
       "config": {
@@ -28,7 +47,9 @@
         "issuer": "Issuer-FIDC",
         "secretsProvider": "SystemAndEnvSecretStore-FIDC",
         "scopes": [
-          "openid"
+          "openid",
+          "profile",
+          "email"
         ]
       }
     }
@@ -81,7 +102,7 @@
                   "application/x-www-form-urlencoded"
                 ]
               },
-              "entity": "email=sfrance%40companieshouse.gov.uk&seccode=DevPass12&submit=Sign+in&lang=en"
+              "entity": "email=${attributes.openid.user_info.email}&seccode=${attributes.openid.user_info.webfiling_info.password}&submit=Sign+in&lang=en"
             }
           }
         }
