@@ -103,12 +103,13 @@
                   "application/x-www-form-urlencoded"
                 ]
               },
-              "entity": "email=${attributes.openid.user_info.email}&seccode=${attributes.openid.user_info.webfiling_info.password}&submit=Sign+in&lang=${attributes.openid.user_info.webfiling_info.jurisdiction}"
+              "entity": "email=${attributes.openid.user_info.email}&seccode=${attributes.openid.user_info.webfiling_info.password}&submit=Sign+in&lang=en"
             }
           }
         }
       ],
       "handler": "ReverseProxyHandler"
     }
-  }
+  },
+  "condition": "${matches(request.uri.path, '^//seclogin') or matches(request.uri.path, '^/oidc/callback')}"
 }

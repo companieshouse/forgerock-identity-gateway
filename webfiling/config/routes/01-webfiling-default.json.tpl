@@ -36,5 +36,5 @@
       }
     }
   },
-  "condition": "${not matches(request.uri.path, '^//seclogin') and not matches(request.uri.path, '^/oidc/callback')}"
+  "condition": "${not matches(request.uri.path, '^//seclogin') and not matches(request.uri.path, '^/oidc/callback') and not matches(request.uri.path, '^//runpage')}"
 }
