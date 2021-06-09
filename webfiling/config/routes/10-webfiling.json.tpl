@@ -49,7 +49,8 @@
         "scopes": [
           "openid",
           "profile",
-          "email"
+          "email",
+          "webfiling"
         ],
         "tokenEndpointAuthMethod": "client_secret_post"
       }
