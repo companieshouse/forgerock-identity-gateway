@@ -6,6 +6,22 @@
       {
         "name": "APPLICATION_HOST",
         "value": "${application_host}"
+      },
+      {
+        "name": "FIDC_FQDN",
+        "value": "${fidc_fqdn}"
+      },
+      {
+        "name": "FIDC_REALM",
+        "value": "${fidc_realm}"
+      },
+      {
+        "name": "OIDC_CLIENT_ID",
+        "value": "${oidc_client_id}"
+      },
+      {
+        "name": "OIDC_CLIENT_SECRET",
+        "value": "${oidc_client_secret}"
       }
     ],
     "portMappings": [
