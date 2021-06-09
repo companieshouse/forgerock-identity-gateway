@@ -7,4 +7,3 @@ create_certificate = false
 certificate_domain = "amido.aws.chdev.org"
 create_route53_record = true
 route53_zone = "aws.chdev.org"
-application_host = "ewf-kermit.companieshouse.gov.uk"

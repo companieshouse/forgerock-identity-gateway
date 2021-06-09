@@ -4,7 +4,7 @@
     "config": {
       "status": 200,
       "reason": "OK",
-      "entity": "<html><body><p>Healthy</p></body></html>"
+      "entity": "Healthy"
     }
   },
   "condition": "${matches(request.uri.path, '^/healthcheck')}"

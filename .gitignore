@@ -2,3 +2,9 @@
 .terraform
 *tfplan
 local.auto.tfvars
+
+*.crt
+*.key
+.env
+nginx/.DS_Store
+.DS_Store

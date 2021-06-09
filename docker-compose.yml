@@ -1,0 +1,25 @@
+version: '3'
+services:
+  reverseproxy:
+    image: nginx:alpine
+    volumes:
+      - ./nginx:/etc/nginx
+      - ./nginx/ewf-kermit.companieshouse.gov.uk.crt:/etc/nginx/ewf-kermit.companieshouse.gov.uk.crt
+      - ./nginx/ewf-kermit.companieshouse.gov.uk.key:/etc/nginx/ewf-kermit.companieshouse.gov.uk.key
+    ports:
+      - 443:443
+    restart: always
+
+  ig:
+    depends_on:
+      - reverseproxy
+    environment:
+      - APPLICATION_HOST=${APPLICATION_HOST}
+      - FIDC_FQDN=${FIDC_FQDN}
+      - FIDC_REALM=${FIDC_REALM}
+      - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
+      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
+    build:
+      context: ./webfiling
+      args:
+        DOCKER_IMAGE: ${DOCKER_IMAGE}

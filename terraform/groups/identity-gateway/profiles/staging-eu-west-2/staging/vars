@@ -6,4 +6,3 @@ domain_name = "company-information.service.gov.uk"
 create_certificate = false
 certificate_domain = "*.companieshouse.gov.uk"
 create_route53_record = false
-application_host = "ewfpp.companieshouse.gov.uk"

@@ -65,7 +65,29 @@ variable "certificate_domain" {
   default     = "N/A"
 }
 
-variable "application_host" {
+variable "application_url" {
   type        = string
-  description = "Application that IG will be in front of"
+  description = "Application URL that IG will be in front of"
+}
+
+variable "fidc_custom_url" {
+  type        = string
+  description = "Custom URL for ForgeRock Identity Cloud"
+}
+
+variable "fidc_realm" {
+  type        = string
+  description = "ForgeRock Identity Cloud Realm"
+  default     = "alpha"
+}
+
+variable "oidc_client_id" {
+  type        = string
+  description = "ForgeRock Identity Cloud client ID"
+  default     = "oidc_client"
+}
+
+variable "oidc_client_secret" {
+  type        = string
+  description = "Client secret for the above client"
 }

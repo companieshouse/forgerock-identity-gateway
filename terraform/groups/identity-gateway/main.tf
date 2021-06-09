@@ -56,6 +56,10 @@ module "webfiling" {
   log_group_name          = "forgerock-monitoring"
   log_prefix              = "webfiling-ig"
   target_group_arn        = module.webfiling_lb.target_group_arn
-  application_host        = var.application_host
+  application_host        = replace(var.application_url, "https://", "")
+  fidc_fqdn               = replace(var.fidc_custom_url, "https://", "")
+  fidc_realm              = var.fidc_realm
+  oidc_client_id          = var.oidc_client_id
+  oidc_client_secret      = var.oidc_client_secret
   tags                    = local.common_tags
 }

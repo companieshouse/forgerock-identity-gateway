@@ -58,6 +58,22 @@ variable "application_host" {
   type = string
 }
 
+variable "fidc_fqdn" {
+  type = string
+}
+
+variable "fidc_realm" {
+  type = string
+}
+
+variable "oidc_client_id" {
+  type = string
+}
+
+variable "oidc_client_secret " {
+  type = string
+}
+
 variable "tags" {
   type = object({
     Environment    = string
