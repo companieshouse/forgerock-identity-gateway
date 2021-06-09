@@ -97,7 +97,7 @@
             "loginPage": "${matches(request.uri.path,'^//seclogin')}",
             "request": {
               "method": "POST",
-              "uri": "https://{APPLICATION_IP}//seclogin?tc=1",
+              "uri": "https://{APPLICATION_HOST}//seclogin?tc=1",
               "headers": {
                 "Content-Type": [
                   "application/x-www-form-urlencoded"
@@ -106,10 +106,37 @@
               "entity": "email=${attributes.openid.user_info.email}&seccode=${attributes.openid.user_info.webfiling_info.password}&submit=Sign+in&lang=en"
             }
           }
+        },
+        {
+          "type": "PasswordReplayFilter",
+          "config": {
+            "loginPage": "${contains(request.uri.query,'page=companyAuthorisation')}",
+            "loginPageExtractions": [
+              {
+                "name": "viewstate",
+                "pattern": "name=\"__VIEWSTATE\" value=\"(.*?)\""
+              }
+            ],
+            "request": {
+              "method": "POST",
+              "uri": "https://{APPLICATION_HOST}${request.uri.path}?${request.uri.query}",
+              "headers": {
+                "Content-Type": [
+                  "application/x-www-form-urlencoded"
+                ]
+              },
+              "entity": "companySignInPage.companySignInForm.coType=EW&companySignInPage.companySignInForm.coNum=08694860&companySignInPage.companySignInForm.authCode=222222&companySignInPage.submit=Sign+in&__VIEWSTATE=${formEncodeParameterNameOrValue(attributes.extracted.viewstate)}"
+            }
+          }
+        },
+        {
+          "type": "CookieFilter",
+          "config": {
+            "defaultAction": "MANAGE"
+          }
         }
       ],
       "handler": "ReverseProxyHandler"
     }
-  },
-  "condition": "${matches(request.uri.path, '^//seclogin') or matches(request.uri.path, '^/oidc/callback')}"
+  }
 }
