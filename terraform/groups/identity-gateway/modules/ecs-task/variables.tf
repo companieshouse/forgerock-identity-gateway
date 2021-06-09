@@ -70,7 +70,7 @@ variable "oidc_client_id" {
   type = string
 }
 
-variable "oidc_client_secret " {
+variable "oidc_client_secret" {
   type = string
 }
 
