@@ -133,7 +133,7 @@
                   "application/x-www-form-urlencoded"
                 ]
               },
-              "entity": "companySignInPage.companySignInForm.coType=${attributes.openid.id_token_claims['webfiling_info'].jurisdiction}&companySignInPage.companySignInForm.coNum=${attributes.openid.id_token_claims['webfiling_info'].company_no}&companySignInPage.companySignInForm.authCode=${attributes.openid.id_token_claims['webfiling_info'].authCode}&companySignInPage.submit=Sign+in&__VIEWSTATE=${formEncodeParameterNameOrValue(attributes.extracted.viewstate)}"
+              "entity": "companySignInPage.companySignInForm.coType=${attributes.openid.id_token_claims['webfiling_info'].jurisdiction}&companySignInPage.companySignInForm.coNum=${attributes.openid.id_token_claims['webfiling_info'].company_no}&companySignInPage.companySignInForm.authCode=${attributes.openid.id_token_claims['webfiling_info'].auth_code}&companySignInPage.submit=Sign+in&__VIEWSTATE=${formEncodeParameterNameOrValue(attributes.extracted.viewstate)}"
             }
           }
         },
