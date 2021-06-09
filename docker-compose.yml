@@ -15,7 +15,6 @@ services:
       - reverseproxy
     environment:
       - APPLICATION_HOST=${APPLICATION_HOST}
-      - APPLICATION_IP=${APPLICATION_IP}
       - FIDC_FQDN=${FIDC_FQDN}
       - FIDC_REALM=${FIDC_REALM}
       - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
