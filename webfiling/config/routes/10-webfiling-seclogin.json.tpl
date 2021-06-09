@@ -92,6 +92,14 @@
           }
         },
         {
+            "name": "logs",
+            "type": "ScriptableFilter",
+            "config": {
+                "type": "application/x-groovy",
+                "file" : "script.groovy"
+            }
+        },
+        {
           "type": "PasswordReplayFilter",
           "config": {
             "loginPage": "${matches(request.uri.path,'^//seclogin')}",
@@ -103,7 +111,7 @@
                   "application/x-www-form-urlencoded"
                 ]
               },
-              "entity": "email=${attributes.openid.user_info.email}&seccode=${attributes.openid.user_info.webfiling_info.password}&submit=Sign+in&lang=en"
+              "entity": "email=${attributes.openid.id_token_claims['email’]}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=en"
             }
           }
         },
@@ -125,7 +133,7 @@
                   "application/x-www-form-urlencoded"
                 ]
               },
-              "entity": "companySignInPage.companySignInForm.coType=EW&companySignInPage.companySignInForm.coNum=08694860&companySignInPage.companySignInForm.authCode=222222&companySignInPage.submit=Sign+in&__VIEWSTATE=${formEncodeParameterNameOrValue(attributes.extracted.viewstate)}"
+              "entity": "companySignInPage.companySignInForm.coType=${attributes.openid.id_token_claims['webfiling_info'].jurisdiction}&companySignInPage.companySignInForm.coNum=${attributes.openid.id_token_claims['webfiling_info'].company_no}&companySignInPage.companySignInForm.authCode=${attributes.openid.id_token_claims['webfiling_info'].authCode}&companySignInPage.submit=Sign+in&__VIEWSTATE=${formEncodeParameterNameOrValue(attributes.extracted.viewstate)}"
             }
           }
         },
