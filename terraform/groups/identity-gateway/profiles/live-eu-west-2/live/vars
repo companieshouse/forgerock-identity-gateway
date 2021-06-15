@@ -6,3 +6,7 @@ domain_name = "company-information.service.gov.uk"
 create_certificate = true
 create_route53_record = true
 route53_zone = "company-information.service.gov.uk"
+autoscaling_min = 2
+autoscaling_max = 4
+target_cpu = 50
+target_memory = 50

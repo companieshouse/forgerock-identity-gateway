@@ -18,6 +18,10 @@ variable "ecs_cluster_id" {
   type = string
 }
 
+variable "ecs_cluster_name" {
+  type = string
+}
+
 variable "ecs_task_role_arn" {
   type = string
 }
@@ -81,4 +85,21 @@ variable "tags" {
     ServiceSubType = string
     Team           = string
   })
+}
+
+variable "autoscaling_min" {
+  type = number
+}
+
+variable "autoscaling_max" {
+  type = number
+}
+
+
+variable "target_cpu" {
+  type = number
+}
+
+variable "target_memory" {
+  type = number
 }

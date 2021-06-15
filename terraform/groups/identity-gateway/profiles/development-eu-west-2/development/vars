@@ -7,3 +7,7 @@ create_certificate = false
 certificate_domain = "amido.aws.chdev.org"
 create_route53_record = true
 route53_zone = "aws.chdev.org"
+autoscaling_min = 2
+autoscaling_max = 4
+target_cpu = 50
+target_memory = 50
