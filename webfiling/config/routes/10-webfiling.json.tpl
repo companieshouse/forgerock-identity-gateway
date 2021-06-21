@@ -89,16 +89,74 @@
               "ClientRegistration-FIDC"
             ],
             "requireHttps": false,
-            "cacheExpiration": "disabled"
+            "cacheExpiration": "disabled",
+            "defaultLogoutGoto": "/"
           }
         },
         {
-            "name": "logs",
-            "type": "ScriptableFilter",
-            "config": {
-                "type": "application/x-groovy",
-                "file" : "script.groovy"
+          "type": "ConditionalFilter",
+          "config": {
+            "condition": "${matches(request.uri.path, '^/com-signout')}",
+            "delegate": {
+              "type": "HeaderFilter",
+              "config": {
+                "messageType": "RESPONSE",
+                "remove": [
+                  "location"
+                ],
+                "add": {
+                  "location": [
+                    "/com-logout?silent=1"
+                  ]
+                }
+              }
             }
+          }
+        },
+        {
+          "type": "ConditionalFilter",
+          "config": {
+            "condition": "${matches(request.uri.path, '^/com-logout')}",
+            "delegate": {
+              "type": "HeaderFilter",
+              "config": {
+                "messageType": "RESPONSE",
+                "remove": [
+                  "location"
+                ],
+                "add": {
+                  "location": [
+                    "/oidc/logout"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "ConditionalFilter",
+          "config": {
+            "condition": "${matches(request.uri.path, '^/com-logout') && !contains(request.uri.query,'endSession=0')}",
+            "delegate": {
+              "type": "ScriptableFilter",
+              "config": {
+                "type": "application/x-groovy",
+                "file": "endSession.groovy",
+                "args": {
+                  "routeArgIamFqdn": "&{fidc.fqdn}",
+                  "routeArgRealm": "&{fidc.realm}"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "logs",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "script.groovy"
+          }
         },
         {
           "type": "PasswordReplayFilter",
