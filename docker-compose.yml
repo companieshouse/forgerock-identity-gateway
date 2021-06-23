@@ -7,6 +7,7 @@ services:
       - ./nginx/ewf-kermit.companieshouse.gov.uk.crt:/etc/nginx/ewf-kermit.companieshouse.gov.uk.crt
       - ./nginx/ewf-kermit.companieshouse.gov.uk.key:/etc/nginx/ewf-kermit.companieshouse.gov.uk.key
     ports:
+      - 80:80
       - 443:443
     restart: always
 
@@ -17,8 +18,10 @@ services:
       - APPLICATION_HOST=${APPLICATION_HOST}
       - FIDC_FQDN=${FIDC_FQDN}
       - FIDC_REALM=${FIDC_REALM}
+      - FIDC_LOGIN_JOURNEY=${FIDC_LOGIN_JOURNEY}
       - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
       - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
+      - UI_LOGIN_URL=${UI_LOGIN_URL}
     build:
       context: ./webfiling
       args:

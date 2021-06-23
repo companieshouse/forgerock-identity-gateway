@@ -69,6 +69,20 @@
           }
         },
         {
+          "name": "AuthRedirectFilter",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "authRedirect.groovy",
+            "args": {
+              "routeArgAuthUri": "&{ui.login.url}",
+              "routeArgRealm": "&{fidc.realm}",
+              "routeArgJourney": "&{fidc.login.journey}",
+              "routeArgFidcFqdn": "&{fidc.fqdn}"
+            }
+          }
+        },
+        {
           "name": "OAuth2ClientFilter-FIDC",
           "type": "OAuth2ClientFilter",
           "config": {
@@ -109,6 +123,19 @@
                     "/com-logout?silent=1"
                   ]
                 }
+              }
+            }
+          }
+        },
+        {
+          "type": "ConditionalFilter",
+          "config": {
+            "condition": "${matches(request.uri.path, '^/file-for-another-company')}",
+            "delegate": {
+              "type": "StaticRequestFilter",
+              "config": {
+                "method": "GET",
+                "uri": "https://{APPLICATION_HOST}/com-logout?silent=1&endSession=0"
               }
             }
           }
