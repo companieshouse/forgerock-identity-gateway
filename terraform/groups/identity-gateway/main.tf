@@ -59,7 +59,9 @@ module "webfiling" {
   application_host        = replace(var.application_url, "https://", "")
   fidc_fqdn               = replace(var.fidc_custom_url, "https://", "")
   fidc_realm              = var.fidc_realm
+  fidc_login_journey      = var.fidc_login_journey
   oidc_client_id          = var.oidc_client_id
   oidc_client_secret      = var.oidc_client_secret
+  ui_login_url            = var.ui_login_url
   tags                    = local.common_tags
 }

@@ -66,11 +66,19 @@ variable "fidc_realm" {
   type = string
 }
 
+variable "fidc_login_journey" {
+  type = string
+}
+
 variable "oidc_client_id" {
   type = string
 }
 
 variable "oidc_client_secret" {
+  type = string
+}
+
+variable "ui_login_url" {
   type = string
 }
 
