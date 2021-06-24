@@ -31,7 +31,10 @@
           "config": {
             "type": "application/x-groovy",
             "file": "legacyRewriteHost.groovy",
-            "args": {}
+            "args": {
+              "hostPrefix": "&{application.host.prefix}",
+              "legacyHostPrefix": "&{application.legacy.host.prefix}"
+            }
           }
         }
       ],
