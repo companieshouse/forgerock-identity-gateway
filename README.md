@@ -64,6 +64,7 @@ cp .env.sample .env
 
 # Update your host file
 127.0.0.1 {REPLACE_WITH_APPLICATION_HOST}
+127.0.0.1 {REPLACE_WITH_APPLICATION_LEGACY_HOST}
 
 # Build and run IG Docker image
 docker-compose up --build
