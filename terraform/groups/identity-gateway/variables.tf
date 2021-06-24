@@ -81,6 +81,12 @@ variable "fidc_realm" {
   default     = "alpha"
 }
 
+variable "fidc_login_journey" {
+  type        = string
+  description = "ForgeRock Identity Cloud Login Journey"
+  default     = "CHWebFiling"
+}
+
 variable "oidc_client_id" {
   type        = string
   description = "ForgeRock Identity Cloud client ID"
@@ -90,4 +96,8 @@ variable "oidc_client_id" {
 variable "oidc_client_secret" {
   type        = string
   description = "Client secret for the above client"
+}
+
+variable "ui_login_url" {
+  type = string
 }
