@@ -10,8 +10,10 @@ data "template_file" "container_definitions" {
     application_host          = var.application_host
     fidc_fqdn                 = var.fidc_fqdn
     fidc_realm                = var.fidc_realm
+    fidc_login_journey        = var.fidc_login_journey
     oidc_client_id            = var.oidc_client_id
     oidc_client_secret        = var.oidc_client_secret
+    ui_login_url              = var.ui_login_url
   }
 }
 
