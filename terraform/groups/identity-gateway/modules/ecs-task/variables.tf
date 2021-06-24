@@ -82,6 +82,18 @@ variable "ui_login_url" {
   type = string
 }
 
+variable "application_legacy_host" {
+  type = string
+}
+
+variable "application_legacy_host_prefix" {
+  type = string
+}
+
+variable "application_host_prefix" {
+  type = string
+}
+
 variable "tags" {
   type = object({
     Environment    = string

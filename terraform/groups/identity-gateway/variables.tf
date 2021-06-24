@@ -101,3 +101,18 @@ variable "oidc_client_secret" {
 variable "ui_login_url" {
   type = string
 }
+
+variable "application_legacy_host" {
+  type        = string
+  description = "Host name for legacy access to WebFiling login page"
+}
+
+variable "application_legacy_host_prefix" {
+  type        = string
+  description = "Host name prefix for legacy access to WebFiling login page"
+}
+
+variable "application_host_prefix" {
+  type        = string
+  description = "Host name prefix for access to FIDC WebFiling login page"
+}

@@ -41,27 +41,30 @@ module "webfiling_lb" {
 }
 
 module "webfiling" {
-  source                  = "./modules/ecs-task"
-  region                  = var.region
-  service_name            = "webfiling"
-  vpc_id                  = data.aws_vpc.vpc.id
-  subnet_ids              = data.aws_subnet_ids.data_subnets.ids
-  ecs_cluster_id          = module.ecs.cluster_id
-  ecs_task_role_arn       = module.ecs.task_role_arn
-  lb_security_group_id    = module.webfiling_lb.security_group_id
-  container_image_version = var.container_image_version
-  ecr_url                 = var.ecr_url
-  task_cpu                = var.task_cpu
-  task_memory             = var.task_memory
-  log_group_name          = "forgerock-monitoring"
-  log_prefix              = "webfiling-ig"
-  target_group_arn        = module.webfiling_lb.target_group_arn
-  application_host        = replace(var.application_url, "https://", "")
-  fidc_fqdn               = replace(var.fidc_custom_url, "https://", "")
-  fidc_realm              = var.fidc_realm
-  fidc_login_journey      = var.fidc_login_journey
-  oidc_client_id          = var.oidc_client_id
-  oidc_client_secret      = var.oidc_client_secret
-  ui_login_url            = var.ui_login_url
-  tags                    = local.common_tags
+  source                         = "./modules/ecs-task"
+  region                         = var.region
+  service_name                   = "webfiling"
+  vpc_id                         = data.aws_vpc.vpc.id
+  subnet_ids                     = data.aws_subnet_ids.data_subnets.ids
+  ecs_cluster_id                 = module.ecs.cluster_id
+  ecs_task_role_arn              = module.ecs.task_role_arn
+  lb_security_group_id           = module.webfiling_lb.security_group_id
+  container_image_version        = var.container_image_version
+  ecr_url                        = var.ecr_url
+  task_cpu                       = var.task_cpu
+  task_memory                    = var.task_memory
+  log_group_name                 = "forgerock-monitoring"
+  log_prefix                     = "webfiling-ig"
+  target_group_arn               = module.webfiling_lb.target_group_arn
+  application_host               = replace(var.application_url, "https://", "")
+  fidc_fqdn                      = replace(var.fidc_custom_url, "https://", "")
+  fidc_realm                     = var.fidc_realm
+  fidc_login_journey             = var.fidc_login_journey
+  oidc_client_id                 = var.oidc_client_id
+  oidc_client_secret             = var.oidc_client_secret
+  ui_login_url                   = var.ui_login_url
+  application_legacy_host        = var.application_legacy_host
+  application_legacy_host_prefix = var.application_legacy_host_prefix
+  application_host_prefix        = var.application_host_prefix
+  tags                           = local.common_tags
 }
