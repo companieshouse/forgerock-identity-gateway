@@ -1,20 +1,42 @@
 {
-  "name": "Legacy passthrough",
+  "name": "Legacy Web Filing",
   "baseURI": "https://{APPLICATION_HOST}",
+  "heap": [
+    {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler",
+      "capture": [
+        "request",
+        "response"
+      ],
+      "config": {
+        "tls": {
+          "type": "ClientTlsOptions",
+          "config": {
+            "trustManager": {
+              "type": "TrustAllManager"
+            }
+          }
+        },
+        "hostnameVerifier": "ALLOW_ALL"
+      }
+    }
+  ],
   "handler": {
     "type": "Chain",
     "config": {
       "filters": [
         {
-          "type": "StaticRequestFilter",
+          "type": "ScriptableFilter",
           "config": {
-            "method": "GET",
-            "uri": "https://theguardian.com/uk"
+            "type": "application/x-groovy",
+            "file": "legacyRewriteHost.groovy",
+            "args": {}
           }
         }
       ],
       "handler": "ReverseProxyHandler"
     }
   },
-  "condition": "${matches(request.uri.path, '^/legacy')}"
+  "condition": "${request.uri.host == '&{application.legacy.host}'}"
 }

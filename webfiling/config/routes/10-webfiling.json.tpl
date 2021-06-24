@@ -1,6 +1,7 @@
 {
   "name": "Web Filing",
   "baseURI": "https://{APPLICATION_HOST}",
+  "condition": "${request.uri.host == 'ewf-kermit.companieshouse.gov.uk'}",
   "globalDecorators": {
     "capture": "all"
   },
