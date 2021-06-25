@@ -1,19 +1,22 @@
 data "template_file" "container_definitions" {
   template = file("${path.module}/templates/container_definitions.json.tpl")
   vars = {
-    task_name                 = var.service_name
-    aws_ecr_url               = var.ecr_url
-    tag                       = var.container_image_version
-    cloudwatch_log_group_name = var.log_group_name
-    cloudwatch_log_prefix     = var.log_prefix
-    region                    = var.region
-    application_host          = var.application_host
-    fidc_fqdn                 = var.fidc_fqdn
-    fidc_realm                = var.fidc_realm
-    fidc_login_journey        = var.fidc_login_journey
-    oidc_client_id            = var.oidc_client_id
-    oidc_client_secret        = var.oidc_client_secret
-    ui_login_url              = var.ui_login_url
+    task_name                      = var.service_name
+    aws_ecr_url                    = var.ecr_url
+    tag                            = var.container_image_version
+    cloudwatch_log_group_name      = var.log_group_name
+    cloudwatch_log_prefix          = var.log_prefix
+    region                         = var.region
+    application_host               = var.application_host
+    fidc_fqdn                      = var.fidc_fqdn
+    fidc_realm                     = var.fidc_realm
+    fidc_login_journey             = var.fidc_login_journey
+    oidc_client_id                 = var.oidc_client_id
+    oidc_client_secret             = var.oidc_client_secret
+    ui_login_url                   = var.ui_login_url
+    application_legacy_host        = var.application_legacy_host
+    application_legacy_host_prefix = var.application_legacy_host_prefix
+    application_host_prefix        = var.application_host_prefix
   }
 }
 
