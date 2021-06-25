@@ -115,7 +115,6 @@ variable "autoscaling_max" {
   type = number
 }
 
-
 variable "target_cpu" {
   type = number
 }

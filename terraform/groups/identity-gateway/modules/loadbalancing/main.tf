@@ -97,6 +97,12 @@ resource "aws_lb_target_group" "main" {
     interval            = 60
   }
 
+  stickiness {
+    enabled = true
+    type = "app_cookie"
+    cookie_name = "IG_SESSIONID"
+  }
+
   tags = var.tags
 }
 
