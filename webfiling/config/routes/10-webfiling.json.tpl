@@ -1,6 +1,7 @@
 {
   "name": "Web Filing",
   "baseURI": "https://{APPLICATION_HOST}",
+  "condition": "${request.uri.host != '&{application.legacy.host}'}",
   "globalDecorators": {
     "capture": "all"
   },
@@ -69,6 +70,20 @@
           }
         },
         {
+          "name": "AuthRedirectFilter",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "authRedirect.groovy",
+            "args": {
+              "routeArgAuthUri": "&{ui.login.url}",
+              "routeArgRealm": "&{fidc.realm}",
+              "routeArgJourney": "&{fidc.login.journey}",
+              "routeArgFidcFqdn": "&{fidc.fqdn}"
+            }
+          }
+        },
+        {
           "name": "OAuth2ClientFilter-FIDC",
           "type": "OAuth2ClientFilter",
           "config": {
@@ -89,16 +104,87 @@
               "ClientRegistration-FIDC"
             ],
             "requireHttps": false,
-            "cacheExpiration": "disabled"
+            "cacheExpiration": "disabled",
+            "defaultLogoutGoto": "/"
           }
         },
         {
-            "name": "logs",
-            "type": "ScriptableFilter",
-            "config": {
-                "type": "application/x-groovy",
-                "file" : "script.groovy"
+          "type": "ConditionalFilter",
+          "config": {
+            "condition": "${matches(request.uri.path, '^/com-signout')}",
+            "delegate": {
+              "type": "HeaderFilter",
+              "config": {
+                "messageType": "RESPONSE",
+                "remove": [
+                  "location"
+                ],
+                "add": {
+                  "location": [
+                    "/com-logout?silent=1"
+                  ]
+                }
+              }
             }
+          }
+        },
+        {
+          "type": "ConditionalFilter",
+          "config": {
+            "condition": "${matches(request.uri.path, '^/file-for-another-company')}",
+            "delegate": {
+              "type": "StaticRequestFilter",
+              "config": {
+                "method": "GET",
+                "uri": "https://{APPLICATION_HOST}/com-logout?silent=1&endSession=0"
+              }
+            }
+          }
+        },
+        {
+          "type": "ConditionalFilter",
+          "config": {
+            "condition": "${matches(request.uri.path, '^/com-logout')}",
+            "delegate": {
+              "type": "HeaderFilter",
+              "config": {
+                "messageType": "RESPONSE",
+                "remove": [
+                  "location"
+                ],
+                "add": {
+                  "location": [
+                    "/oidc/logout"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "ConditionalFilter",
+          "config": {
+            "condition": "${matches(request.uri.path, '^/com-logout') && !contains(request.uri.query,'endSession=0')}",
+            "delegate": {
+              "type": "ScriptableFilter",
+              "config": {
+                "type": "application/x-groovy",
+                "file": "endSession.groovy",
+                "args": {
+                  "routeArgIamFqdn": "&{fidc.fqdn}",
+                  "routeArgRealm": "&{fidc.realm}"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "logs",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "script.groovy"
+          }
         },
         {
           "type": "PasswordReplayFilter",
@@ -112,7 +198,7 @@
                   "application/x-www-form-urlencoded"
                 ]
               },
-              "entity": "email=${attributes.openid.id_token_claims['email']}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=en"
+              "entity": "email=${attributes.openid.id_token_claims['email']}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=${attributes.openid.id_token_claims['webfiling_info'].language}"
             }
           }
         },

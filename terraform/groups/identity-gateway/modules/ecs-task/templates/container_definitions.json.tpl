@@ -16,12 +16,32 @@
         "value": "${fidc_realm}"
       },
       {
+        "name": "FIDC_LOGIN_JOURNEY",
+        "value": "${fidc_login_journey}"
+      },
+      {
         "name": "OIDC_CLIENT_ID",
         "value": "${oidc_client_id}"
       },
       {
         "name": "OIDC_CLIENT_SECRET",
         "value": "${oidc_client_secret}"
+      },
+      {
+        "name": "UI_LOGIN_URL",
+        "value": "${ui_login_url}"
+      },
+      {
+        "name": "APPLICATION_LEGACY_HOST",
+        "value": "${application_legacy_host}"
+      },
+      {
+        "name": "APPLICATION_LEGACY_HOST_PREFIX",
+        "value": "${application_legacy_host_prefix}"
+      },
+      {
+        "name": "APPLICATION_HOST_PREFIX",
+        "value": "${application_host_prefix}"
       }
     ],
     "portMappings": [
