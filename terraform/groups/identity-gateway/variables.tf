@@ -116,3 +116,23 @@ variable "application_host_prefix" {
   type        = string
   description = "Host name prefix for access to FIDC WebFiling login page"
 }
+
+variable "autoscaling_min" {
+  type        = number
+  description = "Minimum number of IG instances"
+}
+
+variable "autoscaling_max" {
+  type        = number
+  description = "Maximum number of IG instances"
+}
+
+variable "target_cpu" {
+  type        = number
+  description = "Autoscaling: Target CPU usage percentage"
+}
+
+variable "target_memory" {
+  type        = number
+  description = "Autoscaling: Target Memory usage percentage"
+}

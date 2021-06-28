@@ -47,6 +47,7 @@ module "webfiling" {
   vpc_id                         = data.aws_vpc.vpc.id
   subnet_ids                     = data.aws_subnet_ids.data_subnets.ids
   ecs_cluster_id                 = module.ecs.cluster_id
+  ecs_cluster_name               = var.service_name
   ecs_task_role_arn              = module.ecs.task_role_arn
   lb_security_group_id           = module.webfiling_lb.security_group_id
   container_image_version        = var.container_image_version
@@ -66,5 +67,9 @@ module "webfiling" {
   application_legacy_host        = var.application_legacy_host
   application_legacy_host_prefix = var.application_legacy_host_prefix
   application_host_prefix        = var.application_host_prefix
+  autoscaling_min                = var.autoscaling_min
+  autoscaling_max                = var.autoscaling_max
+  target_cpu                     = var.target_cpu
+  target_memory                  = var.target_memory
   tags                           = local.common_tags
 }

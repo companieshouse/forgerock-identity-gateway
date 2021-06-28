@@ -36,7 +36,7 @@ resource "aws_ecs_service" "ig" {
   name            = var.service_name
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.ig.arn
-  desired_count   = 2
+  desired_count   = var.autoscaling_min
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -49,6 +49,11 @@ resource "aws_ecs_service" "ig" {
     target_group_arn = var.target_group_arn
     container_name   = var.service_name
     container_port   = 8080
+  }
+
+  # Optional: Allow external changes without Terraform plan difference
+  lifecycle {
+    ignore_changes = [desired_count]
   }
 
   tags = var.tags
@@ -76,4 +81,44 @@ resource "aws_security_group" "instance" {
   }
 
   tags = var.tags
+}
+
+resource "aws_appautoscaling_target" "ig" {
+  max_capacity       = var.autoscaling_max
+  min_capacity       = var.autoscaling_min
+  resource_id        = "service/${var.ecs_cluster_name}/${aws_ecs_service.ig.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "ig-cpu" {
+  name               = "${var.service_name} CPU Target"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ig.resource_id
+  scalable_dimension = aws_appautoscaling_target.ig.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ig.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+
+    target_value = var.target_cpu
+  }
+}
+
+resource "aws_appautoscaling_policy" "ig-memory" {
+  name               = "${var.service_name} Memory Target"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ig.resource_id
+  scalable_dimension = aws_appautoscaling_target.ig.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ig.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+    }
+
+    target_value = var.target_memory
+  }
 }
