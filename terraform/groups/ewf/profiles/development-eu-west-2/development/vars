@@ -1,12 +1,11 @@
 environment = "development"
-vpc_name = "Test & Development"
+vpc_name = "vpc-heritage-development"
 task_cpu = 1024
 task_memory = 2048
-domain_name = "amido.aws.chdev.org"
+domain_name = "ewf-kermit.companieshouse.gov.uk"
 create_certificate = false
-certificate_domain = "amido.aws.chdev.org"
-create_route53_record = true
-route53_zone = "aws.chdev.org"
+certificate_domain = "*.companieshouse.gov.uk"
+create_route53_record = false
 autoscaling_min = 2
 autoscaling_max = 4
 target_cpu = 50
