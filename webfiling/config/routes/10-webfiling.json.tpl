@@ -98,20 +98,6 @@
                     }
                   },
                   {
-                    "name": "AuthRedirectFilter",
-                    "type": "ScriptableFilter",
-                    "config": {
-                      "type": "application/x-groovy",
-                      "file": "authRedirect.groovy",
-                      "args": {
-                        "routeArgAuthUri": "&{ui.login.url}",
-                        "routeArgRealm": "&{fidc.realm}",
-                        "routeArgJourney": "&{fidc.login.journey}",
-                        "routeArgFidcFqdn": "&{fidc.fqdn}"
-                      }
-                    }
-                  },
-                  {
                     "name": "OAuth2ClientFilter-FIDC",
                     "type": "OAuth2ClientFilter",
                     "config": {
@@ -186,23 +172,6 @@
                             "location": [
                               "/oidc/logout"
                             ]
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "ConditionalFilter",
-                    "config": {
-                      "condition": "${matches(request.uri.path, '^/com-logout') && !contains(request.uri.query,'endSession=0')}",
-                      "delegate": {
-                        "type": "ScriptableFilter",
-                        "config": {
-                          "type": "application/x-groovy",
-                          "file": "endSession.groovy",
-                          "args": {
-                            "routeArgIamFqdn": "&{fidc.fqdn}",
-                            "routeArgRealm": "&{fidc.realm}"
                           }
                         }
                       }
