@@ -11,7 +11,7 @@ data "aws_subnet_ids" "data_subnets" {
   vpc_id = data.aws_vpc.vpc.id
   filter {
     name   = "tag:Name"
-    values = ["*-applications-*"]
+    values = ["*-application-*"]
   }
 }
 
@@ -25,9 +25,9 @@ module "ecs" {
   tags         = local.common_tags
 }
 
-module "webfiling_lb" {
+module "lb" {
   source                = "./modules/loadbalancing"
-  service_name          = "forgerock-ig-webfiling"
+  service_name          = "forgerock-ig"
   vpc_id                = data.aws_vpc.vpc.id
   vpn_cidrs             = values(data.terraform_remote_state.networking.outputs.vpn_cidrs)
   subnet_ids            = data.aws_subnet_ids.data_subnets.ids
@@ -40,23 +40,23 @@ module "webfiling_lb" {
   tags                  = local.common_tags
 }
 
-module "webfiling" {
+module "ig" {
   source                         = "./modules/ecs-task"
   region                         = var.region
-  service_name                   = "webfiling"
+  service_name                   = "identity-gateway"
   vpc_id                         = data.aws_vpc.vpc.id
   subnet_ids                     = data.aws_subnet_ids.data_subnets.ids
   ecs_cluster_id                 = module.ecs.cluster_id
   ecs_cluster_name               = var.service_name
   ecs_task_role_arn              = module.ecs.task_role_arn
-  lb_security_group_id           = module.webfiling_lb.security_group_id
+  lb_security_group_id           = module.lb.security_group_id
   container_image_version        = var.container_image_version
   ecr_url                        = var.ecr_url
   task_cpu                       = var.task_cpu
   task_memory                    = var.task_memory
   log_group_name                 = "forgerock-monitoring"
-  log_prefix                     = "webfiling-ig"
-  target_group_arn               = module.webfiling_lb.target_group_arn
+  log_prefix                     = "ig"
+  target_group_arn               = module.lb.target_group_arn
   application_host               = replace(var.application_url, "https://", "")
   fidc_fqdn                      = replace(var.fidc_custom_url, "https://", "")
   fidc_realm                     = var.fidc_realm

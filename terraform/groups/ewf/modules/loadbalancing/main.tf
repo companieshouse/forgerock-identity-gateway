@@ -10,7 +10,7 @@ data "aws_route53_zone" "domain" {
 
 resource "aws_acm_certificate" "certificate" {
   count             = var.create_certificate ? 1 : 0
-  domain_name       = "${var.service_name}.${var.domain_name}"
+  domain_name       = var.domain_name
   validation_method = "DNS"
 
   tags = var.tags
@@ -33,7 +33,7 @@ resource "aws_acm_certificate_validation" "certificate" {
 
 resource "aws_route53_record" "lb" {
   count   = var.create_route53_record ? 1 : 0
-  name    = "${var.service_name}.${var.domain_name}"
+  name    = var.domain_name
   zone_id = data.aws_route53_zone.domain.0.id
   type    = "A"
   alias {
@@ -98,8 +98,8 @@ resource "aws_lb_target_group" "main" {
   }
 
   stickiness {
-    enabled = true
-    type = "app_cookie"
+    enabled     = true
+    type        = "app_cookie"
     cookie_name = "IG_SESSIONID"
   }
 
