@@ -6,18 +6,22 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 3.0"
     }
-  }
-}
-
-data "terraform_remote_state" "networking" {
-  backend = "s3"
-  config = {
-    bucket = "${var.environment}-${var.region}.terraform-state.ch.gov.uk"
-    key    = "aws-common-infrastructure-terraform/common-${var.region}/networking.tfstate"
-    region = var.region
+    vault = {
+      source  = "hashicorp/vault"
+      version = ">= 2.0.0"
+    }
   }
 }
 
 provider "aws" {
   region = var.region
+}
+
+provider "vault" {
+  auth_login {
+    path = "auth/userpass/login/${var.vault_username}"
+    parameters = {
+      password = var.vault_password
+    }
+  }
 }

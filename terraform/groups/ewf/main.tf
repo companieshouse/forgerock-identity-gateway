@@ -15,6 +15,10 @@ data "aws_subnet_ids" "data_subnets" {
   }
 }
 
+data "vault_generic_secret" "internal_cidrs" {
+  path = "aws-accounts/network/internal_cidr_ranges"
+}
+
 ###
 # Modules
 ###
@@ -29,7 +33,7 @@ module "lb" {
   source                = "./modules/loadbalancing"
   service_name          = "forgerock-ig"
   vpc_id                = data.aws_vpc.vpc.id
-  vpn_cidrs             = values(data.terraform_remote_state.networking.outputs.vpn_cidrs)
+  ingress_cidr_blocks   = values(data.vault_generic_secret.internal_cidrs.data)
   subnet_ids            = data.aws_subnet_ids.data_subnets.ids
   target_port           = 8080
   domain_name           = var.domain_name

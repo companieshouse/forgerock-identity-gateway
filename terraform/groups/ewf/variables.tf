@@ -1,3 +1,13 @@
+variable "vault_username" {
+  type        = string
+  description = "Username for connecting to Vault"
+}
+
+variable "vault_password" {
+  type        = string
+  description = "Password for connecting to Vault"
+}
+
 variable "region" {
   type        = string
   description = "AWS region for deployment"
