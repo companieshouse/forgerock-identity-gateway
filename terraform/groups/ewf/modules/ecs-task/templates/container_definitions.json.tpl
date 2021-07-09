@@ -8,12 +8,20 @@
         "value": "${application_host}"
       },
       {
+        "name": "IG_HOST",
+        "value": "${ig_host}"
+      },
+      {
         "name": "FIDC_FQDN",
         "value": "${fidc_fqdn}"
       },
       {
         "name": "FIDC_REALM",
         "value": "${fidc_realm}"
+      },
+      {
+        "name": "FIDC_MAIN_JOURNEY",
+        "value": "${fidc_main_journey}"
       },
       {
         "name": "FIDC_LOGIN_JOURNEY",

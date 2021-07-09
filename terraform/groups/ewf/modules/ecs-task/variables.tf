@@ -62,11 +62,19 @@ variable "application_host" {
   type = string
 }
 
+variable "ig_host" {
+  type = string
+}
+
 variable "fidc_fqdn" {
   type = string
 }
 
 variable "fidc_realm" {
+  type = string
+}
+
+variable "fidc_main_journey" {
   type = string
 }
 

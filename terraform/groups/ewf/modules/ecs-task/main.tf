@@ -8,8 +8,10 @@ data "template_file" "container_definitions" {
     cloudwatch_log_prefix          = var.log_prefix
     region                         = var.region
     application_host               = var.application_host
+    ig_host                        = var.ig_host
     fidc_fqdn                      = var.fidc_fqdn
     fidc_realm                     = var.fidc_realm
+    fidc_main_journey              = var.fidc_main_journey
     fidc_login_journey             = var.fidc_login_journey
     oidc_client_id                 = var.oidc_client_id
     oidc_client_secret             = var.oidc_client_secret
