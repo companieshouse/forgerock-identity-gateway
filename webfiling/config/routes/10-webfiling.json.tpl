@@ -22,6 +22,8 @@
             }
           }
         },
+        "connectionTimeout": "60 seconds",
+        "soTimeout": "60 seconds",
         "hostnameVerifier": "ALLOW_ALL"
       }
     },
@@ -58,180 +60,205 @@
     }
   ],
   "handler": {
-    "type": "Chain",
+    "type": "DispatchHandler",
     "config": {
-      "filters": [
+      "bindings": [
         {
-          "type": "ForwardedRequestFilter",
-          "config": {
-            "scheme": "${request.headers['X-Forwarded-Proto'][0]}",
-            "host": "${split(request.headers['Host'][0], ':')[0]}",
-            "port": "${integer(request.headers['X-Forwarded-Port'][0])}"
-          }
-        },
-        {
-          "name": "AuthRedirectFilter",
-          "type": "ScriptableFilter",
-          "config": {
-            "type": "application/x-groovy",
-            "file": "authRedirect.groovy",
-            "args": {
-              "routeArgAuthUri": "&{ui.login.url}",
-              "routeArgRealm": "&{fidc.realm}",
-              "routeArgJourney": "&{fidc.login.journey}",
-              "routeArgFidcFqdn": "&{fidc.fqdn}"
+          "condition": "${matches(request.uri.path, '^/start')}",
+          "handler": {
+            "type": "ScriptableHandler",
+            "name": "ScriptableHandler-Start",
+            "config": {
+              "type": "application/x-groovy",
+              "file": "start.groovy",
+              "args": {
+                "igHost": "&{ig.host}"
+              }
             }
           }
         },
         {
-          "name": "OAuth2ClientFilter-FIDC",
-          "type": "OAuth2ClientFilter",
-          "config": {
-            "clientEndpoint": "/oidc",
-            "failureHandler": {
-              "type": "StaticResponseHandler",
-              "config": {
-                "status": 500,
-                "headers": {
-                  "Content-Type": [
-                    "text/plain"
-                  ]
+          "handler": {
+            "name": "OIDC Handler",
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "type": "ForwardedRequestFilter",
+                  "config": {
+                    "scheme": "${request.headers['X-Forwarded-Proto'][0]}",
+                    "host": "${split(request.headers['Host'][0], ':')[0]}",
+                    "port": "${integer(request.headers['X-Forwarded-Port'][0])}"
+                  }
                 },
-                "entity": "Error in OAuth 2.0 setup."
-              }
-            },
-            "registrations": [
-              "ClientRegistration-FIDC"
-            ],
-            "requireHttps": false,
-            "cacheExpiration": "disabled",
-            "defaultLogoutGoto": "/"
-          }
-        },
-        {
-          "type": "ConditionalFilter",
-          "config": {
-            "condition": "${matches(request.uri.path, '^/com-signout')}",
-            "delegate": {
-              "type": "HeaderFilter",
-              "config": {
-                "messageType": "RESPONSE",
-                "remove": [
-                  "location"
-                ],
-                "add": {
-                  "location": [
-                    "/com-logout?silent=1"
-                  ]
+                {
+                  "name": "AuthRedirectFilter",
+                  "type": "ScriptableFilter",
+                  "config": {
+                    "type": "application/x-groovy",
+                    "file": "authRedirect.groovy",
+                    "args": {
+                      "routeArgAuthUri": "&{ui.login.url}",
+                      "routeArgRealm": "&{fidc.realm}",
+                      "routeArgLoginJourney": "&{fidc.login.journey}",
+                      "routeArgMainJourney": "&{fidc.main.journey}",
+                      "routeArgFidcFqdn": "&{fidc.fqdn}"
+                    }
+                  }
+                },
+                {
+                  "name": "OAuth2ClientFilter-FIDC",
+                  "type": "OAuth2ClientFilter",
+                  "config": {
+                    "clientEndpoint": "/oidc",
+                    "failureHandler": {
+                      "type": "StaticResponseHandler",
+                      "config": {
+                        "status": 500,
+                        "headers": {
+                          "Content-Type": [
+                            "text/plain"
+                          ]
+                        },
+                        "entity": "Error in OAuth 2.0 setup."
+                      }
+                    },
+                    "registrations": [
+                      "ClientRegistration-FIDC"
+                    ],
+                    "requireHttps": false,
+                    "cacheExpiration": "disabled",
+                    "defaultLogoutGoto": "/"
+                  }
+                },
+                {
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${matches(request.uri.path, '^/com-signout')}",
+                    "delegate": {
+                      "type": "HeaderFilter",
+                      "config": {
+                        "messageType": "RESPONSE",
+                        "remove": [
+                          "location"
+                        ],
+                        "add": {
+                          "location": [
+                            "/com-logout?silent=1"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${matches(request.uri.path, '^/file-for-another-company')}",
+                    "delegate": {
+                      "type": "StaticRequestFilter",
+                      "config": {
+                        "method": "GET",
+                        "uri": "https://{APPLICATION_HOST}/com-logout?silent=1&companySelect=1"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${matches(request.uri.path, '^/com-logout')}",
+                    "delegate": {
+                      "type": "HeaderFilter",
+                      "config": {
+                        "messageType": "RESPONSE",
+                        "remove": [
+                          "location"
+                        ],
+                        "add": {
+                          "location": [
+                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}:443//seclogin?&')}${urlEncode(request.uri.query)}"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${matches(request.uri.path, '^/com-logout') && !contains(request.uri.query,'companySelect=1')}",
+                    "delegate": {
+                      "type": "ScriptableFilter",
+                      "config": {
+                        "type": "application/x-groovy",
+                        "file": "endSession.groovy",
+                        "args": {
+                          "routeArgIamFqdn": "&{fidc.fqdn}",
+                          "routeArgRealm": "&{fidc.realm}"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "logs",
+                  "type": "ScriptableFilter",
+                  "config": {
+                    "type": "application/x-groovy",
+                    "file": "script.groovy"
+                  }
+                },
+                {
+                  "type": "PasswordReplayFilter",
+                  "config": {
+                    "loginPage": "${matches(request.uri.path,'^//seclogin')}",
+                    "request": {
+                      "method": "POST",
+                      "uri": "https://{APPLICATION_HOST}//seclogin?tc=1",
+                      "headers": {
+                        "Content-Type": [
+                          "application/x-www-form-urlencoded"
+                        ]
+                      },
+                      "entity": "email=${attributes.openid.id_token_claims['email']}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=${attributes.openid.id_token_claims['webfiling_info'].language}"
+                    }
+                  }
+                },
+                {
+                  "type": "PasswordReplayFilter",
+                  "config": {
+                    "loginPage": "${contains(request.uri.query,'page=companyAuthorisation')}",
+                    "loginPageExtractions": [
+                      {
+                        "name": "viewstate",
+                        "pattern": "name=\"__VIEWSTATE\" value=\"(.*?)\""
+                      }
+                    ],
+                    "request": {
+                      "method": "POST",
+                      "uri": "https://{APPLICATION_HOST}${request.uri.path}?${request.uri.query}",
+                      "headers": {
+                        "Content-Type": [
+                          "application/x-www-form-urlencoded"
+                        ]
+                      },
+                      "entity": "companySignInPage.companySignInForm.coType=${attributes.openid.id_token_claims['webfiling_info'].jurisdiction}&companySignInPage.companySignInForm.coNum=${attributes.openid.id_token_claims['webfiling_info'].company_no}&companySignInPage.companySignInForm.authCode=${attributes.openid.id_token_claims['webfiling_info'].auth_code}&companySignInPage.submit=Sign+in&__VIEWSTATE=${formEncodeParameterNameOrValue(attributes.extracted.viewstate)}"
+                    }
+                  }
+                },
+                {
+                  "type": "CookieFilter",
+                  "config": {
+                    "defaultAction": "MANAGE"
+                  }
                 }
-              }
+              ],
+              "handler": "ReverseProxyHandler"
             }
-          }
-        },
-        {
-          "type": "ConditionalFilter",
-          "config": {
-            "condition": "${matches(request.uri.path, '^/file-for-another-company')}",
-            "delegate": {
-              "type": "StaticRequestFilter",
-              "config": {
-                "method": "GET",
-                "uri": "https://{APPLICATION_HOST}/com-logout?silent=1&endSession=0"
-              }
-            }
-          }
-        },
-        {
-          "type": "ConditionalFilter",
-          "config": {
-            "condition": "${matches(request.uri.path, '^/com-logout')}",
-            "delegate": {
-              "type": "HeaderFilter",
-              "config": {
-                "messageType": "RESPONSE",
-                "remove": [
-                  "location"
-                ],
-                "add": {
-                  "location": [
-                    "/oidc/logout"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        {
-          "type": "ConditionalFilter",
-          "config": {
-            "condition": "${matches(request.uri.path, '^/com-logout') && !contains(request.uri.query,'endSession=0')}",
-            "delegate": {
-              "type": "ScriptableFilter",
-              "config": {
-                "type": "application/x-groovy",
-                "file": "endSession.groovy",
-                "args": {
-                  "routeArgIamFqdn": "&{fidc.fqdn}",
-                  "routeArgRealm": "&{fidc.realm}"
-                }
-              }
-            }
-          }
-        },
-        {
-          "name": "logs",
-          "type": "ScriptableFilter",
-          "config": {
-            "type": "application/x-groovy",
-            "file": "script.groovy"
-          }
-        },
-        {
-          "type": "PasswordReplayFilter",
-          "config": {
-            "loginPage": "${matches(request.uri.path,'^//seclogin')}",
-            "request": {
-              "method": "POST",
-              "uri": "https://{APPLICATION_HOST}//seclogin?tc=1",
-              "headers": {
-                "Content-Type": [
-                  "application/x-www-form-urlencoded"
-                ]
-              },
-              "entity": "email=${attributes.openid.id_token_claims['email']}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=${attributes.openid.id_token_claims['webfiling_info'].language}"
-            }
-          }
-        },
-        {
-          "type": "PasswordReplayFilter",
-          "config": {
-            "loginPage": "${contains(request.uri.query,'page=companyAuthorisation')}",
-            "loginPageExtractions": [
-              {
-                "name": "viewstate",
-                "pattern": "name=\"__VIEWSTATE\" value=\"(.*?)\""
-              }
-            ],
-            "request": {
-              "method": "POST",
-              "uri": "https://{APPLICATION_HOST}${request.uri.path}?${request.uri.query}",
-              "headers": {
-                "Content-Type": [
-                  "application/x-www-form-urlencoded"
-                ]
-              },
-              "entity": "companySignInPage.companySignInForm.coType=${attributes.openid.id_token_claims['webfiling_info'].jurisdiction}&companySignInPage.companySignInForm.coNum=${attributes.openid.id_token_claims['webfiling_info'].company_no}&companySignInPage.companySignInForm.authCode=${attributes.openid.id_token_claims['webfiling_info'].auth_code}&companySignInPage.submit=Sign+in&__VIEWSTATE=${formEncodeParameterNameOrValue(attributes.extracted.viewstate)}"
-            }
-          }
-        },
-        {
-          "type": "CookieFilter",
-          "config": {
-            "defaultAction": "MANAGE"
           }
         }
-      ],
-      "handler": "ReverseProxyHandler"
+      ]
     }
   }
 }
