@@ -62,8 +62,10 @@ module "ig" {
   log_prefix                     = "ig"
   target_group_arn               = module.lb.target_group_arn
   application_host               = replace(var.application_url, "https://", "")
+  ig_host                        = var.domain_name
   fidc_fqdn                      = replace(var.fidc_custom_url, "https://", "")
   fidc_realm                     = var.fidc_realm
+  fidc_main_journey              = var.fidc_main_journey
   fidc_login_journey             = var.fidc_login_journey
   oidc_client_id                 = var.oidc_client_id
   oidc_client_secret             = var.oidc_client_secret
