@@ -64,7 +64,7 @@
     "config": {
       "bindings": [
         {
-          "condition": "${matches(request.uri.path, '^/start')}",
+          "condition": "${matches(request.uri.path, '^/file-for-a-company')}",
           "handler": {
             "type": "ScriptableHandler",
             "name": "ScriptableHandler-Start",
@@ -177,7 +177,7 @@
                         ],
                         "add": {
                           "location": [
-                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}:443//seclogin?&')}${urlEncode(request.uri.query)}"
+                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}:443//seclogin?')}${urlEncode(request.uri.query)}"
                           ]
                         }
                       }
