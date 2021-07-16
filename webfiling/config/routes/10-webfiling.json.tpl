@@ -114,13 +114,12 @@
                     "failureHandler": {
                       "type": "StaticResponseHandler",
                       "config": {
-                        "status": 500,
+                        "status": 302,
                         "headers": {
-                          "Content-Type": [
-                            "text/plain"
+                          "Location": [
+                            "/oidc/logout"
                           ]
-                        },
-                        "entity": "Error in OAuth 2.0 setup."
+                        }
                       }
                     },
                     "registrations": [
