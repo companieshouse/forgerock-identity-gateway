@@ -26,7 +26,7 @@ next.handle(context, request).thenOnResult(response -> {
         }
 
         // Redirect to landing page using login journey
-        newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney + "&authIndexType=service&authIndexValue=" + routeArgLoginJourney + "&mode=AUTHN_ONLY"
+        newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney + "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
         
         response.headers.remove("Location")
         response.headers.add("Location",newUri)
