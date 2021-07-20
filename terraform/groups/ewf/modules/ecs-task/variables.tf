@@ -90,7 +90,15 @@ variable "oidc_client_secret" {
   type = string
 }
 
-variable "ui_login_url" {
+variable "ui_url" {
+  type = string
+}
+
+variable "login_path" {
+  type = string
+}
+
+variable "error_path" {
   type = string
 }
 

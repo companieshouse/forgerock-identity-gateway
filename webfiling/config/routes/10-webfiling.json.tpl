@@ -98,7 +98,8 @@
                     "type": "application/x-groovy",
                     "file": "authRedirect.groovy",
                     "args": {
-                      "routeArgAuthUri": "&{ui.login.url}",
+                      "routeArgAuthUri": "&{ui.url}",
+                      "routeArgLoginPath": "&{login.path}",
                       "routeArgRealm": "&{fidc.realm}",
                       "routeArgLoginJourney": "&{fidc.login.journey}",
                       "routeArgMainJourney": "&{fidc.main.journey}",
@@ -206,6 +207,23 @@
                   "config": {
                     "type": "application/x-groovy",
                     "file": "script.groovy"
+                  }
+                },
+                {
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${matches(request.uri.path,'^//seclogin') or contains(request.uri.query,'page=companyAuthorisation')}",
+                    "delegate": {
+                      "type": "ScriptableFilter",
+                      "config": {
+                        "type": "application/x-groovy",
+                        "file": "errorRedirect.groovy",
+                        "args": {
+                          "routeArgAuthUri": "&{ui.url}",
+                          "routeArgErrorPath": "&{error.path}"
+                        }
+                      }
+                    }
                   }
                 },
                 {

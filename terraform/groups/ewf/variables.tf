@@ -114,8 +114,20 @@ variable "oidc_client_secret" {
   description = "Client secret for the above client"
 }
 
-variable "ui_login_url" {
+variable "ui_url" {
   type = string
+}
+
+variable "login_path" {
+  type        = string
+  description = "Path to login page"
+  default     = "/account/login/"
+}
+
+variable "error_path" {
+  type        = string
+  description = "Path to error page for password replay failures"
+  default     = "/account/home/"
 }
 
 variable "application_legacy_host" {

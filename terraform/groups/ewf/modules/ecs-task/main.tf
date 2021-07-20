@@ -15,7 +15,9 @@ data "template_file" "container_definitions" {
     fidc_login_journey             = var.fidc_login_journey
     oidc_client_id                 = var.oidc_client_id
     oidc_client_secret             = var.oidc_client_secret
-    ui_login_url                   = var.ui_login_url
+    ui_url                         = var.ui_url
+    login_path                     = var.login_path
+    error_path                     = var.error_path
     application_legacy_host        = var.application_legacy_host
     application_legacy_host_prefix = var.application_legacy_host_prefix
     application_host_prefix        = var.application_host_prefix

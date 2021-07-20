@@ -36,8 +36,16 @@
         "value": "${oidc_client_secret}"
       },
       {
-        "name": "UI_LOGIN_URL",
-        "value": "${ui_login_url}"
+        "name": "UI_URL",
+        "value": "${ui_url}"
+      },
+      {
+        "name": "LOGIN_PATH",
+        "value": "${login_path}"
+      },
+      {
+        "name": "ERROR_PATH",
+        "value": "${error_path}"
       },
       {
         "name": "APPLICATION_LEGACY_HOST",
