@@ -8,7 +8,7 @@ next.handle(context, request).thenOnResult(response -> {
         (locationHeaders = response.headers.get("Location")) != null &&
         (locationUri = locationHeaders.firstValue.toString()) ==~ "^https://" + routeArgFidcFqdn + "/am/oauth2/authorize.*") {
         
-        def newUri = routeArgAuthUri
+        def newUri = routeArgAuthUri + routeArgLoginPath
 
         def queryParams = request.uri.query?.split('&')
         if (queryParams != null) {

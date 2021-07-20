@@ -26,7 +26,9 @@ services:
       - FIDC_MAIN_JOURNEY=${FIDC_MAIN_JOURNEY}
       - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
       - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
-      - UI_LOGIN_URL=${UI_LOGIN_URL}
+      - UI_URL=${UI_URL}
+      - LOGIN_PATH=${LOGIN_PATH}
+      - ERROR_PATH=${ERROR_PATH}
     build:
       context: ./webfiling
       args:
