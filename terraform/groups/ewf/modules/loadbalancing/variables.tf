@@ -6,6 +6,10 @@ variable "vpc_id" {
   type = string
 }
 
+variable "internal" {
+  type = bool
+}
+
 variable "ingress_cidr_blocks" {
   type = list(string)
 }

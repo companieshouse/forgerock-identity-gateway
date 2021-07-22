@@ -33,7 +33,8 @@ module "lb" {
   source                = "./modules/loadbalancing"
   service_name          = "forgerock-ig"
   vpc_id                = data.aws_vpc.vpc.id
-  ingress_cidr_blocks   = values(data.vault_generic_secret.internal_cidrs.data)
+  internal              = var.internal_access_only
+  ingress_cidr_blocks   = var.environment == "staging" ? local.public_allow_cidr_blocks : values(data.vault_generic_secret.internal_cidrs.data)
   subnet_ids            = data.aws_subnet_ids.data_subnets.ids
   target_port           = 8080
   domain_name           = var.domain_name

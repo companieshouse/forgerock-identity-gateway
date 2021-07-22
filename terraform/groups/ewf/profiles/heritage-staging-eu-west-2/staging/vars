@@ -10,3 +10,4 @@ autoscaling_min = 2
 autoscaling_max = 4
 target_cpu = 50
 target_memory = 50
+internal = false
