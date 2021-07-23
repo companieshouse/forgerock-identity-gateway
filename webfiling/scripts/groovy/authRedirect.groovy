@@ -23,7 +23,7 @@ next.handle(context, request).thenOnResult(response -> {
                 response.headers.remove("Location")
                 return response.headers.add("Location",newUri)
             }
-            if (mapParams.requestAuthCode) {
+            if (mapParams.postSecLoginRedirect) {
                 // Prevent landing page redirect
                 return
             }
