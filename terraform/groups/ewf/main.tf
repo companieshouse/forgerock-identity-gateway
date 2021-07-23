@@ -15,6 +15,14 @@ data "aws_subnet_ids" "data_subnets" {
   }
 }
 
+data "aws_subnet_ids" "public_subnets" {
+  vpc_id = data.aws_vpc.vpc.id
+  filter {
+    name   = "tag:Name"
+    values = ["*-public-*"]
+  }
+}
+
 data "vault_generic_secret" "internal_cidrs" {
   path = "aws-accounts/network/internal_cidr_ranges"
 }
@@ -34,8 +42,8 @@ module "lb" {
   service_name          = "forgerock-ig"
   vpc_id                = data.aws_vpc.vpc.id
   internal              = var.internal_access_only
-  ingress_cidr_blocks   = var.environment == "staging" ? local.public_allow_cidr_blocks : values(data.vault_generic_secret.internal_cidrs.data)
-  subnet_ids            = data.aws_subnet_ids.data_subnets.ids
+  ingress_cidr_blocks   = var.internal_access_only ? values(data.vault_generic_secret.internal_cidrs.data) : local.public_allow_cidr_blocks
+  subnet_ids            = var.internal_access_only ? data.aws_subnet_ids.data_subnets.ids : data.aws_subnet_ids.public_subnets.ids
   target_port           = 8080
   domain_name           = var.domain_name
   create_route53_record = var.create_route53_record
