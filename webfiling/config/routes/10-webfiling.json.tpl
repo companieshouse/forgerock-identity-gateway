@@ -78,13 +78,13 @@
           }
         },
         {
-          "condition": "${matches(request.uri.path, '^/request-auth-code')}",
+          "condition": "${matches(request.uri.path, '^/request-auth-code') or matches(request.uri.path, '^/recent-filings')}",
           "handler": {
             "type": "ScriptableHandler",
-            "name": "ScriptableHandler-Request-Auth-Code",
+            "name": "ScriptableHandler-Post-SecLogin-Redirects",
             "config": {
               "type": "application/x-groovy",
-              "file": "requestAuthCode.groovy",
+              "file": "postSecLoginRedirect.groovy",
               "args": {
                 "igHost": "&{ig.host}"
               }
@@ -243,12 +243,12 @@
                 {
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path,'^//seclogin') and contains(request.uri.query,'requestAuthCode=1')}",
+                    "condition": "${matches(request.uri.path,'^//seclogin') and contains(request.uri.query,'postSecLoginRedirect')}",
                     "delegate": {
                       "type": "ScriptableFilter",
                       "config": {
                         "type": "application/x-groovy",
-                        "file": "requestAuthCode.groovy",
+                        "file": "postSecLoginRedirect.groovy",
                         "args": {
                           "igHost": "&{ig.host}"
                         }
