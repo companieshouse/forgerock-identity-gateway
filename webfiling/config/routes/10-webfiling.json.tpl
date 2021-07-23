@@ -78,6 +78,20 @@
           }
         },
         {
+          "condition": "${matches(request.uri.path, '^/request-auth-code')}",
+          "handler": {
+            "type": "ScriptableHandler",
+            "name": "ScriptableHandler-Request-Auth-Code",
+            "config": {
+              "type": "application/x-groovy",
+              "file": "requestAuthCode.groovy",
+              "args": {
+                "igHost": "&{ig.host}"
+              }
+            }
+          }
+        },
+        {
           "handler": {
             "name": "OIDC Handler",
             "type": "Chain",
@@ -227,6 +241,22 @@
                   }
                 },
                 {
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${matches(request.uri.path,'^//seclogin') and contains(request.uri.query,'requestAuthCode=1')}",
+                    "delegate": {
+                      "type": "ScriptableFilter",
+                      "config": {
+                        "type": "application/x-groovy",
+                        "file": "requestAuthCode.groovy",
+                        "args": {
+                          "igHost": "&{ig.host}"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
                   "type": "PasswordReplayFilter",
                   "config": {
                     "loginPage": "${matches(request.uri.path,'^//seclogin')}",
@@ -238,7 +268,7 @@
                           "application/x-www-form-urlencoded"
                         ]
                       },
-                      "entity": "email=${attributes.openid.id_token_claims['email']}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=${attributes.openid.id_token_claims['webfiling_info'].language}"
+                      "entity": "email=${attributes.openid.id_token_claims['email']}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=en"
                     }
                   }
                 },
