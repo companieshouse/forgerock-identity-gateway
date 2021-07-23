@@ -164,3 +164,9 @@ variable "target_memory" {
   type        = number
   description = "Autoscaling: Target Memory usage percentage"
 }
+
+variable "internal_access_only" {
+  type        = bool
+  description = "Should the Load Balancer be internal"
+  default     = true
+}

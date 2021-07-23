@@ -47,7 +47,7 @@ resource "aws_lb" "main" {
   name                             = var.service_name
   load_balancer_type               = "application"
   enable_cross_zone_load_balancing = "true"
-  internal                         = true
+  internal                         = var.internal
   subnets                          = var.subnet_ids
   security_groups                  = [aws_security_group.lb.id]
 
