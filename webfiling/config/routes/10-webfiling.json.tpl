@@ -268,7 +268,7 @@
                           "application/x-www-form-urlencoded"
                         ]
                       },
-                      "entity": "email=${attributes.openid.id_token_claims['email']}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=en"
+                      "entity": "email=${attributes.openid.id_token_claims['email']}&seccode=${attributes.openid.id_token_claims['webfiling_info'].password}&submit=Sign+in&lang=${attributes.openid.id_token_claims['webfiling_info'].language}"
                     }
                   }
                 },
