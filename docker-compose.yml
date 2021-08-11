@@ -11,7 +11,7 @@ services:
       - 443:443
     restart: always
 
-  ig:
+  ewf-ig:
     depends_on:
       - reverseproxy
     environment:
@@ -31,5 +31,15 @@ services:
       - ERROR_PATH=${ERROR_PATH}
     build:
       context: ./webfiling
+      args:
+        DOCKER_IMAGE: ${DOCKER_IMAGE}
+  
+  chs-ig:
+    depends_on:
+      - reverseproxy
+    environment:
+      - API_LOAD_BALANCER=${API_LOAD_BALANCER}
+    build:
+      context: ./chs
       args:
         DOCKER_IMAGE: ${DOCKER_IMAGE}
