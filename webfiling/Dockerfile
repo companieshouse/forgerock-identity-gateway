@@ -5,4 +5,4 @@ FROM ${DOCKER_IMAGE}
 
 COPY --chown=forgerock:root . /var/ig
 
-ENTRYPOINT [ "/var/ig/run-ig.sh" ]
+ENTRYPOINT [ "/opt/ig/bin/start.sh", "/var/ig" ]

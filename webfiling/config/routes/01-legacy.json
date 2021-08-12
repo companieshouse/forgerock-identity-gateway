@@ -1,6 +1,6 @@
 {
   "name": "Legacy Web Filing",
-  "baseURI": "https://{APPLICATION_HOST}",
+  "baseURI": "https://&{application.host}",
   "heap": [
     {
       "name": "ReverseProxyHandler",

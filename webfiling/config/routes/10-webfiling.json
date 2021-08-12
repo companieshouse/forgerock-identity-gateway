@@ -1,6 +1,6 @@
 {
   "name": "Web Filing",
-  "baseURI": "https://{APPLICATION_HOST}",
+  "baseURI": "https://&{application.host}",
   "condition": "${request.uri.host != '&{application.legacy.host}'}",
   "globalDecorators": {
     "capture": "all"
@@ -173,7 +173,7 @@
                       "type": "StaticRequestFilter",
                       "config": {
                         "method": "GET",
-                        "uri": "https://{APPLICATION_HOST}/com-logout?silent=1&companySelect=1"
+                        "uri": "https://&{application.host}/com-logout?silent=1&companySelect=1"
                       }
                     }
                   }
@@ -262,7 +262,7 @@
                     "loginPage": "${matches(request.uri.path,'^//seclogin')}",
                     "request": {
                       "method": "POST",
-                      "uri": "https://{APPLICATION_HOST}//seclogin?tc=1",
+                      "uri": "https://&{application.host}//seclogin?tc=1",
                       "headers": {
                         "Content-Type": [
                           "application/x-www-form-urlencoded"
@@ -284,7 +284,7 @@
                     ],
                     "request": {
                       "method": "POST",
-                      "uri": "https://{APPLICATION_HOST}${request.uri.path}?${request.uri.query}",
+                      "uri": "https://&{application.host}${request.uri.path}?${request.uri.query}",
                       "headers": {
                         "Content-Type": [
                           "application/x-www-form-urlencoded"
