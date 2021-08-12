@@ -1,0 +1,14 @@
+environment = "development"
+vpc_name = "Test & Development"
+task_cpu = 1024
+task_memory = 2048
+domain_name = "api-ig.amido.aws.chdev.org"
+create_certificate = false
+certificate_domain = "amido.aws.chdev.org"
+create_route53_record = false
+autoscaling_min = 2
+autoscaling_max = 4
+target_cpu = 50
+target_memory = 50
+api_load_balancer = "api.amido.aws.chdev.org"
+create_external_lb = false
