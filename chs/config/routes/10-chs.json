@@ -1,0 +1,28 @@
+{
+  "name": "CHS",
+  "baseURI": "https://&{api.load.balancer}",
+  "heap": [
+    {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler",
+      "capture": [
+        "request",
+        "response"
+      ],
+      "config": {
+        "tls": {
+          "type": "ClientTlsOptions",
+          "config": {
+            "trustManager": {
+              "type": "TrustAllManager"
+            }
+          }
+        },
+        "hostnameVerifier": "ALLOW_ALL"
+      }
+    }
+  ],
+  "handler": {
+    "type": "ReverseProxyHandler"
+  }
+}
