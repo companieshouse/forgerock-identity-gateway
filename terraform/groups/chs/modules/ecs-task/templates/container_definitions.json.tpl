@@ -6,6 +6,18 @@
       {
         "name": "API_LOAD_BALANCER",
         "value": "${api_load_balancer}"
+      },
+      {
+        "name": "FIDC_FQDN",
+        "value": "${fidc_fqdn}"
+      },
+      {
+        "name": "FIDC_REALM",
+        "value": "${fidc_realm}"
+      },
+      {
+        "name": "AGENT_SECRET_ID",
+        "value": "${agent_secret_id}"
       }
     ],
     "portMappings": [

@@ -93,3 +93,19 @@ variable "create_external_lb" {
   type    = bool
   default = false
 }
+
+variable "fidc_custom_url" {
+  type        = string
+  description = "Custom URL for ForgeRock Identity Cloud"
+}
+
+variable "fidc_realm" {
+  type        = string
+  description = "ForgeRock Identity Cloud Realm"
+  default     = "alpha"
+}
+
+variable "agent_secret_id" {
+  type        = string
+  description = "Identity Gateway Agent Secret ID"
+}
