@@ -33,12 +33,15 @@ services:
       context: ./webfiling
       args:
         DOCKER_IMAGE: ${DOCKER_IMAGE}
-  
+
   chs-ig:
     depends_on:
       - reverseproxy
     environment:
       - API_LOAD_BALANCER=${API_LOAD_BALANCER}
+      - FIDC_FQDN=${FIDC_FQDN}
+      - FIDC_REALM=${FIDC_REALM}
+      - AGENT_SECRET_ID=${IG_AGENT_SECRET}
     build:
       context: ./chs
       args:
