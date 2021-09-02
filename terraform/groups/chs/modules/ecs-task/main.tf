@@ -8,6 +8,9 @@ data "template_file" "container_definitions" {
     cloudwatch_log_prefix     = var.log_prefix
     region                    = var.region
     api_load_balancer         = var.api_load_balancer
+    fidc_fqdn                 = var.fidc_fqdn
+    fidc_realm                = var.fidc_realm
+    agent_secret_id           = var.agent_secret_id
   }
 }
 

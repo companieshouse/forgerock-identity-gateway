@@ -86,3 +86,15 @@ variable "target_memory" {
 variable "api_load_balancer" {
   type = string
 }
+
+variable "fidc_fqdn" {
+  type = string
+}
+
+variable "fidc_realm" {
+  type = string
+}
+
+variable "agent_secret_id" {
+  type = string
+}

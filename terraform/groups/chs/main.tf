@@ -95,5 +95,8 @@ module "ig" {
   target_cpu              = var.target_cpu
   target_memory           = var.target_memory
   api_load_balancer       = var.api_load_balancer
+  fidc_fqdn               = replace(var.fidc_custom_url, "https://", "")
+  fidc_realm              = var.fidc_realm
+  agent_secret_id         = var.agent_secret_id
   tags                    = local.common_tags
 }
