@@ -10,23 +10,26 @@ next.handle(context, request).thenOnResult(response -> {
     println()
 
     if (request.uri != null) {
-        if (request.uri.toString().endsWith("/macc")) {
 
-           println("[CHLOG][AUTHREDIRECT] WE HAVE A MACC SO ADDING HEADER!!")
-           session["gotoTarget"] = "macc"
+        if (request.uri.toString().endsWith("/manage-your-account")) {
 
-        } else if (request.uri.toString().endsWith("/ycom")) {
+           println("[CHLOG][AUTHREDIRECT] Setting gotoTarget as : " + routeArgManagePath)
+           session["gotoTarget"] = routeArgManagePath
 
-           println("[CHLOG][AUTHREDIRECT] WE HAVE A YCOM SO ADDING HEADER!!")
-           session["gotoTarget"] = "ycom"
+        } else if (request.uri.toString().endsWith("/your-company-list")) {
+
+           println("[CHLOG][AUTHREDIRECT] Setting gotoTarget as : " + routeArgCompaniesPath)
+           session["gotoTarget"] = routeArgCompaniesPath
 
        } else if (request.uri.toString().endsWith("/file-for-another-company") ||
                   request.uri.toString().endsWith("/file-for-a-company")) {
 
-            println("[CHLOG][AUTHREDIRECT] CLEARING HEADER!!")
+            println("[CHLOG][AUTHREDIRECT] Clearing gotoTarget in session")
             session["gotoTarget"] = ""
 
         }
+
+        println("Session gotoTarget = " + session["gotoTarget"])
     }
 
     if (response.getStatus().isRedirection() &&
@@ -58,25 +61,23 @@ next.handle(context, request).thenOnResult(response -> {
         newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney + "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
 
         println()
-        println("[CHLOG][AUTHREDIRECT] NewURI : " + newUri)
+        println("[CHLOG][AUTHREDIRECT] Session Goto Target = " + session["gotoTarget"])
         println()
-
-        println ("[CHLOG][AUTHREDIRECT] Goto Target = " + session["gotoTarget"])
 
         if (session["gotoTarget"] != null) {
 
-            if (session["gotoTarget"].equals("macc")) {
+            if (session["gotoTarget"].equals(routeArgManagePath) ||
+                session["gotoTarget"].equals(routeArgCompaniesPath)) {
 
-                println ("[CHLOG][AUTHREDIRECT] Adding Manage Account")
-                newUri += "&goto=" + URLEncoder.encode("/account/manage/", "utf-8")
+                println ("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
+                newUri += "&goto=" + URLEncoder.encode(session["gotoTarget"], "utf-8")
 
-            } else if (session["gotoTarget"].equals("ycom")) {
-
-               println ("[CHLOG][AUTHREDIRECT] Adding Your Companies")
-               newUri += "&goto=" + URLEncoder.encode("/account/your-companies/", "utf-8")
-
-           }
+            }
         }
+
+        println()
+        println("[CHLOG][AUTHREDIRECT] NewURI : " + newUri)
+        println()
 
         response.headers.remove("Location")
         response.headers.add("Location",newUri)

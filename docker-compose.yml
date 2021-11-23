@@ -29,6 +29,8 @@ services:
       - UI_URL=${UI_URL}
       - LOGIN_PATH=${LOGIN_PATH}
       - ERROR_PATH=${ERROR_PATH}
+      - MANAGE_PATH=${MANAGE_PATH}
+      - COMPANIES_PATH=${COMPANIES_PATH}
     build:
       context: ./webfiling
       args:

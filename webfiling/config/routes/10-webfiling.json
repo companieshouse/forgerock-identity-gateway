@@ -117,7 +117,9 @@
                       "routeArgRealm": "&{fidc.realm}",
                       "routeArgLoginJourney": "&{fidc.login.journey}",
                       "routeArgMainJourney": "&{fidc.main.journey}",
-                      "routeArgFidcFqdn": "&{fidc.fqdn}"
+                      "routeArgFidcFqdn": "&{fidc.fqdn}",
+                      "routeArgManagePath": "&{manage.path}",
+                      "routeArgCompaniesPath": "&{companies.path}"
                     }
                   }
                 },
@@ -168,7 +170,7 @@
                 {
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/macc') or matches(request.uri.path, '^/ycom')}",
+                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/manage-your-account') or matches(request.uri.path, '^/your-company-list')}",
                     "delegate": {
                       "type": "StaticRequestFilter",
                       "config": {
