@@ -10,13 +10,6 @@ if (session && session["oauth2:https://" + igHost + ":443/oidc"] && session["oau
   location = "/com-logout?silent=1&companySelect=1"
 }
 
-//if (session && session["oauth2:https://" + igHost + "/oidc"] && session["oauth2:https://" + igHost + "/oidc"].atr && session["oauth2:https://" + igHost + "/oidc"].atr.id_token) {
-  // location = "/com-logout?silent=1&companySelect=1"
-  // println()
-  // println("GETOUT 2")
-  // println()
-//}
-
 if(request.uri.query) {
   location += "&" + request.uri.query
 }

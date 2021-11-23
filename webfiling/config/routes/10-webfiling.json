@@ -118,6 +118,7 @@
                       "routeArgLoginJourney": "&{fidc.login.journey}",
                       "routeArgMainJourney": "&{fidc.main.journey}",
                       "routeArgFidcFqdn": "&{fidc.fqdn}",
+                      "routeArgErrorPath": "&{error.path}",
                       "routeArgManagePath": "&{manage.path}",
                       "routeArgCompaniesPath": "&{companies.path}"
                     }

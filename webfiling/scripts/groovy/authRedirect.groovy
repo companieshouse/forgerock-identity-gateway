@@ -29,7 +29,7 @@ next.handle(context, request).thenOnResult(response -> {
 
         }
 
-        println("Session gotoTarget = " + session["gotoTarget"])
+        println("[CHLOG][AUTHREDIRECT] Session gotoTarget = " + session["gotoTarget"])
     }
 
     if (response.getStatus().isRedirection() &&
@@ -87,6 +87,17 @@ next.handle(context, request).thenOnResult(response -> {
         println()
         println("[CHLOG][AUTHREDIRECT] Skipped")
         println()
+
+        if ((locationHeaders = response.headers.get("Location")) != null &&
+            (locationHeaders.firstValue.toString().indexOf(routeArgErrorPath) > -1)) {
+
+            session.clear()
+
+            println()
+            println("[CHLOG][AUTHREDIRECT] Cleared session as endpoint is error page")
+            println()
+
+        }
 
    }
 })
