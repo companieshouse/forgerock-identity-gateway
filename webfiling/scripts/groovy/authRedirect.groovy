@@ -4,6 +4,31 @@ next.handle(context, request).thenOnResult(response -> {
    def locationHeaders
    def locationUri
 
+    println()
+    println("[CHLOG][AUTHREDIRECT] Location : " + response.headers.get("Location"))
+    println("[CHLOG][AUTHREDIRECT] Request URI (Str) : " + request.uri.toString())
+    println()
+
+    if (request.uri != null) {
+        if (request.uri.toString().endsWith("/macc")) {
+
+           println("[CHLOG][AUTHREDIRECT] WE HAVE A MACC SO ADDING HEADER!!")
+           session["gotoTarget"] = "macc"
+
+        } else if (request.uri.toString().endsWith("/ycom")) {
+
+           println("[CHLOG][AUTHREDIRECT] WE HAVE A YCOM SO ADDING HEADER!!")
+           session["gotoTarget"] = "ycom"
+
+       } else if (request.uri.toString().endsWith("/file-for-another-company") ||
+                  request.uri.toString().endsWith("/file-for-a-company")) {
+
+            println("[CHLOG][AUTHREDIRECT] CLEARING HEADER!!")
+            session["gotoTarget"] = ""
+
+        }
+    }
+
     if (response.getStatus().isRedirection() &&
         (locationHeaders = response.headers.get("Location")) != null &&
         (locationUri = locationHeaders.firstValue.toString()) ==~ "^https://" + routeArgFidcFqdn + "/am/oauth2/authorize.*") {
@@ -31,8 +56,36 @@ next.handle(context, request).thenOnResult(response -> {
 
         // Redirect to landing page using login journey
         newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney + "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
-        
+
+        println()
+        println("[CHLOG][AUTHREDIRECT] NewURI : " + newUri)
+        println()
+
+        println ("[CHLOG][AUTHREDIRECT] Goto Target = " + session["gotoTarget"])
+
+        if (session["gotoTarget"] != null) {
+
+            if (session["gotoTarget"].equals("macc")) {
+
+                println ("[CHLOG][AUTHREDIRECT] Adding Manage Account")
+                newUri += "&goto=" + URLEncoder.encode("/account/manage/", "utf-8")
+
+            } else if (session["gotoTarget"].equals("ycom")) {
+
+               println ("[CHLOG][AUTHREDIRECT] Adding Your Companies")
+               newUri += "&goto=" + URLEncoder.encode("/account/your-companies/", "utf-8")
+
+           }
+        }
+
         response.headers.remove("Location")
         response.headers.add("Location",newUri)
+
+   } else {
+
+        println()
+        println("[CHLOG][AUTHREDIRECT] Skipped")
+        println()
+
    }
 })

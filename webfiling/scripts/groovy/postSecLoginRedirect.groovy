@@ -20,7 +20,7 @@ if(request.uri.path == "//seclogin") {
     if (request.uri.query == recentFilingsQueryString) {
       location +=  "//runpage?page=recentFilings"
     }
-    println "(SAUL DEBUG) redirectLocation: " + location
+    println "[CHLOG][POSTSECLOGINREDIRECT] redirectLocation: " + location
     response.headers.remove("Location")
     response.headers.add("Location", location)
   })
