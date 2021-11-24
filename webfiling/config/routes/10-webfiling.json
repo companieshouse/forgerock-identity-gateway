@@ -171,7 +171,7 @@
                 {
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/manage-your-account') or matches(request.uri.path, '^/your-company-list')}",
+                    "condition": "${matches(request.uri.path, '^/file-for-another-company')}",
                     "delegate": {
                       "type": "StaticRequestFilter",
                       "config": {
@@ -194,7 +194,7 @@
                         ],
                         "add": {
                           "location": [
-                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}:443//seclogin?')}${urlEncode(request.uri.query)}"
+                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}//seclogin?')}${urlEncode(request.uri.query)}"
                           ]
                         }
                       }

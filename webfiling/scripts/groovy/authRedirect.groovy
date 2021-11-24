@@ -9,29 +9,6 @@ next.handle(context, request).thenOnResult(response -> {
     println("[CHLOG][AUTHREDIRECT] Request URI (Str) : " + request.uri.toString())
     println()
 
-    if (request.uri != null) {
-
-        if (request.uri.toString().endsWith("/manage-your-account")) {
-
-           println("[CHLOG][AUTHREDIRECT] Setting gotoTarget as : " + routeArgManagePath)
-           session["gotoTarget"] = routeArgManagePath
-
-        } else if (request.uri.toString().endsWith("/your-company-list")) {
-
-           println("[CHLOG][AUTHREDIRECT] Setting gotoTarget as : " + routeArgCompaniesPath)
-           session["gotoTarget"] = routeArgCompaniesPath
-
-       } else if (request.uri.toString().endsWith("/file-for-another-company") ||
-                  request.uri.toString().endsWith("/file-for-a-company")) {
-
-            println("[CHLOG][AUTHREDIRECT] Clearing gotoTarget in session")
-            session["gotoTarget"] = ""
-
-        }
-
-        println("[CHLOG][AUTHREDIRECT] Session gotoTarget = " + session["gotoTarget"])
-    }
-
     if (response.getStatus().isRedirection() &&
         (locationHeaders = response.headers.get("Location")) != null &&
         (locationUri = locationHeaders.firstValue.toString()) ==~ "^https://" + routeArgFidcFqdn + "/am/oauth2/authorize.*") {
@@ -59,21 +36,6 @@ next.handle(context, request).thenOnResult(response -> {
 
         // Redirect to landing page using login journey
         newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney + "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
-
-        println()
-        println("[CHLOG][AUTHREDIRECT] Session Goto Target = " + session["gotoTarget"])
-        println()
-
-        if (session["gotoTarget"] != null) {
-
-            if (session["gotoTarget"].equals(routeArgManagePath) ||
-                session["gotoTarget"].equals(routeArgCompaniesPath)) {
-
-                println ("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
-                newUri += "&goto=" + URLEncoder.encode(session["gotoTarget"], "utf-8")
-
-            }
-        }
 
         println()
         println("[CHLOG][AUTHREDIRECT] NewURI : " + newUri)
