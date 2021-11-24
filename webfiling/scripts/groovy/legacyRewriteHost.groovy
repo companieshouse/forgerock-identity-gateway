@@ -11,4 +11,8 @@ next.handle(context, request).thenOnResult(response -> {
       response.headers.remove("Location")
       response.headers.add("Location", newUri)
    }
+
+   println()
+   println("[CHLOG][LEGACYREWRITEHOST] Here")
+   println()
 })

@@ -81,6 +81,8 @@ module "ig" {
   ui_url                         = var.ui_url
   login_path                     = var.login_path
   error_path                     = var.error_path
+  manage_path                    = var.manage_path
+  companies_path                 = var.companies_path
   application_legacy_host        = var.application_legacy_host
   application_legacy_host_prefix = var.application_legacy_host_prefix
   application_host_prefix        = var.application_host_prefix

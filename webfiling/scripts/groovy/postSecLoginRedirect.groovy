@@ -14,18 +14,26 @@ if(request.uri.path == "/recent-filings") {
 // Redirect seclogin response
 if(request.uri.path == "//seclogin") {
   next.handle(context, request).thenOnResult(response -> {
+
     if (request.uri.query == authCodeQueryString) {
       location +=  "//runpage?page=companyWebFilingRegister"
     }
+
     if (request.uri.query == recentFilingsQueryString) {
       location +=  "//runpage?page=recentFilings"
     }
-    println "(SAUL DEBUG) redirectLocation: " + location
+
+    println "[CHLOG][POSTSECLOGINREDIRECT] redirectLocation: " + location
+
     response.headers.remove("Location")
     response.headers.add("Location", location)
+
   })
 } else {
+
   Response response = new Response(Status.FOUND)
   response.headers.add("Location", location)
+
   return response
+
 }

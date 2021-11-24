@@ -48,6 +48,14 @@
         "value": "${error_path}"
       },
       {
+        "name": "MANAGE_PATH",
+        "value": "${manage_path}"
+      },
+      {
+        "name": "COMPANIES_PATH",
+        "value": "${companies_path}"
+      },
+      {
         "name": "APPLICATION_LEGACY_HOST",
         "value": "${application_legacy_host}"
       },

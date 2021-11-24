@@ -126,8 +126,20 @@ variable "login_path" {
 
 variable "error_path" {
   type        = string
-  description = "Path to error page for password replay failures"
-  default     = "/account/home/"
+  description = "Path to error page for failures"
+  default     = "/error/webfiling/"
+}
+
+variable "manage_path" {
+  type        = string
+  description = "Path to allow user to manage account"
+  default     = "/account/manage/"
+}
+
+variable "companies_path" {
+  type        = string
+  description = "Path to user company list"
+  default     = "/account/your-companies/"
 }
 
 variable "application_legacy_host" {

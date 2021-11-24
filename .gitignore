@@ -8,3 +8,5 @@ local.auto.tfvars
 .env
 nginx/.DS_Store
 .DS_Store
+
+.idea

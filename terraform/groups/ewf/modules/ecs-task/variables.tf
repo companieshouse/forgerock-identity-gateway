@@ -102,6 +102,14 @@ variable "error_path" {
   type = string
 }
 
+variable "manage_path" {
+  type = string
+}
+
+variable "companies_path" {
+  type = string
+}
+
 variable "application_legacy_host" {
   type = string
 }

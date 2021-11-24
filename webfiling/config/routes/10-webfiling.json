@@ -117,7 +117,10 @@
                       "routeArgRealm": "&{fidc.realm}",
                       "routeArgLoginJourney": "&{fidc.login.journey}",
                       "routeArgMainJourney": "&{fidc.main.journey}",
-                      "routeArgFidcFqdn": "&{fidc.fqdn}"
+                      "routeArgFidcFqdn": "&{fidc.fqdn}",
+                      "routeArgErrorPath": "&{error.path}",
+                      "routeArgManagePath": "&{manage.path}",
+                      "routeArgCompaniesPath": "&{companies.path}"
                     }
                   }
                 },
@@ -168,7 +171,7 @@
                 {
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/file-for-another-company')}",
+                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/manage-your-account') or matches(request.uri.path, '^/your-company-list')}",
                     "delegate": {
                       "type": "StaticRequestFilter",
                       "config": {
@@ -226,7 +229,7 @@
                 {
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path,'^//seclogin') or contains(request.uri.query,'page=companyAuthorisation')}",
+                    "condition": "${matches(request.uri.path,'^//seclogin')}",
                     "delegate": {
                       "type": "ScriptableFilter",
                       "config": {
@@ -234,7 +237,26 @@
                         "file": "errorRedirect.groovy",
                         "args": {
                           "routeArgAuthUri": "&{ui.url}",
-                          "routeArgErrorPath": "&{error.path}"
+                          "routeArgErrorPath": "&{error.path}",
+                          "routeArgContext": "seclogin"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${contains(request.uri.query,'page=companyAuthorisation')}",
+                    "delegate": {
+                      "type": "ScriptableFilter",
+                      "config": {
+                        "type": "application/x-groovy",
+                        "file": "errorRedirect.groovy",
+                        "args": {
+                          "routeArgAuthUri": "&{ui.url}",
+                          "routeArgErrorPath": "&{error.path}",
+                          "routeArgContext": "companyAuthorisation"
                         }
                       }
                     }
