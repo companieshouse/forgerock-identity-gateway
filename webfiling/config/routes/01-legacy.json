@@ -33,7 +33,9 @@
             "file": "legacyRewriteHost.groovy",
             "args": {
               "hostPrefix": "&{application.host.prefix}",
-              "legacyHostPrefix": "&{application.legacy.host.prefix}"
+              "legacyHostPrefix": "&{application.legacy.host.prefix}",
+              "applicationHost": "&{application.host}",
+              "applicationLegacyHost": "&{application.legacy.host}"
             }
           }
         }
