@@ -23,7 +23,7 @@ if(request.uri.path == "//seclogin") {
       location +=  "//runpage?page=recentFilings"
     }
 
-    println "[CHLOG][POSTSECLOGINREDIRECT] redirectLocation: " + location
+    logger.info("[CHLOG][POSTSECLOGINREDIRECT] redirectLocation: " + location)
 
     response.headers.remove("Location")
     response.headers.add("Location", location)

@@ -1,4 +1,4 @@
-println("[CHLOG][ENDSESSION] ending AM session")
+logger.info("[CHLOG][ENDSESSION] ending AM session")
 
 def id_token = attributes.openid.id_token
 def access_token = attributes.openid.access_token
@@ -12,7 +12,7 @@ logoutRequest.headers.add("Authorization","Bearer " + access_token)
 
 http.send(logoutRequest).then(logoutResponse -> {
 
-    println("[CHLOG][ENDSESSION] back from AM")
+    logger.info("[CHLOG][ENDSESSION] back from AM")
     return null
 
 })

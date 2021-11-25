@@ -4,14 +4,13 @@ next.handle(context, request).thenOnResult(response -> {
 
   def requestUri = request.uri.toString()
 
-  println()
-  println("[CHLOG][LEGACYREWRITEHOST] Request URI (Str) : " + requestUri)
-  println("[CHLOG][LEGACYREWRITEHOST] Redirect = " + response.getStatus().isRedirection())
-  println("[CHLOG][LEGACYREWRITEHOST] Location Headers = " + response.headers.get("Location"))
-  println("[CHLOG][LEGACYREWRITEHOST] Host Prefix = " + hostPrefix)
-  println("[CHLOG][LEGACYREWRITEHOST] Legacy Host Prefix = " + legacyHostPrefix)
-  println("[CHLOG][LEGACYREWRITEHOST] Legacy Host = " + applicationLegacyHost)
-  println("[CHLOG][LEGACYREWRITEHOST] Application Host = " + applicationHost)
+  logger.info("[CHLOG][LEGACYREWRITEHOST] Request URI (Str) : " + requestUri)
+  logger.info("[CHLOG][LEGACYREWRITEHOST] Redirect = " + response.getStatus().isRedirection())
+  logger.info("[CHLOG][LEGACYREWRITEHOST] Location Headers = " + response.headers.get("Location"))
+  logger.info("[CHLOG][LEGACYREWRITEHOST] Host Prefix = " + hostPrefix)
+  logger.info("[CHLOG][LEGACYREWRITEHOST] Legacy Host Prefix = " + legacyHostPrefix)
+  logger.info("[CHLOG][LEGACYREWRITEHOST] Legacy Host = " + applicationLegacyHost)
+  logger.info("[CHLOG][LEGACYREWRITEHOST] Application Host = " + applicationHost)
 
   def newUri = ""
 
@@ -21,7 +20,7 @@ next.handle(context, request).thenOnResult(response -> {
 
       newUri = locationUri.replaceAll(hostPrefix, legacyHostPrefix)
 
-      println("[CHLOG][LEGACYREWRITEHOST] Replaced URI (Location) : " + newUri)
+      logger.info("[CHLOG][LEGACYREWRITEHOST] Replaced URI (Location) : " + newUri)
 
       if (newUri.indexOf("/signout") > -1) {
         newUri = newUri.replaceAll("/signout", "//com-logout")
@@ -31,18 +30,18 @@ next.handle(context, request).thenOnResult(response -> {
               requestUri.indexOf(applicationHost) > -1 &&
               requestUri.indexOf("/file-for-another-company") > -1) {
 
-      println("[CHLOG][LEGACYREWRITEHOST] Detected FFAC")
+      logger.info("[CHLOG][LEGACYREWRITEHOST] Detected FFAC")
 
       newUri = requestUri.replaceAll(applicationHost, applicationLegacyHost)
       newUri = newUri.replaceAll("/file-for-another-company", "/runpage?page=companyAuthorisation")
 
    }
 
-   println("[CHLOG][LEGACYREWRITEHOST] New URI : " + newUri)
+   logger.info("[CHLOG][LEGACYREWRITEHOST] New URI : " + newUri)
 
    if (!("".equals(newUri))) {
 
-      println("[CHLOG][LEGACYREWRITEHOST] Setting response headers and status")
+      logger.info("[CHLOG][LEGACYREWRITEHOST] Setting response headers and status")
 
       response.setStatus(Status.FOUND)
       response.headers.remove("Location")
@@ -50,7 +49,6 @@ next.handle(context, request).thenOnResult(response -> {
 
    }
 
-   println("[CHLOG][LEGACYREWRITEHOST] Finished legacy")
-   println()
+   logger.info("[CHLOG][LEGACYREWRITEHOST] Finished legacy")
 
 })

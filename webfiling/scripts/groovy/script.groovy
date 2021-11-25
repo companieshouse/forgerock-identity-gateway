@@ -1,13 +1,13 @@
 if (attributes != null && attributes.openid != null && attributes.openid.id_token_claims != null) {
-    println()
-    println "[CHLOG][SCRIPT] Request URI : " + request.uri
-    println "[CHLOG][SCRIPT] OpenID claims : " + attributes.openid.id_token_claims
-    println "[CHLOG][SCRIPT] OpenID EWF claim : " + attributes.openid.id_token_claims['webfiling_info']
-    println()
+
+    logger.info("[CHLOG][SCRIPT] Request URI : " + request.uri)
+    logger.info("[CHLOG][SCRIPT] OpenID claims : " + attributes.openid.id_token_claims)
+    logger.info("[CHLOG][SCRIPT] OpenID EWF claim : " + attributes.openid.id_token_claims['webfiling_info'])
+
 } else {
-    println()
-    println "[CHLOG][SCRIPT] No OpenID Token Claims found"
-    println()
+
+    logger.info("[CHLOG][SCRIPT] No OpenID Token Claims found")
+
 }
 
 next.handle(context, request)

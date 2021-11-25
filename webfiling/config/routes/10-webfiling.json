@@ -171,7 +171,7 @@
                 {
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/file-for-another-company')}",
+                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/idam-logout')}",
                     "delegate": {
                       "type": "StaticRequestFilter",
                       "config": {

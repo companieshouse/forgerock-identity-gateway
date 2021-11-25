@@ -4,10 +4,29 @@ next.handle(context, request).thenOnResult(response -> {
    def locationHeaders
    def locationUri
 
-    println()
-    println("[CHLOG][AUTHREDIRECT] Location : " + response.headers.get("Location"))
-    println("[CHLOG][AUTHREDIRECT] Request URI (Str) : " + request.uri.toString())
-    println()
+    logger.info("[CHLOG][AUTHREDIRECT] Location : " + response.headers.get("Location"))
+    logger.info("[CHLOG][AUTHREDIRECT] Request URI (Str) : " + request.uri.toString())
+
+    // The following URL can be used from IDAM to force an EWF logout and then
+    // redirect back to IDAM to do a local Sign Out
+    // https://ewf-kermit.companieshouse.gov.uk/idam-logout
+
+    if (request.uri != null) {
+        if (request.uri.toString().endsWith("/idam-logout")) {
+
+           logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as : " + routeArgManagePath)
+           session["gotoTarget"] = "/account/logout/"
+
+        } else if (request.uri.toString().endsWith("/file-for-another-company") ||
+                   request.uri.toString().endsWith("/file-for-a-company")) {
+
+            logger.info("[CHLOG][AUTHREDIRECT] Clearing gotoTarget in session")
+            session["gotoTarget"] = ""
+
+        }
+
+        logger.info("[CHLOG][AUTHREDIRECT] Session gotoTarget = " + session["gotoTarget"])
+    }
 
     if (response.getStatus().isRedirection() &&
         (locationHeaders = response.headers.get("Location")) != null &&
@@ -18,7 +37,9 @@ next.handle(context, request).thenOnResult(response -> {
         def queryParams = request.uri.query?.split('&')
         if (queryParams != null) {
             def mapParams = queryParams.collectEntries { param -> param.split('=').collect { URLDecoder.decode(it) }}
+
             if (mapParams.companySelect) {
+
                 // Redirect to main journey with force auth
                 // to trigger company selection
                 newUri += "?goto=" + URLEncoder.encode(locationUri) + "&realm=/" + routeArgRealm + "&service=" + routeArgMainJourney + "&authIndexType=service&authIndexValue=" + routeArgMainJourney + "&mode=AUTHN_ONLY&ForceAuth=true"
@@ -26,40 +47,52 @@ next.handle(context, request).thenOnResult(response -> {
                 newUri += mapParams.jurisdiction ? "&jurisdiction=" + mapParams.jurisdiction : ""
                 
                 response.headers.remove("Location")
+
                 return response.headers.add("Location",newUri)
+
             }
             if (mapParams.postSecLoginRedirect) {
+
                 // Prevent landing page redirect
                 return
+
             }
         }
 
         // Redirect to landing page using login journey
         newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney + "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
 
-        println()
-        println("[CHLOG][AUTHREDIRECT] NewURI : " + newUri)
-        println()
+        logger.info("[CHLOG][AUTHREDIRECT] Session Goto Target = " + session["gotoTarget"])
+
+        if (session["gotoTarget"] != null) {
+
+            if (session["gotoTarget"].equals("/account/logout/")) {
+
+                 logger.info("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
+                 newUri += "&goto=" + URLEncoder.encode(session["gotoTarget"], "utf-8")
+
+            }
+
+            session["gotoTarget"] = ""
+
+        }
+
+        logger.info("[CHLOG][AUTHREDIRECT] NewURI : " + newUri)
 
         response.headers.remove("Location")
         response.headers.add("Location",newUri)
 
    } else {
 
-        println()
-        println("[CHLOG][AUTHREDIRECT] Skipped")
-        println()
+        logger.info("[CHLOG][AUTHREDIRECT] Skipped")
 
         if ((locationHeaders = response.headers.get("Location")) != null &&
             (locationHeaders.firstValue.toString().indexOf(routeArgErrorPath) > -1)) {
 
             session.clear()
 
-            println()
-            println("[CHLOG][AUTHREDIRECT] Cleared session as endpoint is error page")
-            println()
+            logger.info("[CHLOG][AUTHREDIRECT] Cleared session as endpoint is error page")
 
         }
-
    }
 })
