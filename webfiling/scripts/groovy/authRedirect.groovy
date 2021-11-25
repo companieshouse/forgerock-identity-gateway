@@ -9,6 +9,8 @@ next.handle(context, request).thenOnResult(response -> {
     println("[CHLOG][AUTHREDIRECT] Request URI (Str) : " + request.uri.toString())
     println()
 
+    // The following URL can be used from IDAM to force an EWF logout and then
+    // redirect back to IDAM to do a local Sign Out
     // https://ewf-kermit.companieshouse.gov.uk/idam-logout
 
     if (request.uri != null) {
@@ -17,8 +19,8 @@ next.handle(context, request).thenOnResult(response -> {
            println("[CHLOG][AUTHREDIRECT] Setting gotoTarget as : " + routeArgManagePath)
            session["gotoTarget"] = "/account/logout/"
 
-        } else if (request.uri.toString().endsWith("/file-for-another-company") /* ||
-                   request.uri.toString().endsWith("/file-for-a-company") */) {
+        } else if (request.uri.toString().endsWith("/file-for-another-company") ||
+                   request.uri.toString().endsWith("/file-for-a-company")) {
 
             println("[CHLOG][AUTHREDIRECT] Clearing gotoTarget in session")
             session["gotoTarget"] = ""
