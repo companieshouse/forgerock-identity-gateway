@@ -1,54 +1,51 @@
 next.handle(context, request).thenOnResult(response -> {
-  def locationHeaders
-  def locationUri
+    def locationHeaders
+    def locationUri
 
-  def requestUri = request.uri.toString()
+    def requestUri = request.uri.toString()
 
-  logger.info("[CHLOG][LEGACYREWRITEHOST] Request URI (Str) : " + requestUri)
-  logger.info("[CHLOG][LEGACYREWRITEHOST] Redirect = " + response.getStatus().isRedirection())
-  logger.info("[CHLOG][LEGACYREWRITEHOST] Location Headers = " + response.headers.get("Location"))
-  logger.info("[CHLOG][LEGACYREWRITEHOST] Host Prefix = " + hostPrefix)
-  logger.info("[CHLOG][LEGACYREWRITEHOST] Legacy Host Prefix = " + legacyHostPrefix)
-  logger.info("[CHLOG][LEGACYREWRITEHOST] Legacy Host = " + applicationLegacyHost)
-  logger.info("[CHLOG][LEGACYREWRITEHOST] Application Host = " + applicationHost)
+    logger.info("[CHLOG][LEGACYREWRITEHOST] Request URI (Str) : " + requestUri)
+    logger.info("[CHLOG][LEGACYREWRITEHOST] Redirect = " + response.getStatus().isRedirection())
+    logger.info("[CHLOG][LEGACYREWRITEHOST] Location Headers = " + response.headers.get("Location"))
+    logger.info("[CHLOG][LEGACYREWRITEHOST] Host Prefix = " + hostPrefix)
+    logger.info("[CHLOG][LEGACYREWRITEHOST] Legacy Host Prefix = " + legacyHostPrefix)
+    logger.info("[CHLOG][LEGACYREWRITEHOST] Legacy Host = " + applicationLegacyHost)
+    logger.info("[CHLOG][LEGACYREWRITEHOST] Application Host = " + applicationHost)
 
-  def newUri = ""
+    def newUri = ""
 
-  if ((response.getStatus().isRedirection() &&
-      (locationHeaders = response.headers.get("Location")) != null  &&
-      (locationUri = locationHeaders.firstValue.toString()) ==~ "^https://${hostPrefix}.*")) {
+    if ((response.getStatus().isRedirection() &&
+            (locationHeaders = response.headers.get("Location")) != null &&
+            (locationUri = locationHeaders.firstValue.toString()) ==~ "^https://${hostPrefix}.*")) {
 
-      newUri = locationUri.replaceAll(hostPrefix, legacyHostPrefix)
+        newUri = locationUri.replaceAll(hostPrefix, legacyHostPrefix)
 
-      logger.info("[CHLOG][LEGACYREWRITEHOST] Replaced URI (Location) : " + newUri)
+        logger.info("[CHLOG][LEGACYREWRITEHOST] Replaced URI (Location) : " + newUri)
 
-      if (newUri.indexOf("/signout") > -1) {
-        newUri = newUri.replaceAll("/signout", "//com-logout")
-      }
+        if (newUri.indexOf("/signout") > -1) {
+            newUri = newUri.replaceAll("/signout", "//com-logout")
+        }
+    } else if (requestUri != null &&
+            requestUri.indexOf(applicationHost) > -1 &&
+            requestUri.indexOf("/file-for-another-company") > -1) {
 
-   } else if (requestUri != null &&
-              requestUri.indexOf(applicationHost) > -1 &&
-              requestUri.indexOf("/file-for-another-company") > -1) {
+        logger.info("[CHLOG][LEGACYREWRITEHOST] Detected FFAC")
 
-      logger.info("[CHLOG][LEGACYREWRITEHOST] Detected FFAC")
+        newUri = requestUri.replaceAll((String) applicationHost, applicationLegacyHost)
+        newUri = newUri.replaceAll("/file-for-another-company", "/runpage?page=companyAuthorisation")
+    }
 
-      newUri = requestUri.replaceAll(applicationHost, applicationLegacyHost)
-      newUri = newUri.replaceAll("/file-for-another-company", "/runpage?page=companyAuthorisation")
+    logger.info("[CHLOG][LEGACYREWRITEHOST] New URI : " + newUri)
 
-   }
+    if (!("".equals(newUri))) {
 
-   logger.info("[CHLOG][LEGACYREWRITEHOST] New URI : " + newUri)
+        logger.info("[CHLOG][LEGACYREWRITEHOST] Setting response headers and status")
 
-   if (!("".equals(newUri))) {
+        response.setStatus(Status.FOUND)
+        response.headers.remove("Location")
+        response.headers.add("Location", newUri)
 
-      logger.info("[CHLOG][LEGACYREWRITEHOST] Setting response headers and status")
+    }
 
-      response.setStatus(Status.FOUND)
-      response.headers.remove("Location")
-      response.headers.add("Location", newUri)
-
-   }
-
-   logger.info("[CHLOG][LEGACYREWRITEHOST] Finished legacy")
-
+    logger.info("[CHLOG][LEGACYREWRITEHOST] Finished legacy")
 })

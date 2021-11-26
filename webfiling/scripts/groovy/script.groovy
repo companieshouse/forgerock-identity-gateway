@@ -7,7 +7,6 @@ if (attributes != null && attributes.openid != null && attributes.openid.id_toke
 } else {
 
     logger.info("[CHLOG][SCRIPT] No OpenID Token Claims found")
-
 }
 
 next.handle(context, request)
