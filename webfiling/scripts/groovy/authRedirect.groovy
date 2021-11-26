@@ -1,8 +1,8 @@
 // Redirect to the FIDC authorize endpoint, change it to a journey with a goto URL of the authz request, and force authentication
 
 next.handle(context, request).thenOnResult(response -> {
-   def locationHeaders
-   def locationUri
+    def locationHeaders
+    def locationUri
 
     logger.info("[CHLOG][AUTHREDIRECT] Location : " + response.headers.get("Location"))
     logger.info("[CHLOG][AUTHREDIRECT] Request URI (Str) : " + request.uri.toString())
@@ -14,11 +14,11 @@ next.handle(context, request).thenOnResult(response -> {
     if (request.uri != null) {
         if (request.uri.toString().endsWith("/idam-logout")) {
 
-           logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as : " + routeArgManagePath)
-           session["gotoTarget"] = "/account/logout/"
+            logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as : " + routeArgManagePath)
+            session["gotoTarget"] = "/account/logout/"
 
         } else if (request.uri.toString().endsWith("/file-for-another-company") ||
-                   request.uri.toString().endsWith("/file-for-a-company")) {
+                request.uri.toString().endsWith("/file-for-a-company")) {
 
             logger.info("[CHLOG][AUTHREDIRECT] Clearing gotoTarget in session")
             session["gotoTarget"] = ""
@@ -29,38 +29,50 @@ next.handle(context, request).thenOnResult(response -> {
     }
 
     if (response.getStatus().isRedirection() &&
-        (locationHeaders = response.headers.get("Location")) != null &&
-        (locationUri = locationHeaders.firstValue.toString()) ==~ "^https://" + routeArgFidcFqdn + "/am/oauth2/authorize.*") {
-        
+            (locationHeaders = response.headers.get("Location")) != null &&
+            (locationUri = locationHeaders.firstValue.toString()) ==~ "^https://" + routeArgFidcFqdn + "/am/oauth2/authorize.*") {
+
         def newUri = routeArgAuthUri + routeArgLoginPath
 
-        def queryParams = request.uri.query?.split('&')
-        if (queryParams != null) {
-            def mapParams = queryParams.collectEntries { param -> param.split('=').collect { URLDecoder.decode(it) }}
+        if (request.uri != null && request.uri.query != null) {
 
-            if (mapParams.companySelect) {
+            def queryParams = ((String) request.uri.query).split('&')
 
-                // Redirect to main journey with force auth
-                // to trigger company selection
-                newUri += "?goto=" + URLEncoder.encode(locationUri) + "&realm=/" + routeArgRealm + "&service=" + routeArgMainJourney + "&authIndexType=service&authIndexValue=" + routeArgMainJourney + "&mode=AUTHN_ONLY&ForceAuth=true"
-                newUri += mapParams.companyNo ? "&companyNo=" + mapParams.companyNo : ""
-                newUri += mapParams.jurisdiction ? "&jurisdiction=" + mapParams.jurisdiction : ""
-                
-                response.headers.remove("Location")
+            if (queryParams != null) {
+                def mapParams = queryParams.collectEntries { param ->
+                    param.split('=').collect
+                            {
+                                URLDecoder.decode(it, "utf-8")
+                            }
+                }
 
-                return response.headers.add("Location",newUri)
+                if (mapParams.companySelect) {
 
-            }
-            if (mapParams.postSecLoginRedirect) {
+                    // Redirect to main journey with force auth to trigger company selection
 
-                // Prevent landing page redirect
-                return
+                    newUri += "?goto=" + URLEncoder.encode(locationUri, "utf-8") +
+                            "&realm=/" + routeArgRealm +
+                            "&service=" + routeArgMainJourney +
+                            "&authIndexType=service&authIndexValue=" + routeArgMainJourney +
+                            "&mode=AUTHN_ONLY&ForceAuth=true"
 
+                    newUri += mapParams.companyNo ? "&companyNo=" + mapParams.companyNo : ""
+                    newUri += mapParams.jurisdiction ? "&jurisdiction=" + mapParams.jurisdiction : ""
+
+                    response.headers.remove("Location")
+                    return response.headers.add("Location", newUri)
+                }
+
+                if (mapParams.postSecLoginRedirect) {
+                    // Prevent landing page redirect
+                    return
+                }
             }
         }
 
         // Redirect to landing page using login journey
-        newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney + "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
+        newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney +
+                "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
 
         logger.info("[CHLOG][AUTHREDIRECT] Session Goto Target = " + session["gotoTarget"])
 
@@ -68,31 +80,29 @@ next.handle(context, request).thenOnResult(response -> {
 
             if (session["gotoTarget"].equals("/account/logout/")) {
 
-                 logger.info("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
-                 newUri += "&goto=" + URLEncoder.encode(session["gotoTarget"], "utf-8")
+                logger.info("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
+                newUri += "&goto=" + URLEncoder.encode((String) session["gotoTarget"], "utf-8")
 
             }
 
             session["gotoTarget"] = ""
-
         }
 
         logger.info("[CHLOG][AUTHREDIRECT] NewURI : " + newUri)
 
         response.headers.remove("Location")
-        response.headers.add("Location",newUri)
+        response.headers.add("Location", newUri)
 
-   } else {
+    } else {
 
         logger.info("[CHLOG][AUTHREDIRECT] Skipped")
 
         if ((locationHeaders = response.headers.get("Location")) != null &&
-            (locationHeaders.firstValue.toString().indexOf(routeArgErrorPath) > -1)) {
+                (locationHeaders.firstValue.toString().indexOf(routeArgErrorPath) > -1)) {
 
             session.clear()
 
             logger.info("[CHLOG][AUTHREDIRECT] Cleared session as endpoint is error page")
-
         }
-   }
+    }
 })
