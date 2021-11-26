@@ -64,6 +64,17 @@
     "config": {
       "bindings": [
         {
+          "condition": "${matches(request.uri.path, '^/submissions') or matches(request.uri.path, '^/submissionData') or matches(request.uri.path, '^/paymentResource') or matches(request.uri.path, '^/authorisedFilersEmails')}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
+        {
           "condition": "${matches(request.uri.path, '^/file-for-a-company')}",
           "handler": {
             "type": "ScriptableHandler",
