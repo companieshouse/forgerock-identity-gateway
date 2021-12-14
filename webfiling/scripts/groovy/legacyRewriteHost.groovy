@@ -18,7 +18,14 @@ next.handle(context, request).thenOnResult(response -> {
             (locationHeaders = response.headers.get("Location")) != null &&
             (locationUri = locationHeaders.firstValue.toString()) ==~ "^https://${hostPrefix}.*")) {
 
-        newUri = locationUri.replaceAll(hostPrefix, legacyHostPrefix)
+        logger.info('[CHLOG][LEGACYREWRITEHOST] LocationUri : ' + locationUri)
+
+        if (locationUri.indexOf(legacyHostPrefix + '.') == -1) {
+            logger.info('[CHLOG][LEGACYREWRITEHOST] Replacing "' + hostPrefix + '" with "' + legacyHostPrefix + '" in : ' + locationUri)
+            newUri = locationUri.replaceAll(hostPrefix, legacyHostPrefix)
+        } else {
+            newUri = locationUri;
+        }
 
         logger.info("[CHLOG][LEGACYREWRITEHOST] Replaced URI (Location) : " + newUri)
 
