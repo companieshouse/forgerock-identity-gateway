@@ -15,8 +15,8 @@ next.handle(context, request).thenOnResult(response -> {
     if (request.uri != null) {
         if (request.uri.toString().endsWith("/idam-logout")) {
 
-            logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as /account/logout/")
-            session["gotoTarget"] = "/account/logout/"
+            logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as " + routeArgLogoutPath)
+            session["gotoTarget"] = routeArgLogoutPath
 
         } else if (request.uri.toString().endsWith("/file-for-another-company") ||
                 request.uri.toString().endsWith("/file-for-a-company")) {
@@ -37,14 +37,10 @@ next.handle(context, request).thenOnResult(response -> {
 
         def newUri = routeArgAuthUri + routeArgLoginPath;
 
-        if ("/account/logout/".equals(session["gotoTarget"])) {
-
-            // Redirect to landing page using login journey
-            newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney +
-                    "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
+        if (routeArgLogoutPath.equals(session["gotoTarget"])) {
 
             logger.info("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
-            newUri += "&goto=" + URLEncoder.encode((String) session["gotoTarget"], "utf-8")
+            newUri = routeArgAuthUri + routeArgLogoutPath
 
             session["gotoTarget"] = ""
 
@@ -101,10 +97,10 @@ next.handle(context, request).thenOnResult(response -> {
 
         if (session["gotoTarget"] != null) {
 
-            if (session["gotoTarget"].equals("/account/logout/")) {
+            if (session["gotoTarget"].equals(routeArgLogoutPath)) {
 
                 logger.info("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
-                newUri += "&goto=" + URLEncoder.encode((String) session["gotoTarget"], "utf-8")
+                newUri = routeArgAuthUri + routeArgLogoutPath
 
             }
 

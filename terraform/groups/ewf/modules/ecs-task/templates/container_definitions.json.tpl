@@ -43,6 +43,10 @@
         "name": "LOGIN_PATH",
         "value": "${login_path}"
       },
+     {
+        "name": "LOGOUT_PATH",
+        "value": "${logout_path}"
+      },
       {
         "name": "ERROR_PATH",
         "value": "${error_path}"

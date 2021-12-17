@@ -98,6 +98,10 @@ variable "login_path" {
   type = string
 }
 
+variable "logout_path" {
+  type = string
+}
+
 variable "error_path" {
   type = string
 }
