@@ -125,6 +125,7 @@
                     "args": {
                       "routeArgAuthUri": "&{ui.url}",
                       "routeArgLoginPath": "&{login.path}",
+                      "routeArgLogoutPath": "&{logout.path}",
                       "routeArgRealm": "&{fidc.realm}",
                       "routeArgLoginJourney": "&{fidc.login.journey}",
                       "routeArgMainJourney": "&{fidc.main.journey}",

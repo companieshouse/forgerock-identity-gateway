@@ -124,6 +124,12 @@ variable "login_path" {
   default     = "/account/login/"
 }
 
+variable "logout_path" {
+  type        = string
+  description = "Path to logout page"
+  default     = "/account/logout/"
+}
+
 variable "error_path" {
   type        = string
   description = "Path to error page for failures"
