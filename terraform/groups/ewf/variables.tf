@@ -183,6 +183,12 @@ variable "target_memory" {
   description = "Autoscaling: Target Memory usage percentage"
 }
 
+variable "internal_access_cidrs" {
+  type        = list(any)
+  description = "List of additional CIDRs for internal access"
+  default     = []
+}
+
 variable "internal_access_only" {
   type        = bool
   description = "Should the Load Balancer be internal"
