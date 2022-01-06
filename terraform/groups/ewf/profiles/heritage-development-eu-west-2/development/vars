@@ -10,3 +10,9 @@ autoscaling_min = 2
 autoscaling_max = 4
 target_cpu = 50
 target_memory = 50
+internal_access_cidrs = [
+  "10.75.0.0/16",
+  "10.254.1.0/24",
+  "10.254.2.0/24",
+  "10.254.3.0/24"
+]
