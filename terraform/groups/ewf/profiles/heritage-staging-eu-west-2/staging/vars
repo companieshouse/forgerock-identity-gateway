@@ -11,3 +11,10 @@ autoscaling_max = 4
 target_cpu = 50
 target_memory = 50
 internal_access_only = false
+internal_access_cidrs = [
+  "10.172.116.0/22",
+  "10.65.0.0/16",
+  "35.177.1.77/32",
+  "18.135.80.40/32",
+  "18.135.67.249/32",
+]
