@@ -64,7 +64,7 @@
     "config": {
       "bindings": [
         {
-          "condition": "${matches(request.uri.path, '^//submissions') or matches(request.uri.path, '^/submissions') or matches(request.uri.path, '^//submissionData') or matches(request.uri.path, '^/submissionData') or matches(request.uri.path, '^//paymentResource') or matches(request.uri.path, '^/paymentResource') or matches(request.uri.path, '^//authorisedFilersEmails') or matches(request.uri.path, '^/authorisedFilersEmails')}",
+          "condition": "${matches(request.uri.path, '^//submissions') or matches(request.uri.path, '^/submissions') or matches(request.uri.path, '^//submissionData') or matches(request.uri.path, '^/submissionData') or matches(request.uri.path, '^//paymentResource') or matches(request.uri.path, '^/paymentResource') or matches(request.uri.path, '^//authorisedFilersEmails') or matches(request.uri.path, '^/authorisedFilersEmails') or (matches(request.uri.path, '^/autopage') && contains(request.uri.query,'form=INC'))}",
           "handler": {
             "type": "Chain",
             "config": {
