@@ -18,6 +18,16 @@ next.handle(context, request).thenOnResult(response -> {
             logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as " + routeArgLogoutPath)
             session["gotoTarget"] = routeArgLogoutPath
 
+        } else if (request.uri.toString().endsWith("/your-company-list")) {
+
+            logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as " + routeArgCompaniesPath)
+            session["gotoTarget"] = routeArgCompaniesPath
+
+        } else if (request.uri.toString().endsWith("/manage-your-account")) {
+
+            logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as " + routeArgManagePath)
+            session["gotoTarget"] = routeArgManagePath
+
         } else if (request.uri.toString().endsWith("/file-for-another-company") ||
                 request.uri.toString().endsWith("/file-for-a-company")) {
 
@@ -48,6 +58,7 @@ next.handle(context, request).thenOnResult(response -> {
 
             response.headers.remove("Location")
             return response.headers.add("Location", newUri)
+
         }
 
         if (request.uri != null && request.uri.query != null) {
@@ -101,6 +112,12 @@ next.handle(context, request).thenOnResult(response -> {
 
                 logger.info("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
                 newUri = routeArgAuthUri + routeArgLogoutPath
+
+            } else if (session["gotoTarget"].equals(routeArgManagePath) ||
+                    session["gotoTarget"].equals(routeArgCompaniesPath)) {
+
+                println("[CHLOG][AUTHREDIRECT] Going to " + session["gotoTarget"])
+                newUri += "&goto=" + URLEncoder.encode((String) session["gotoTarget"], "utf-8")
 
             }
 
