@@ -30,7 +30,7 @@ next.handle(context, request).thenOnResult(response -> {
         logger.info("[CHLOG][LEGACYREWRITEHOST] Replaced URI (Location) : " + newUri)
 
         if (newUri.indexOf("/signout") > -1) {
-            newUri = newUri.replaceAll("/signout", "//com-logout")
+            newUri = newUri.replaceAll("/signout", "//com-logout?silent=1")
         }
     } else if (requestUri != null &&
             requestUri.indexOf(applicationHost) > -1 &&
