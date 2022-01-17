@@ -183,7 +183,7 @@
                 {
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/idam-logout')}",
+                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/manage-your-account') or matches(request.uri.path, '^/your-company-list') or matches(request.uri.path, '^/idam-logout')}",
                     "delegate": {
                       "type": "StaticRequestFilter",
                       "config": {
