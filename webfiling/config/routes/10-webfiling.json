@@ -64,7 +64,20 @@
     "config": {
       "bindings": [
         {
-          "condition": "${matches(request.uri.path, '^//submissions') or matches(request.uri.path, '^/submissions') or matches(request.uri.path, '^//submissionData') or matches(request.uri.path, '^/submissionData') or matches(request.uri.path, '^//paymentResource') or matches(request.uri.path, '^/paymentResource') or matches(request.uri.path, '^//authorisedFilersEmails') or matches(request.uri.path, '^/authorisedFilersEmails') or (matches(request.uri.path, '^/autopage') && contains(request.uri.query,'form=INC'))}",
+          "name": "PAYMENTS-reverse-proxy",
+          "condition": "${matches(request.uri.path, '^//submissions') or matches(request.uri.path, '^/submissions') or matches(request.uri.path, '^//submissionData') or matches(request.uri.path, '^/submissionData') or matches(request.uri.path, '^//paymentResource') or matches(request.uri.path, '^/paymentResource') or matches(request.uri.path, '^//authorisedFilersEmails') or matches(request.uri.path, '^/authorisedFilersEmails')}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
+        {
+          "name": "SCRS-reverse-proxy",
+          "condition": "${(matches(request.uri.path, '^/autopage') && contains(request.uri.query,'form=INC')) or contains(request.uri.query,'form=INC') or matches(request.uri.path, '^/incorporation') or contains(request.uri.query,'page=incOnlySCRSLogin') or contains(request.uri.query,'form=resumeIncorporation') or contains(request.uri.path, '/scripts/') or contains(request.uri.path, '/style/') or contains(request.uri.path, '/images/') or contains(request.uri.path, 'favicon.ico') or contains(request.uri.path, '/stylesheets/') or contains(request.uri.path, '/javascripts/') or matches(request.uri.path, '^//govPayResponseDispatcher')}",
           "handler": {
             "type": "Chain",
             "config": {
