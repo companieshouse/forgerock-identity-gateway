@@ -77,7 +77,7 @@
         },
         {
           "name": "SCRS-reverse-proxy",
-          "condition": "${(matches(request.uri.path, '^/autopage') && contains(request.uri.query,'form=INC')) or contains(request.uri.query,'form=INC') or matches(request.uri.path, '^/incorporation') or contains(request.uri.query,'page=incOnlySCRSLogin') or contains(request.uri.query,'form=resumeIncorporation') or matches(request.uri.path, '^//govPayResponseDispatcher') or contains(request.uri.query, 'page=fileUpload')}",
+          "condition": "${contains(request.uri.query,'form=INC') or matches(request.uri.path, '^/incorporation') or contains(request.uri.query,'page=incOnlySCRSLogin') or contains(request.uri.query,'form=resumeIncorporation') or matches(request.uri.path, '^//govPayResponseDispatcher') or contains(request.uri.query, 'page=fileUpload') or contains(request.uri.query,'page=scrsAccessibilityPage') or contains(request.uri.query,'page=register') or contains(request.uri.query,'page=reminder') or contains(request.uri.query,'form=memorandum')}",
           "handler": {
             "type": "Chain",
             "config": {
@@ -101,7 +101,7 @@
         },
         {
           "name": "HTML-ASSETS-reverse-proxy",
-          "condition": "${contains(request.uri.path, '/scripts/') or contains(request.uri.path, '/style/') or contains(request.uri.path, '/images/') or contains(request.uri.path, 'favicon.ico') or contains(request.uri.path, '/stylesheets/') or contains(request.uri.path, '/javascripts/')}",
+          "condition": "${contains(request.uri.path, '/scripts/') or contains(request.uri.path, '/style/') or contains(request.uri.path, '/images/') or contains(request.uri.path, 'favicon.ico') or contains(request.uri.path, '/stylesheets/') or contains(request.uri.path, '/javascripts/') or contains(request.uri.path, '/cookies') or matches(request.uri.path, '^/lang') or matches(request.uri.path, '^//lang')}",
           "handler": {
             "type": "Chain",
             "config": {
