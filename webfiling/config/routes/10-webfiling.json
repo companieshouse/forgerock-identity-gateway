@@ -101,7 +101,7 @@
         },
         {
           "name": "HTML-ASSETS-reverse-proxy",
-          "condition": "${contains(request.uri.path, '/scripts/') or contains(request.uri.path, '/style/') or contains(request.uri.path, '/images/') or contains(request.uri.path, 'favicon.ico') or contains(request.uri.path, '/stylesheets/') or contains(request.uri.path, '/javascripts/') or contains(request.uri.path, '/cookies') or matches(request.uri.path, '^/lang') or matches(request.uri.path, '^//lang')}",
+          "condition": "${contains(request.uri.path, '/scripts/') or contains(request.uri.path, '/style/') or contains(request.uri.path, '/images/') or contains(request.uri.path, 'favicon.ico') or contains(request.uri.path, '/stylesheets/') or contains(request.uri.path, '/javascripts/') or contains(request.uri.path, '/cookies') or matches(request.uri.path, '^/lang') or matches(request.uri.path, '^//lang') or contains(request.uri.query, 'name=aboutWebFiling')}",
           "handler": {
             "type": "Chain",
             "config": {
