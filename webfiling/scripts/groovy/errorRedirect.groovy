@@ -21,6 +21,8 @@ next.handle(context, request).thenOnResult(response -> {
             }
         }
 
+        // THIS SECTION WILL REDIRECT TO A WELL-DEFINED IDAM UI PAGE IF THE EWF LOGIN FAILS
+
         def location = routeArgAuthUri + routeArgErrorPath + '?context=' + routeArgContext + "&companyNo=" + companyNo
 
         response.setStatus(Status.FOUND)
