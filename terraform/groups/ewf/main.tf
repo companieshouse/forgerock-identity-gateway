@@ -27,6 +27,10 @@ data "vault_generic_secret" "internal_cidrs" {
   path = "aws-accounts/network/internal_cidr_ranges"
 }
 
+data "vault_generic_secret" "external_cidrs" {
+  path = "applications/heritage-development-eu-west-2/forgerock/ewf/forgerock-identity-gateway"
+}
+
 ###
 # Modules
 ###
