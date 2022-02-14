@@ -32,6 +32,7 @@ services:
       - ERROR_PATH=${ERROR_PATH}
       - MANAGE_PATH=${MANAGE_PATH}
       - COMPANIES_PATH=${COMPANIES_PATH}
+      - WEBFILING_COMP=${WEBFILING_COMP}
     build:
       context: ./webfiling
       args:

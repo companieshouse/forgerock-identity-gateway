@@ -60,6 +60,10 @@
         "value": "${companies_path}"
       },
       {
+        "name": "WEBFILING_COMP",
+        "value": "${webfiling_comp}"
+      },
+      {
         "name": "APPLICATION_LEGACY_HOST",
         "value": "${application_legacy_host}"
       },

@@ -114,6 +114,10 @@ variable "companies_path" {
   type = string
 }
 
+variable "webfiling_comp" {
+  type = string
+}
+
 variable "application_legacy_host" {
   type = string
 }
