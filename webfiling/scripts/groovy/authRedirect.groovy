@@ -77,7 +77,13 @@ next.handle(context, request).thenOnResult(response -> {
 
                     // Redirect to main journey with force auth to trigger company selection
 
-                    newUri += "?goto=" + URLEncoder.encode(locationUri, "utf-8") +
+                    logger.info("[CHLOG][AUTHREDIRECT] routeArgWebFilingComp : " + routeArgWebFilingComp)
+
+                    def gotoURL = locationUri + "&acr_values=" + routeArgWebFilingComp
+
+                    logger.info("[CHLOG][AUTHREDIRECT] gotoURL : " + gotoURL)
+
+                    newUri += "?goto=" + URLEncoder.encode(gotoURL, "utf-8") +
                             "&realm=/" + routeArgRealm +
                             "&service=" + routeArgMainJourney +
                             "&authIndexType=service&authIndexValue=" + routeArgMainJourney +

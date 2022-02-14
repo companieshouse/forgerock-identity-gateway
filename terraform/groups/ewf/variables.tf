@@ -148,6 +148,12 @@ variable "companies_path" {
   default     = "/account/your-companies/"
 }
 
+variable "webfiling_comp" {
+  type        = string
+  description = "OAuth2 Provider - OpenID Connect acr_values to Auth Chain Mapping"
+  default     = "webfilingcomp"
+}
+
 variable "application_legacy_host" {
   type        = string
   description = "Host name for legacy access to WebFiling login page"
