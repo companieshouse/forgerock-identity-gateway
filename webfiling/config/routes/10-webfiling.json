@@ -90,7 +90,19 @@
         },
         {
           "name": "SCRS-reverse-proxy",
-          "condition": "${contains(request.uri.query,'form=INC') or contains(request.uri.path, '/incorporation') or contains(request.uri.query,'page=incOnlySCRSLogin') or contains(request.uri.query,'form=resumeIncorporation') or contains(request.uri.path, '/govPayResponseDispatcher') or contains(request.uri.query, 'page=fileUpload') or contains(request.uri.query,'page=scrsAccessibilityPage') or contains(request.uri.query,'page=register') or contains(request.uri.query,'page=reminder') or contains(request.uri.query,'page=thankYou') or contains(request.uri.query,'form=memorandum')}",
+          "condition": "${contains(request.uri.query,'form=INC') or contains(request.uri.path, '/incorporation') or contains(request.uri.query,'page=incOnlySCRSLogin') or contains(request.uri.query,'form=resumeIncorporation') or contains(request.uri.path, '/govPayResponseDispatcher') or contains(request.uri.query,'page=scrsAccessibilityPage') or contains(request.uri.query,'page=register') or contains(request.uri.query,'page=reminder') or contains(request.uri.query,'page=thankYou') or contains(request.uri.query,'form=memorandum')}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
+        {
+          "name": "SCRS-FILE-UPLOAD-reverse-proxy",
+          "condition": "${(contains(request.headers['Referer'][0], 'form=INC') && contains(request.uri.query, 'page=fileUpload'))}",
           "handler": {
             "type": "Chain",
             "config": {
