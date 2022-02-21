@@ -101,6 +101,18 @@
           }
         },
         {
+          "name": "SCRS-EMAILS-reverse-proxy",
+          "condition": "${matches(request.uri.path, '^/com-shortlink') or matches(request.uri.path, '^//resetpassword') or matches(request.uri.path, '^/resetpassword') or matches(request.uri.path, '^/help') }",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
+        {
           "name": "SCRS-FILE-UPLOAD-reverse-proxy",
           "condition": "${(contains(request.headers['Referer'][0], 'form=INC') && contains(request.uri.query, 'page=fileUpload'))}",
           "handler": {
