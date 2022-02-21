@@ -7,7 +7,7 @@ next.handle(context, request).thenOnResult(response -> {
         def companyNo = ""
 
         if (attributes != null && attributes.openid != null && attributes.openid.id_token_claims != null) {
-            logger.info("[CHLOG][ERRORREDIRECT] OpenID EWF claim : " + attributes.openid.id_token_claims['webfiling_info'])
+            // logger.info("[CHLOG][ERRORREDIRECT] OpenID EWF claim : " + attributes.openid.id_token_claims['webfiling_info'])
 
             if (attributes.openid.id_token_claims['webfiling_info'] != null) {
 
