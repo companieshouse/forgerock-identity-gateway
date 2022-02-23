@@ -11,6 +11,9 @@ if (request.uri.path == "/recent-filings") {
     location += "//seclogin?" + recentFilingsQueryString
 }
 
+logger.info("[CHLOG][POSTSECLOGINREDIRECT] request uri : " + request.uri.toString())
+logger.info("[CHLOG][POSTSECLOGINREDIRECT] location : " + location)
+
 // Redirect seclogin response
 if (request.uri.path == "//seclogin") {
     next.handle(context, request).thenOnResult(response -> {
