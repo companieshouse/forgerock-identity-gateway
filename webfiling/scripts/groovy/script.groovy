@@ -22,6 +22,17 @@ if (attributes != null && attributes.openid != null && attributes.openid.id_toke
         logger.info("[CHLOG][SCRIPT] OpenID EWF claim > jurisdiction : " + attributes.openid.id_token_claims[webFilingClaimName].jurisdiction)
         logger.info("[CHLOG][SCRIPT] OpenID EWF claim > auth_code? " + (attributes.openid.id_token_claims[webFilingClaimName].auth_code != null))
         logger.info("[CHLOG][SCRIPT] OpenID EWF claim > language : " + attributes.openid.id_token_claims[webFilingClaimName].language)
+
+        logger.info("[CHLOG][SCRIPT][LANGUAGE] Session before language update from ID token: " + session["ewfLanguage"])
+
+        logger.info("[CHLOG][SCRIPT][LANGUAGE] headers Location: " + request.headers.get("Location"))
+        logger.info("[CHLOG][SCRIPT][LANGUAGE] headers Referer: " + request.headers.get("Referer"))
+
+        if (session["ewfLanguage"] == null || session["ewfLanguage"] == "" || request.headers.get("Referer").toString().indexOf('idam-ui') > -1 ){ 
+            session["ewfLanguage"] = attributes.openid.id_token_claims[webFilingClaimName].language;
+        }
+        logger.info("[CHLOG][SCRIPT][LANGUAGE] Session after language update from ID token: " + session["ewfLanguage"])
+
     } else {
         logger.info("[CHLOG][SCRIPT] OpenID EWF claim is NOT present")
     }
