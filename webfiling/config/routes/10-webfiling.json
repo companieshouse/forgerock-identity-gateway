@@ -337,7 +337,7 @@
                         ],
                         "add": {
                           "location": [
-                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}//seclogin?')}${urlEncode(request.uri.query)}"
+                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}:443//seclogin?')}${urlEncode(request.uri.query)}"
                           ]
                         }
                       }
