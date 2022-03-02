@@ -168,13 +168,38 @@
            "handler": {
              "type": "Chain",
              "config": {
-               "filters": [
-               ],
+               "filters": [],
                "handler": "ReverseProxyHandler"
              }
            }
          },
-
+         {
+          "name": "lang-logic",
+          "condition": "${(matches(request.uri.path, '^/lang') or matches(request.uri.path, '^//lang'))}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+               {
+                 "name": "lang-logic-inner",
+                 "type": "ScriptableFilter",
+                 "config": {
+                  "type": "application/x-groovy",
+                  "file": "language.groovy"
+                }
+               },
+               {
+                "name": "CookieFilter-Manage-lang",
+                "type": "CookieFilter",
+                "config": {
+                  "defaultAction": "MANAGE"
+                }
+              }
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
         {
           "condition": "${matches(request.uri.path, '^/file-for-a-company')}",
           "handler": {
@@ -312,7 +337,7 @@
                         ],
                         "add": {
                           "location": [
-                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}//seclogin?')}${urlEncode(request.uri.query)}"
+                            "/oidc/logout?goto=${urlEncode('https://&{ig.host}:443//seclogin?')}${urlEncode(request.uri.query)}"
                           ]
                         }
                       }

@@ -8,6 +8,7 @@ next.handle(context, request).thenOnResult(response -> {
     logger.info("[CHLOG][AUTHREDIRECT] Is Redirect : " + response.getStatus().isRedirection())
     logger.info("[CHLOG][AUTHREDIRECT] Request URI (Str) : " + request.uri.toString())
     logger.info("[CHLOG][AUTHREDIRECT] Session gotoTarget : " + session["gotoTarget"])
+    logger.info("[CHLOG][AUTHREDIRECT] Session language : " + session["ewfLanguage"])
 
     // The following URL can be used from IDAM to force an EWF logout and then
     // redirect back to IDAM to do a local Sign Out
@@ -40,7 +41,7 @@ next.handle(context, request).thenOnResult(response -> {
         // Special case response back from requesting an Auth Code via the post
         // In this scenario we force back to the error page in the IDAM UI stating that the auth code will be sent
         // as if we don't do this then we will (as a result of the IG session cache issue) just carry on and file for
-        // the last company we used instead
+        // the last company we used instead 
 
         if (request.uri.toString().indexOf('/runpage?page=companyWebFilingRegister') > -1
                 && response.headers.get("Location") != null
@@ -151,6 +152,12 @@ next.handle(context, request).thenOnResult(response -> {
         }
 
         logger.info("[CHLOG][AUTHREDIRECT] NewURI : " + newUri)
+
+        // ADDING LANGUAGE TO THE URI
+        if (session["ewfLanguage"] != null && session["ewfLanguage"] != "") {
+            logger.info("[CHLOG][AUTHREDIRECT] *********** Session before PWD REPLAY : " + session["ewfLanguage"])
+            newUri += "&lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
+        }
 
         response.headers.remove("Location")
         response.headers.add("Location", newUri)
