@@ -36,6 +36,10 @@ next.handle(context, request).thenOnResult(response -> {
         // THIS SECTION WILL REDIRECT TO A WELL-DEFINED IDAM UI PAGE IF THE EWF LOGIN FAILS
 
         def location = routeArgAuthUri + routeArgErrorPath + '?context=' + routeArgContext + "&companyNo=" + companyNo + "&authCodeRequest=" + requestedAuthCodeByPost
+        if (session["ewfLanguage"] != null && session["ewfLanguage"] != "") {
+            logger.info("[CHLOG][ERRORREDIRECT][LANGUAGE] Session language before error redirect : " + session["ewfLanguage"])
+            location += "&lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
+        }
 
         response.setStatus(Status.FOUND)
         response.headers.add("Location", location)

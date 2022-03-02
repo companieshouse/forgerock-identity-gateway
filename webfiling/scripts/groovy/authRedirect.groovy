@@ -116,6 +116,12 @@ next.handle(context, request).thenOnResult(response -> {
                     logger.info("[CHLOG][AUTHREDIRECT] Map params returning : " + newUri)
 
                     response.headers.remove("Location")
+
+                    if (session["ewfLanguage"] != null && session["ewfLanguage"] != "") {
+                        logger.info("[CHLOG][AUTHREDIRECT][LANGUAGE] Session before redirecting to IDAM UI for company selection: " + session["ewfLanguage"])
+                        newUri += "&lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
+                    }
+
                     return response.headers.add("Location", newUri)
                 }
 
@@ -155,7 +161,7 @@ next.handle(context, request).thenOnResult(response -> {
 
         // ADDING LANGUAGE TO THE URI
         if (session["ewfLanguage"] != null && session["ewfLanguage"] != "") {
-            logger.info("[CHLOG][AUTHREDIRECT] *********** Session before PWD REPLAY : " + session["ewfLanguage"])
+            logger.info("[CHLOG][AUTHREDIRECT][LANGUAGE] Session before redirecting to IDAM UI : " + session["ewfLanguage"])
             newUri += "&lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
         }
 
