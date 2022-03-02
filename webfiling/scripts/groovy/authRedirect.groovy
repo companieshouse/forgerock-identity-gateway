@@ -52,6 +52,11 @@ next.handle(context, request).thenOnResult(response -> {
 
             def location = routeArgAuthUri + routeArgErrorPath + '?context=companyAuthorisation&companyNo=null&authCodeRequest=true'
 
+            if (session["ewfLanguage"] != null && session["ewfLanguage"] != "") {
+                logger.info("[CHLOG][AUTHREDIRECT][LANGUAGE] Session before redirecting to IDAM UI for auth code sent confirm: " + session["ewfLanguage"])
+                location += "&lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
+            }
+
             response.headers.remove("Location")
             response.headers.add("Location", location)
 
