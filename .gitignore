@@ -11,3 +11,6 @@ nginx/.DS_Store
 
 .idea
 sav-envs/
+.env.DEV
+.env.PROD
+.env.STAGING
