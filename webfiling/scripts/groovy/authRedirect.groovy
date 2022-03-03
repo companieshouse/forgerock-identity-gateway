@@ -22,20 +22,21 @@ next.handle(context, request).thenOnResult(response -> {
 
         } else if (request.uri.toString().endsWith("/your-company-list")) {
 
-            logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as " + routeArgCompaniesPath)
+            logger.info("[CHLOG][AUTHREDIRECT] your-company-list : Setting gotoTarget as " + routeArgCompaniesPath)
+
             session["gotoTarget"] = routeArgCompaniesPath
 
         } else if (request.uri.toString().endsWith("/manage-your-account")) {
 
-            logger.info("[CHLOG][AUTHREDIRECT] Setting gotoTarget as " + routeArgManagePath)
+            logger.info("[CHLOG][AUTHREDIRECT] manage-your-account : Setting gotoTarget as " + routeArgManagePath)
+
             session["gotoTarget"] = routeArgManagePath
 
         } else if (request.uri.toString().endsWith("/file-for-another-company") ||
-                request.uri.toString().endsWith("/file-for-a-company")) {
+                   request.uri.toString().endsWith("/file-for-a-company")) {
 
             logger.info("[CHLOG][AUTHREDIRECT] Clearing gotoTarget in session")
             session["gotoTarget"] = ""
-
         }
 
         // Special case response back from requesting an Auth Code via the post
@@ -55,6 +56,7 @@ next.handle(context, request).thenOnResult(response -> {
             if (session["ewfLanguage"] != null && session["ewfLanguage"] != "") {
                 logger.info("[CHLOG][AUTHREDIRECT][LANGUAGE] Session before redirecting to IDAM UI for auth code sent confirm: " + session["ewfLanguage"])
                 location += "&lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
+
             }
 
             response.headers.remove("Location")
@@ -94,9 +96,9 @@ next.handle(context, request).thenOnResult(response -> {
             if (queryParams != null) {
                 def mapParams = queryParams.collectEntries { param ->
                     param.split('=').collect
-                            {
-                                URLDecoder.decode(it, "utf-8")
-                            }
+                        {
+                            URLDecoder.decode(it, "utf-8")
+                        }
                 }
 
                 if (mapParams.companySelect) {
@@ -129,6 +131,29 @@ next.handle(context, request).thenOnResult(response -> {
 
                     return response.headers.add("Location", newUri)
                 }
+
+                if (mapParams.yourCompanies) {
+                    // Redirect to IDAM UI Your Companies page
+                    def yourCompaniesUri = routeArgAuthUri + routeArgCompaniesPath
+                    if (session["ewfLanguage"] != null && session["ewfLanguage"] != "") {
+                        logger.info("[CHLOG][AUTHREDIRECT][LANGUAGE] Session language before adding language to your-companies link : " + session["ewfLanguage"])
+                        yourCompaniesUri += "?lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
+                    }
+                    response.headers.remove("Location")
+                    return response.headers.add("Location", yourCompaniesUri)
+                }
+
+                if (mapParams.manageAccount) {
+                    // Redirect to IDAM UI Manage Account page
+                    def manageAccountUri = routeArgAuthUri + routeArgManagePath;
+                    if (session["ewfLanguage"] != null && session["ewfLanguage"] != "") {
+                        logger.info("[CHLOG][AUTHREDIRECT][LANGUAGE] Session language before adding language to manage-account link : " + session["ewfLanguage"])
+                        manageAccountUri += "?lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
+                    }
+                    response.headers.remove("Location")
+                    eturn response.headers.add("Location", manageAccountUri)
+                }
+
 
                 if (mapParams.postSecLoginRedirect) {
                     // Prevent landing page redirect
