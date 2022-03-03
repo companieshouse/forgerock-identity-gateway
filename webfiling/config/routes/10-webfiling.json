@@ -310,15 +310,43 @@
                   }
                 },
                 {
-                  "name": "ConditionalFilter-File-for-another-company-and-Manage-your-account",
+                  "name": "ConditionalFilter-File-for-another-company",
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/manage-your-account') or matches(request.uri.path, '^/your-company-list') or matches(request.uri.path, '^/idam-logout')}",
+                    "condition": "${matches(request.uri.path, '^/file-for-another-company') or matches(request.uri.path, '^/idam-logout')}",
                     "delegate": {
                       "type": "StaticRequestFilter",
                       "config": {
                         "method": "GET",
                         "uri": "https://&{application.host}/com-logout?silent=1&companySelect=1"
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "ConditionalFilter-Manage-your-account",
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${matches(request.uri.path, '^/manage-your-account')}",
+                    "delegate": {
+                      "type": "StaticRequestFilter",
+                      "config": {
+                        "method": "GET",
+                        "uri": "https://&{application.host}/com-logout?silent=1&manageAccount=1"
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "ConditionalFilter-Your-companies",
+                  "type": "ConditionalFilter",
+                  "config": {
+                    "condition": "${matches(request.uri.path, '^/your-company-list')}",
+                    "delegate": {
+                      "type": "StaticRequestFilter",
+                      "config": {
+                        "method": "GET",
+                        "uri": "https://&{application.host}/com-logout?silent=1&yourCompanies=1"
                       }
                     }
                   }
@@ -348,7 +376,7 @@
                   "name": "ConditionalFilter-Com-logout-and-Company-Select-1",
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/com-logout') && !contains(request.uri.query,'companySelect=1')}",
+                    "condition": "${matches(request.uri.path, '^/com-logout') && !contains(request.uri.query,'companySelect=1') && !contains(request.uri.query,'yourCompanies=1') && !contains(request.uri.query,'manageAccount=1')}",
                     "delegate": {
                       "type": "ScriptableFilter",
                       "config": {
