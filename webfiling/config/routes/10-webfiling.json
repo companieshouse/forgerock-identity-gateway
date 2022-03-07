@@ -148,10 +148,9 @@
             }
           }
         },
- 
         {
           "name": "HTML-ASSETS-reverse-proxy",
-           "condition": "${contains(request.uri.path, '/scripts/') or contains(request.uri.path, '/style/') or contains(request.uri.path, '/images/') or contains(request.uri.path, 'favicon.ico') or contains(request.uri.path, '/stylesheets/') or contains(request.uri.path, '/javascripts/') or contains(request.uri.path, '/cookies') or contains(request.uri.query, 'name=aboutWebFiling')}",
+           "condition": "${contains(request.uri.path, '/scripts/') or contains(request.uri.path, '/style/') or contains(request.uri.path, '/images/') or contains(request.uri.path, 'favicon.ico') or contains(request.uri.path, '/stylesheets/') or contains(request.uri.path, '/javascripts/')}",
            "handler": {
              "type": "Chain",
              "config": {
@@ -161,7 +160,18 @@
              }
            }
          },
- 
+         {
+          "name": "footer-links-reverse-proxy",
+           "condition": "${contains(request.uri.path, '/cookies') or contains(request.uri.query, 'name=aboutWebFiling') or contains(request.uri.query, 'name=accessibilityStatement')}",
+           "handler": {
+             "type": "Chain",
+             "config": {
+               "filters": [
+               ],
+               "handler": "ReverseProxyHandler"
+             }
+           }
+         },
          {
            "name": "EWF-SCRSplus-lang-switch",
            "condition": "${(matches(request.uri.path, '^/lang') or matches(request.uri.path, '^//lang')) and (contains(request.uri.query,'page=incOnlySCRSLogin') or contains(request.headers['Referer'][0], 'page=incOnlySCRSLogin') or contains(request.headers['Referer'][0], 'form=INC') or contains(request.headers['Referer'][0], '/incorporation') or contains(request.headers['Referer'][0],'form=resumeIncorporation'))}",
@@ -327,7 +337,7 @@
                   "name": "ConditionalFilter-Manage-your-account",
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/manage-your-account')}",
+                    "condition": "${matches(request.uri.path, '^/manage-your-account') or matches(request.uri.path, '^//manage-your-account')}",
                     "delegate": {
                       "type": "StaticRequestFilter",
                       "config": {
@@ -341,7 +351,7 @@
                   "name": "ConditionalFilter-Your-companies",
                   "type": "ConditionalFilter",
                   "config": {
-                    "condition": "${matches(request.uri.path, '^/your-company-list')}",
+                    "condition": "${matches(request.uri.path, '^/your-company-list') or matches(request.uri.path, '^//your-company-list')}",
                     "delegate": {
                       "type": "StaticRequestFilter",
                       "config": {
