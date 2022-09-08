@@ -74,6 +74,10 @@
       {
         "name": "APPLICATION_HOST_PREFIX",
         "value": "${application_host_prefix}"
+      },
+      {
+        "name": "IG_JVM_ARGS",
+        "value": "${ig_jvm_args}"
       }
     ],
     "portMappings": [

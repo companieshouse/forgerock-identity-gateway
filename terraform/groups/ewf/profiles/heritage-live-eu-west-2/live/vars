@@ -1,7 +1,7 @@
 environment = "live"
 vpc_name = "vpc-heritage-live"
-task_cpu = 1024
-task_memory = 2048
+task_cpu = 6144
+task_memory = 6144
 domain_name = "ewf.companieshouse.gov.uk"
 create_certificate = false
 certificate_domain = "*.companieshouse.gov.uk"
@@ -11,3 +11,4 @@ autoscaling_max = 4
 target_cpu = 50
 target_memory = 50
 internal_access_only = false
+ig_jvm_args = -Xms256m -Xmx4096m -Xlog:gc*=warning:stdout -XX:+UseG1GC
