@@ -109,3 +109,8 @@ variable "agent_secret_id" {
   type        = string
   description = "Identity Gateway Agent Secret ID"
 }
+
+variable "ig_jvm_args" {
+  type        = string
+  description = "Flags for IG JVM"
+}
