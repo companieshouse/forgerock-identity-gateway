@@ -7,6 +7,6 @@ echo "args: ${IG_JVM_ARGS}"
 JSSE_OPTS="-Djdk.tls.ephemeralDHKeySize=2048"
 
 # Wrap them up into the JAVA_OPTS environment variable
-export JAVA_OPTS="${JAVA_OPTS} ${JVM_OPTS} ${JSSE_OPTS}"
+export JAVA_OPTS="${JAVA_OPTS} ${JVM_OPTS}"
 
 echo "EWF IG - ${JAVA_OPTS}"

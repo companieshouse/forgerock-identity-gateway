@@ -11,4 +11,4 @@ autoscaling_max = 4
 target_cpu = 50
 target_memory = 50
 internal_access_only = false
-ig_jvm_args = -Xms256m -Xmx3072m -Xlog:gc
+ig_jvm_args = -Xms256m -Xmx3072m -Xlog:gc*=warning:stdout -XX:+UseG1GC

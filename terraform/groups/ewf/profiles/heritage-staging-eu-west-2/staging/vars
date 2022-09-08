@@ -1,7 +1,7 @@
 environment = "staging"
 vpc_name = "vpc-heritage-staging"
-task_cpu = 1024
-task_memory = 2048
+task_cpu = 2048
+task_memory = 4096
 domain_name = "ewf-stg-aws.companieshouse.gov.uk"
 create_certificate = false
 certificate_domain = "*.companieshouse.gov.uk"
@@ -18,4 +18,4 @@ internal_access_cidrs = [
   "18.135.80.40/32",
   "18.135.67.249/32",
 ]
-ig_jvm_args = -Xms256m -Xmx2048m -Xlog:gc
+ig_jvm_args = -Xms256m -Xmx3072m -Xlog:gc*=warning:stdout -XX:+UseG1GC
