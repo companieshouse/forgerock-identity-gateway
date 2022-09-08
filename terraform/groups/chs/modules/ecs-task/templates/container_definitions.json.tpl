@@ -18,6 +18,10 @@
       {
         "name": "AGENT_SECRET_ID",
         "value": "${agent_secret_id}"
+      },
+      {
+        "name": "IG_JVM_ARGS",
+        "value": "${ig_jvm_args}"
       }
     ],
     "portMappings": [

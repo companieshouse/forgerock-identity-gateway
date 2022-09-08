@@ -157,4 +157,5 @@ variable "target_memory" {
 
 variable "ig_jvm_args" {
   type = string
+  description = "Flags for IG JVM"
 }
