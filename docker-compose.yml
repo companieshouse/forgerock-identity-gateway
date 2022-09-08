@@ -33,6 +33,7 @@ services:
       - MANAGE_PATH=${MANAGE_PATH}
       - COMPANIES_PATH=${COMPANIES_PATH}
       - WEBFILING_COMP=${WEBFILING_COMP}
+      - IG_JVM_ARGS=${IG_JVM_ARGS}
     build:
       context: ./webfiling
       args:
@@ -46,6 +47,7 @@ services:
       - FIDC_FQDN=${FIDC_FQDN}
       - FIDC_REALM=${FIDC_REALM}
       - AGENT_SECRET_ID=${IG_AGENT_SECRET}
+      - IG_JVM_ARGS=${IG_JVM_ARGS}
     build:
       context: ./chs
       args:

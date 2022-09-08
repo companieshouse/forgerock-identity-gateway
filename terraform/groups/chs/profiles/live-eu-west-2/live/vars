@@ -1,7 +1,7 @@
 environment = "live"
 vpc_name = "CHS"
-task_cpu = 1024
-task_memory = 2048
+task_cpu = 2048
+task_memory = 4096
 domain_name = "api-ig.company-information.service.gov.uk"
 create_certificate = false
 certificate_domain = "*.companieshouse.gov.uk"
@@ -12,3 +12,4 @@ target_cpu = 50
 target_memory = 50
 api_load_balancer = "api.company-information.service.gov.uk"
 create_external_lb = true
+ig_jvm_args = -Xms256m -Xmx3072m -Xlog:gc

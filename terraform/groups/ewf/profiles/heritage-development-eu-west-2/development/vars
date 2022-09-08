@@ -16,3 +16,4 @@ internal_access_cidrs = [
   "10.254.2.0/24",
   "10.254.3.0/24"
 ]
+ig_jvm_args = -Xms256m -Xmx2048m -Xlog:gc

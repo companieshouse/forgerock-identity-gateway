@@ -12,3 +12,4 @@ target_cpu = 50
 target_memory = 50
 api_load_balancer = "api-staging.company-information.service.gov.uk"
 create_external_lb = true
+ig_jvm_args = -Xms256m -Xmx2048m -Xlog:gc

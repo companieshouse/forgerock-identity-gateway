@@ -200,3 +200,8 @@ variable "internal_access_only" {
   description = "Should the Load Balancer be internal"
   default     = true
 }
+
+variable "ig_jvm_args" {
+  type        = string
+  description = "Flags for IG JVM"
+}

@@ -3,6 +3,7 @@
 ARG DOCKER_IMAGE=ig-base
 FROM ${DOCKER_IMAGE}
 
+ENV IG_JVM_ARGS=${IG_JVM_ARGS}
 COPY --chown=forgerock:root . /var/ig
 
 ENTRYPOINT [ "/opt/ig/bin/start.sh", "/var/ig" ]
