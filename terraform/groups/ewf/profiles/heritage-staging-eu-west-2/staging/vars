@@ -18,4 +18,4 @@ internal_access_cidrs = [
   "18.135.80.40/32",
   "18.135.67.249/32",
 ]
-ig_jvm_args = -Xms256m -Xmx3072m -Xlog:gc*=warning:stdout -XX:+UseG1GC
+ig_jvm_args = "-Xms256m -Xmx3072m -Xlog:gc*=warning:stdout -XX:+UseG1GC"
