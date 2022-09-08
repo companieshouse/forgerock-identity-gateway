@@ -97,4 +97,5 @@ module "ig" {
   target_cpu                     = var.target_cpu
   target_memory                  = var.target_memory
   tags                           = local.common_tags
+  ig_jvm_args                    = var.ig_jvm_args
 }

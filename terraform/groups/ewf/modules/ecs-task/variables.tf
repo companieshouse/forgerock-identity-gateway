@@ -154,3 +154,7 @@ variable "target_cpu" {
 variable "target_memory" {
   type = number
 }
+
+variable "ig_jvm_args" {
+  type = string
+}

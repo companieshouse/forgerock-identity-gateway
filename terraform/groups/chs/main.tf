@@ -99,4 +99,5 @@ module "ig" {
   fidc_realm              = var.fidc_realm
   agent_secret_id         = var.agent_secret_id
   tags                    = local.common_tags
+  ig_jvm_args             = var.ig_jvm_args
 }
