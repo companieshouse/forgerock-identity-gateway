@@ -1,7 +1,7 @@
 environment = "live"
 vpc_name = "vpc-heritage-live"
-task_cpu = 6144
-task_memory = 6144
+task_cpu = 4096
+task_memory = 8092
 domain_name = "ewf.companieshouse.gov.uk"
 create_certificate = false
 certificate_domain = "*.companieshouse.gov.uk"
