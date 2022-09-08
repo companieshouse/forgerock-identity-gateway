@@ -98,3 +98,8 @@ variable "fidc_realm" {
 variable "agent_secret_id" {
   type = string
 }
+
+variable "ig_jvm_args" {
+  type = string
+  description = "Flags for IG JVM"
+}

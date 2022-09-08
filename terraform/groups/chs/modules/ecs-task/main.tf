@@ -11,6 +11,7 @@ data "template_file" "container_definitions" {
     fidc_fqdn                 = var.fidc_fqdn
     fidc_realm                = var.fidc_realm
     agent_secret_id           = base64encode(var.agent_secret_id)
+    ig_jvm_args               = var.ig_jvm_args
   }
 }
 
