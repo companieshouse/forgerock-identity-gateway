@@ -151,7 +151,7 @@ next.handle(context, request).thenOnResult(response -> {
                         manageAccountUri += "?lang=" + URLEncoder.encode((String) session["ewfLanguage"], "utf-8")
                     }
                     response.headers.remove("Location")
-                    eturn response.headers.add("Location", manageAccountUri)
+                    return response.headers.add("Location", manageAccountUri)
                 }
 
 

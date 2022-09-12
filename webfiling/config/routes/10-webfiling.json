@@ -161,6 +161,18 @@
           }
         },
         {
+          "name": "iXBRL-reverse-proxy",
+          "condition": "${matches(request.uri.path, '^/xbrl_validator')}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
+        {
           "name": "HTML-ASSETS-reverse-proxy",
            "condition": "${contains(request.uri.path, '/scripts/') or contains(request.uri.path, '/style/') or contains(request.uri.path, '/images/') or contains(request.uri.path, 'favicon.ico') or contains(request.uri.path, '/stylesheets/') or contains(request.uri.path, '/javascripts/')}",
            "handler": {
