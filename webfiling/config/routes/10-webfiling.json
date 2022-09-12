@@ -162,7 +162,7 @@
         },
         {
           "name": "iXBRL-reverse-proxy",
-          "condition": "${matches(request.uri.path, '^/xbrl_validator')}",
+          "condition": "${matches(request.uri.path, '^/xbrl_validator') or matches(request.uri.path, '^/xbrl' or matches(request.uri.path, '^/xbrl_info'))}",
           "handler": {
             "type": "Chain",
             "config": {
