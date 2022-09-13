@@ -138,6 +138,18 @@
         },
         {
           "name": "SCRS-GOV-PAY-reverse-proxy",
+          "condition": "${(contains(request.headers['Cookie'][0], 'register-your-company%2Fapplication-in-progress') && contains(request.uri.path, '/govPayResponseDispatcher'))}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
+        {
+          "name": "SCRS-PLUS-GOV-PAY-reverse-proxy",
           "condition": "${(contains(request.headers['Cookie'][0], 'incorporation%3FjourneyType%3Dplus') && contains(request.uri.path, '/govPayResponseDispatcher'))}",
           "handler": {
             "type": "Chain",
