@@ -121,7 +121,7 @@ variable "ui_url" {
 variable "login_path" {
   type        = string
   description = "Path to login page"
-  default     = "/account/login/"
+  default     = "/"
 }
 
 variable "logout_path" {
