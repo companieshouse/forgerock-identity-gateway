@@ -1,6 +1,7 @@
 data "aws_acm_certificate" "certificate" {
   count  = var.create_certificate ? 0 : 1
   domain = var.certificate_domain
+  most_recent = true
 }
 
 data "aws_route53_zone" "domain" {
