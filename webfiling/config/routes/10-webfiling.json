@@ -90,7 +90,45 @@
         },
         {
           "name": "EWF-eReminders",
-          "condition": "${contains(request.uri.query,'form=eReminders') or contains(request.uri.query,'eReminder') }",
+          "condition": "${contains(request.uri.query,'form=eReminders') or contains(request.uri.query,'eReminder') or contains(request.uri.query,'form=eremActivate') or contains(request.uri.query,'form=eremActivateDone') }",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "name": "CookieFilter-Manage-lang",
+                  "type": "CookieFilter",
+                  "config": {
+                    "defaultAction": "MANAGE"
+                  }
+                }
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
+        {
+          "name": "EWF-eReminders-email-click",
+          "condition": "${(matches(request.uri.path, '^/com-shortlink') and contains(request.uri.query,'eReminder')) or (matches(request.uri.path, '^//emailshortlink') or matches(request.uri.path, '^///emailshortlink'))  }",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "name": "CookieFilter-Manage-lang",
+                  "type": "CookieFilter",
+                  "config": {
+                    "defaultAction": "MANAGE"
+                  }
+                }
+              ],
+              "handler": "ReverseProxyHandler"
+            }
+          }
+        },
+        {
+          "name": "EWF-eReminders-thankyou",
+          "condition": "${contains(request.uri.query,'form=eremThankyou')}",
           "handler": {
             "type": "Chain",
             "config": {
