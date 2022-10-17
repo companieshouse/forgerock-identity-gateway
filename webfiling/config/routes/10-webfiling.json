@@ -109,7 +109,7 @@
         },
         {
           "name": "EWF-eReminders-email-click",
-          "condition": "${(matches(request.uri.path, '^/com-shortlink') and contains(request.uri.query,'eReminder')) or (matches(request.uri.path, '^//emailshortlink') or matches(request.uri.path, '^///emailshortlink'))  }",
+          "condition": "${(matches(request.uri.path, '^/com-shortlink') and contains(request.uri.query,'eReminder')) or (matches(request.uri.path, '^//emailshortlink') or matches(request.uri.path, '^///emailshortlink') or matches(request.uri.path, '^/emailshortlink'))  }",
           "handler": {
             "type": "Chain",
             "config": {
