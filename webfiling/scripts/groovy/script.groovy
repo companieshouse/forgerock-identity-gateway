@@ -18,7 +18,7 @@ if (attributes != null && attributes.openid != null && attributes.openid.id_toke
 
     if (attributes.openid.id_token_claims[webFilingClaimName]) {
         logger.info("[CHLOG][SCRIPT] OpenID EWF claim > company_no : " + attributes.openid.id_token_claims[webFilingClaimName].company_no)
-        logger.info("[CHLOG][SCRIPT] OpenID EWF claim > password? " + (attributes.openid.id_token_claims[webFilingClaimName].password != null))
+        logger.info("[CHLOG][SCRIPT] OpenID EWF claim > password? " + attributes.openid.id_token_claims[webFilingClaimName].password)
         logger.info("[CHLOG][SCRIPT] OpenID EWF claim > jurisdiction : " + attributes.openid.id_token_claims[webFilingClaimName].jurisdiction)
         logger.info("[CHLOG][SCRIPT] OpenID EWF claim > auth_code? " + (attributes.openid.id_token_claims[webFilingClaimName].auth_code != null))
         logger.info("[CHLOG][SCRIPT] OpenID EWF claim > language : " + attributes.openid.id_token_claims[webFilingClaimName].language)
