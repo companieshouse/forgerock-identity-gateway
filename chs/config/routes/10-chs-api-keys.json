@@ -1,5 +1,5 @@
 {
-  "name": "CHS",
+  "name": "CHS API Keys",
   "baseURI": "https://&{api.load.balancer}",
   "globalDecorators": {
     "capture": "all"
@@ -85,6 +85,37 @@
                   }
                 }
               }
+            }
+          }
+        },
+        {
+          "name": "AddERICPassthroughHeaders",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "addERICPassthroughAttributes.groovy"
+          }
+        },
+        {
+          "name": "JwtBuilderFilter-ERIC",
+          "type": "JwtBuilderFilter",
+          "config": {
+            //pass in attributes from above script as the claims
+          }
+        },
+        {
+          "name": "HeaderFilter-ERIC",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "ERIC-Access-Token": "${contexts.jwtBuilder.value}",
+              // tokenValue = "eric." + jwtValue
+//              token := ericAccessToken{
+//          Type:        "Bearer",
+//          AccessToken: tokenValue,
+//          ExpiresIn:   int64(*a.Expiry),
+//        },
             }
           }
         }

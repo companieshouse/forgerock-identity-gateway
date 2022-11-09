@@ -1,0 +1,26 @@
+{
+  "name": "CHS Stream Keys",
+  "baseURI": "https://&{api.load.balancer}",
+  "heap": [
+    {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler",
+      "capture": [
+        "request",
+        "response"
+      ],
+      "config": {
+        "tls": {
+          "type": "ClientTlsOptions",
+          "config": {
+            "trustManager": {
+              "type": "TrustAllManager"
+            }
+          }
+        },
+        "hostnameVerifier": "ALLOW_ALL"
+      }
+    }
+  ],
+  "condition": "${!contains(request.headers['Authorization'][0], 'Bearer')}"
+}
