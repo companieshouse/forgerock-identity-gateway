@@ -41,6 +41,24 @@
         },
         "secretsProvider": "SystemAndEnvSecretStore-FIDC"
       }
+    },
+    {
+      "name": "SecretKeyPropertyFormat-SigningKey",
+      "type": "SecretKeyPropertyFormat",
+      "config": {
+        "format": "BASE64",
+        "algorithm": "AES"
+      }
+    },
+    {
+      "name": "SystemAndEnvSecretStore-SigningKey",
+      "type": "SystemAndEnvSecretStore",
+      "config": {
+        "mappings": [{
+          "secretId": "signing.key.secret.id",
+          "format": "SecretKeyPropertyFormat-SigningKey"
+        }]
+      }
     }
   ],
   "handler": {
@@ -89,7 +107,7 @@
           }
         },
         {
-          "name": "AddERICPassthroughHeaders",
+          "name": "AddERICPassthroughAttributes",
           "type": "ScriptableFilter",
           "config": {
             "type": "application/x-groovy",
@@ -100,7 +118,15 @@
           "name": "JwtBuilderFilter-ERIC",
           "type": "JwtBuilderFilter",
           "config": {
-            //pass in attributes from above script as the claims
+              "template": {
+                "claims": "{${attributes.ericSubject},${attributes.ericIssuer},${attributes.ericExpiry}}"
+              },
+              "secretsProvider": "SecretKeyPropertyFormat-SigningKey",
+              "encryption": {
+                "secretId": "signing.key.secret.id",
+                "algorithm": "dir",
+                "method": "A128CBC-HS256"
+              }
           }
         },
         {
@@ -109,13 +135,12 @@
           "config": {
             "messageType": "REQUEST",
             "add": {
-              "ERIC-Access-Token": "${contexts.jwtBuilder.value}",
-              // tokenValue = "eric." + jwtValue
-//              token := ericAccessToken{
-//          Type:        "Bearer",
-//          AccessToken: tokenValue,
-//          ExpiresIn:   int64(*a.Expiry),
-//        },
+              "Authorization": "Bearer eric.${contexts.jwtBuilder.value}",
+              "ERIC-Authorised-User": "test@test.com",
+              "ERIC-Authorised-Scope": "${contexts.oauth2.accessToken.scopes}",
+              "ERIC-Authorised-Token-Permissions": "${contexts.oauth2.accessToken.info.token_permissions}",
+              "ERIC-Authorised-Roles": "/admin/transaction-lookup",
+              "ERIC-Application-ID": "${contexts.oauth2.accessToken.info.client-id}"
             }
           }
         }
