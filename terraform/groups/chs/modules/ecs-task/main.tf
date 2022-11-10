@@ -1,17 +1,18 @@
 data "template_file" "container_definitions" {
   template = file("${path.module}/templates/container_definitions.json.tpl")
   vars = {
-    task_name                 = var.service_name
-    aws_ecr_url               = var.ecr_url
-    tag                       = var.container_image_version
-    cloudwatch_log_group_name = var.log_group_name
-    cloudwatch_log_prefix     = var.log_prefix
-    region                    = var.region
-    api_load_balancer         = var.api_load_balancer
-    fidc_fqdn                 = var.fidc_fqdn
-    fidc_realm                = var.fidc_realm
-    agent_secret_id           = base64encode(var.agent_secret_id)
-    ig_jvm_args               = var.ig_jvm_args
+    task_name                        = var.service_name
+    aws_ecr_url                      = var.ecr_url
+    tag                              = var.container_image_version
+    cloudwatch_log_group_name        = var.log_group_name
+    cloudwatch_log_prefix            = var.log_prefix
+    region                           = var.region
+    api_load_balancer                = var.api_load_balancer
+    fidc_fqdn                        = var.fidc_fqdn
+    fidc_realm                       = var.fidc_realm
+    agent_secret_id                  = base64encode(var.agent_secret_id)
+    ig_jvm_args                      = var.ig_jvm_args
+    signing_key_secret_id            = base64encode(var.signing_key_secret_id)
   }
 }
 
