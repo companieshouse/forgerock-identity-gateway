@@ -22,5 +22,8 @@
       }
     }
   ],
+  "handler": {
+    "type": "ReverseProxyHandler"
+  },
   "condition": "${!contains(request.headers['Authorization'][0], 'Bearer')}"
 }
