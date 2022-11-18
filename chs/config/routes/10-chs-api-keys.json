@@ -1,10 +1,19 @@
 {
   "name": "CHS API Keys",
   "baseURI": "https://&{api.load.balancer}",
+  "condition": "${contains(request.headers['Authorization'][0], 'Bearer')}",
   "globalDecorators": {
     "capture": "all"
   },
   "heap": [
+    {
+      "name": "Continue",
+      "type": "Delegate",
+      "MyCapture": "all",
+      "config": {
+        "delegate": "ForgeRockClientHandler"
+      }
+    },
     {
       "name": "ReverseProxyHandler",
       "type": "ReverseProxyHandler",
@@ -29,20 +38,6 @@
       "type": "SystemAndEnvSecretStore"
     },
     {
-      "name": "AmService-FIDC",
-      "type": "AmService",
-      "config": {
-        "url": "https://&{fidc.fqdn}/am",
-        "realm": "/&{fidc.realm}",
-        "version": "7.1",
-        "agent": {
-          "username": "ig_agent",
-          "passwordSecretId": "agent.secret.id"
-        },
-        "secretsProvider": "SystemAndEnvSecretStore-FIDC"
-      }
-    },
-    {
       "name": "SecretKeyPropertyFormat-SigningKey",
       "type": "SecretKeyPropertyFormat",
       "config": {
@@ -51,13 +46,22 @@
       }
     },
     {
-      "name": "SystemAndEnvSecretStore-SigningKey",
-      "type": "SystemAndEnvSecretStore",
+      "name": "SecretsProvider-FIDC",
+      "type": "SecretsProvider",
       "config": {
-        "mappings": [{
-          "secretId": "signing.key.secret.id",
-          "format": "SecretKeyPropertyFormat-SigningKey"
-        }]
+        "stores": [
+          {
+            "type": "SystemAndEnvSecretStore",
+            "config": {
+              "mappings": [
+                {
+                  "secretId": "signing.key.secret.id",
+                  "format": "SecretKeyPropertyFormat-SigningKey"
+                }
+              ]
+            }
+          }
+        ]
       }
     }
   ],
@@ -78,24 +82,40 @@
           "name": "OAuth2ResourceServerFilter-FIDC",
           "type": "OAuth2ResourceServerFilter",
           "config": {
-            "scopes": [],
+            "scopes": {
+              "name": "myscript",
+              "type": "ScriptableResourceAccess",
+              "config": {
+                "type": "application/x-groovy",
+                "source": [
+                  "// Minimal set of required scopes",
+                  "def scopes = [ 'mail' ] as Set",
+                  "if (request.uri.path =~ /employee$/) {",
+                  "  // Require another scope to access this resource",
+                  "  scopes += 'employeenumber'",
+                  "}",
+                  "return scopes"
+                ]
+              }
+            },
             "requireHttps": false,
             "realm": "OpenIG",
             "accessTokenResolver": {
               "name": "TokenIntrospectionAccessTokenResolver-FIDC",
               "type": "TokenIntrospectionAccessTokenResolver",
               "config": {
-                "amService": "AmService-FIDC",
+                "endpoint": "https://&{fidc.fqdn}/am/oauth2/introspect",
                 "providerHandler": {
                   "type": "Chain",
                   "config": {
                     "filters": [
                       {
-                        "type": "HttpBasicAuthenticationClientFilter",
+                        "type": "HeaderFilter",
                         "config": {
-                          "username": "ig_agent",
-                          "passwordSecretId": "agent.secret.id",
-                          "secretsProvider": "SystemAndEnvSecretStore-FIDC"
+                          "messageType": "request",
+                          "add": {
+                            "Authorization": [ "Basic ${encodeBase64('<client_id>:<client_secret>')}" ]
+                          }
                         }
                       }
                     ],
@@ -121,7 +141,7 @@
               "template": {
                 "claims": "{${attributes.ericSubject},${attributes.ericIssuer},${attributes.ericExpiry}}"
               },
-              "secretsProvider": "SecretKeyPropertyFormat-SigningKey",
+              "secretsProvider": "SecretsProvider-FIDC",
               "encryption": {
                 "secretId": "signing.key.secret.id",
                 "algorithm": "dir",
@@ -135,12 +155,12 @@
           "config": {
             "messageType": "REQUEST",
             "add": {
-              "Authorization": "Bearer eric.${contexts.jwtBuilder.value}",
-              "ERIC-Authorised-User": "test@test.com",
-              "ERIC-Authorised-Scope": "${contexts.oauth2.accessToken.scopes}",
-              "ERIC-Authorised-Token-Permissions": "${contexts.oauth2.accessToken.info.token_permissions}",
-              "ERIC-Authorised-Roles": "/admin/transaction-lookup",
-              "ERIC-Application-ID": "${contexts.oauth2.accessToken.info.client-id}"
+              "Authorization": [ "Bearer eric.${contexts.jwtBuilder.value}" ],
+              "ERIC-Authorised-User": [ "test@test.com" ],
+              "ERIC-Authorised-Scope": [ "${contexts.oauth2.accessToken.scopes}" ],
+              "ERIC-Authorised-Token-Permissions": [ "${contexts.oauth2.accessToken.info.token_permissions}" ],
+              "ERIC-Authorised-Roles": [ "/admin/transaction-lookup" ],
+              "ERIC-Application-ID": [ "${contexts.oauth2.accessToken.info.client-id}" ]
             }
           }
         }
