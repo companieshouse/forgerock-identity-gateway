@@ -114,7 +114,7 @@
                         "config": {
                           "messageType": "request",
                           "add": {
-                            "Authorization": [ "Basic ${encodeBase64('<client_id>:<client_secret>')}" ]
+                            "Authorization": [ "Basic ${encodeBase64('request.headers['client_id'][0]:request.headers['client_secret'][0]')}" ]
                           }
                         }
                       }
