@@ -114,7 +114,7 @@
                         "config": {
                           "messageType": "request",
                           "add": {
-                            "Authorization": [ "Basic ${request.headers['Authorization'][0]}" ]
+                            "Authorization": [ "${request.headers['Authorization'][0]}" ]
                           }
                         }
                       }
