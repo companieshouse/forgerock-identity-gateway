@@ -1,7 +1,6 @@
 {
   "name": "CHS API Keys",
   "baseURI": "https://&{api.load.balancer}",
-  "condition": "${contains(request.headers['Authorization'][0], 'Bearer')}",
   "globalDecorators": {
     "capture": "all"
   },
@@ -71,40 +70,17 @@
     "config": {
       "filters": [
         {
-          "type": "ForwardedRequestFilter",
-          "config": {
-            "scheme": "${request.headers['X-Forwarded-Proto'][0]}",
-            "host": "${split(request.headers['Host'][0], ':')[0]}",
-            "port": "${integer(request.headers['X-Forwarded-Port'][0])}"
-          }
-        },
-        {
           "name": "OAuth2ResourceServerFilter-FIDC",
           "type": "OAuth2ResourceServerFilter",
           "config": {
-            "scopes": {
-              "name": "myscript",
-              "type": "ScriptableResourceAccess",
-              "config": {
-                "type": "application/x-groovy",
-                "source": [
-                  "// Minimal set of required scopes",
-                  "def scopes = [ 'mail' ] as Set",
-                  "if (request.uri.path =~ /employee$/) {",
-                  "  // Require another scope to access this resource",
-                  "  scopes += 'employeenumber'",
-                  "}",
-                  "return scopes"
-                ]
-              }
-            },
+            "scopes": ["https://identity.company-information.service.gov.uk/user.write-full"],
             "requireHttps": false,
-            "realm": "OpenIG",
+            "realm": "alpha",
             "accessTokenResolver": {
               "name": "TokenIntrospectionAccessTokenResolver-FIDC",
               "type": "TokenIntrospectionAccessTokenResolver",
               "config": {
-                "endpoint": "https://&{fidc.fqdn}/am/oauth2/introspect",
+                "endpoint": "https://&{fidc.fqdn}/am/oauth2/realms/root/realms/alpha/introspect",
                 "providerHandler": {
                   "type": "Chain",
                   "config": {
@@ -114,7 +90,7 @@
                         "config": {
                           "messageType": "request",
                           "add": {
-                            "Authorization": [ "${request.headers['Authorization'][0]}" ]
+                            "Authorization": [ "Basic ${encodeBase64('CHSInternalClient:CHSInternalClient')}" ]
                           }
                         }
                       }
@@ -125,47 +101,18 @@
               }
             }
           }
-        },
-        {
-          "name": "AddERICPassthroughAttributes",
-          "type": "ScriptableFilter",
-          "config": {
-            "type": "application/x-groovy",
-            "file": "addERICPassthroughAttributes.groovy"
-          }
-        },
-        {
-          "name": "JwtBuilderFilter-ERIC",
-          "type": "JwtBuilderFilter",
-          "config": {
-              "template": {
-                "claims": "{${attributes.ericSubject},${attributes.ericIssuer},${attributes.ericExpiry}}"
-              },
-              "secretsProvider": "SecretsProvider-FIDC",
-              "encryption": {
-                "secretId": "signing.key.secret.id",
-                "algorithm": "dir",
-                "method": "A128CBC-HS256"
-              }
-          }
-        },
-        {
-          "name": "HeaderFilter-ERIC",
-          "type": "HeaderFilter",
-          "config": {
-            "messageType": "REQUEST",
-            "add": {
-              "Authorization": [ "Bearer eric.${contexts.jwtBuilder.value}" ],
-              "ERIC-Authorised-User": [ "test@test.com" ],
-              "ERIC-Authorised-Scope": [ "${contexts.oauth2.accessToken.scopes}" ],
-              "ERIC-Authorised-Token-Permissions": [ "${contexts.oauth2.accessToken.info.token_permissions}" ],
-              "ERIC-Authorised-Roles": [ "/admin/transaction-lookup" ],
-              "ERIC-Application-ID": [ "${contexts.oauth2.accessToken.info.client-id}" ]
-            }
-          }
         }
       ],
-      "handler": "ReverseProxyHandler"
+      "handler": {
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 200,
+          "headers": {
+            "Content-Type": [ "text/html; charset=UTF-8" ]
+          },
+          "entity": "<html><body><h2>Decoded access_token: ${contexts.oauth2.accessToken.info}</h2></body></html>"
+        }
+      }
     }
   }
 }
