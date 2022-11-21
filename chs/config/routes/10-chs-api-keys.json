@@ -101,18 +101,48 @@
               }
             }
           }
+        },
+        {
+          "name": "AddERICPassthroughAttributes",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "addERICPassthroughAttributes.groovy"
+          }
+        },
+        {
+          "name": "JwtBuilderFilter-ERIC",
+          "type": "JwtBuilderFilter",
+          "config": {
+            "template": {
+              "claims": "{${attributes.ericSubject},${attributes.ericIssuer},${attributes.ericExpiry}}"
+            },
+            "secretsProvider": "SecretsProvider-FIDC",
+            "encryption": {
+              "secretId": "signing.key.secret.id",
+              "algorithm": "dir",
+              "method": "A128CBC-HS256"
+            }
+          }
+        },
+        {
+          "name": "HeaderFilter-ERIC",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "remove": [ "Authorization" ],
+            "add": {
+              "Authorization": [ "Bearer eric.${contexts.jwtBuilder.value}" ],
+              "ERIC-Authorised-User": [ "test@test.com" ],
+              "ERIC-Authorised-Scope": [ "${contexts.oauth2.accessToken.scopes}" ],
+              "ERIC-Authorised-Token-Permissions": [ "${contexts.oauth2.accessToken.info.token_permissions}" ],
+              "ERIC-Authorised-Roles": [ "/admin/transaction-lookup" ],
+              "ERIC-Application-ID": [ "${contexts.oauth2.accessToken.info.client-id}" ]
+            }
+          }
         }
       ],
-      "handler": {
-        "type": "StaticResponseHandler",
-        "config": {
-          "status": 200,
-          "headers": {
-            "Content-Type": [ "text/html; charset=UTF-8" ]
-          },
-          "entity": "<html><body><h2>Decoded access_token: ${contexts.oauth2.accessToken.info}</h2></body></html>"
-        }
-      }
+      "handler": "ReverseProxyHandler"
     }
   }
 }
