@@ -1,6 +1,7 @@
 {
   "name": "CHS API Keys",
   "baseURI": "https://&{api.load.balancer}",
+  "condition": "${contains(request.headers['Authorization'][0], 'Bearer') == 'true'}",
   "globalDecorators": {
     "capture": "all"
   },

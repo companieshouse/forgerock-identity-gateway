@@ -1,6 +1,7 @@
 {
   "name": "CHS Stream Keys",
   "baseURI": "https://&{api.load.balancer}",
+  "condition": "${contains(request.headers['Authorization'][0], 'Bearer') != 'true'}",
   "heap": [
     {
       "name": "ReverseProxyHandler",
@@ -24,6 +25,5 @@
   ],
   "handler": {
     "type": "ReverseProxyHandler"
-  },
-  "condition": "${!contains(request.headers['Authorization'][0], 'Bearer')}"
+  }
 }
