@@ -22,6 +22,10 @@
       {
         "name": "IG_JVM_ARGS",
         "value": "${ig_jvm_args}"
+      },
+      {
+        "name": "SIGNING_KEY_SECRET_ID",
+        "value": "${signing_key_secret_id}"
       }
     ],
     "portMappings": [
