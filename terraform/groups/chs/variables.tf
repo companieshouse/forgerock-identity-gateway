@@ -114,3 +114,8 @@ variable "ig_jvm_args" {
   type        = string
   description = "Flags for IG JVM"
 }
+
+variable "signing_key_secret_id" {
+  type        = string
+  description = "Signing key secret for encrypting JWT for ERIC"
+}
