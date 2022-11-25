@@ -13,3 +13,4 @@ target_memory = 50
 api_load_balancer = "api-staging.company-information.service.gov.uk"
 create_external_lb = true
 ig_jvm_args = "-Xms256m -Xmx3072m -Xlog:gc*=warning:stdout -XX:+UseG1GC"
+root_log_level = "WARN"

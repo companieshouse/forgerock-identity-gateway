@@ -78,6 +78,10 @@
       {
         "name": "IG_JVM_ARGS",
         "value": "${ig_jvm_args}"
+      },
+      {
+        "name": "ROOT_LOG_LEVEL",
+        "value": "${root_log_level}"
       }
     ],
     "portMappings": [
