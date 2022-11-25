@@ -159,3 +159,7 @@ variable "ig_jvm_args" {
   type = string
   description = "Flags for IG JVM"
 }
+
+variable "root_log_level" {
+  type = string
+}

@@ -34,6 +34,7 @@ services:
       - COMPANIES_PATH=${COMPANIES_PATH}
       - WEBFILING_COMP=${WEBFILING_COMP}
       - IG_JVM_ARGS=${IG_JVM_ARGS}
+      - ROOT_LOG_LEVEL=${ROOT_LOG_LEVEL}
     build:
       context: ./webfiling
       args:
@@ -48,6 +49,7 @@ services:
       - FIDC_REALM=${FIDC_REALM}
       - AGENT_SECRET_ID=${IG_AGENT_SECRET}
       - IG_JVM_ARGS=${IG_JVM_ARGS}
+      - ROOT_LOG_LEVEL=${ROOT_LOG_LEVEL}
     build:
       context: ./chs
       args:

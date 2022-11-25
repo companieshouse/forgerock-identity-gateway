@@ -12,3 +12,4 @@ target_cpu = 50
 target_memory = 50
 internal_access_only = false
 ig_jvm_args = "-Xms256m -Xmx4096m -Xlog:gc*=warning:stdout -XX:+UseG1GC"
+root_log_level = "WARN"

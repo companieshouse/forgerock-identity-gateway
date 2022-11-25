@@ -98,4 +98,5 @@ module "ig" {
   target_memory                  = var.target_memory
   tags                           = local.common_tags
   ig_jvm_args                    = var.ig_jvm_args
+  root_log_level                 = var.root_log_level
 }
