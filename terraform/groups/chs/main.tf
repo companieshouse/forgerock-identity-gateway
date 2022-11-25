@@ -100,5 +100,4 @@ module "ig" {
   agent_secret_id         = var.agent_secret_id
   tags                    = local.common_tags
   ig_jvm_args             = var.ig_jvm_args
-  signing_key_secret_id   = var.signing_key_secret_id
 }
