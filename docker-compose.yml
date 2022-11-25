@@ -50,7 +50,7 @@ services:
       - AGENT_SECRET_ID=${IG_AGENT_SECRET}
       - IG_JVM_ARGS=${IG_JVM_ARGS}
       - ROOT_LOG_LEVEL=${ROOT_LOG_LEVEL}
-      - SIGNING_KEY_SECRET_ID=${SIGNING_KEY_SECRET_ID}
+      - SIGNING_KEY_SECRET=${SIGNING_KEY_SECRET}
     build:
       context: ./chs
       args:

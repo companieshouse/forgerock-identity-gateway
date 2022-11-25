@@ -30,6 +30,10 @@ data "aws_subnet_ids" "public_subnets" {
   }
 }
 
+data "vault_generic_secret" "ig_secret" {
+  path = "applications/heritage-${var.environment}-eu-west-2/forgerock/ewf/forgerock-identity-gateway"
+}
+
 ###
 # Modules
 ###
@@ -101,5 +105,5 @@ module "ig" {
   tags                    = local.common_tags
   ig_jvm_args             = var.ig_jvm_args
   root_log_level          = var.root_log_level
-  signing_key_secret_id   = var.signing_key_secret_id
+  signing_key_secret      = var.signing_key_secret
 }

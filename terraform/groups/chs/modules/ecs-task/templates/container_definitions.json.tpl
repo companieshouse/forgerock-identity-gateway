@@ -24,8 +24,8 @@
         "value": "${ig_jvm_args}"
       },
       {
-        "name": "SIGNING_KEY_SECRET_ID",
-        "value": "${signing_key_secret_id}"
+        "name": "SIGNING_KEY_SECRET",
+        "value": "${signing_key_secret}"
       },
       {
         "name": "ROOT_LOG_LEVEL",

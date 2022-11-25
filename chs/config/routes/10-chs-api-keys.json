@@ -54,7 +54,7 @@
             "config": {
               "mappings": [
                 {
-                  "secretId": "signing.key.secret.id",
+                  "secretId": "signing.key.secret",
                   "format": "SecretKeyPropertyFormat-SigningKey"
                 }
               ]
@@ -119,7 +119,7 @@
             },
             "secretsProvider": "SecretsProvider-FIDC",
             "encryption": {
-              "secretId": "signing.key.secret.id",
+              "secretId": "signing.key.secret",
               "algorithm": "dir",
               "method": "A128CBC-HS256"
             }
