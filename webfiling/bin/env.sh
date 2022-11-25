@@ -10,3 +10,5 @@ JSSE_OPTS="-Djdk.tls.ephemeralDHKeySize=2048"
 export JAVA_OPTS="${JAVA_OPTS} ${JVM_OPTS}"
 
 echo "EWF IG - ${JAVA_OPTS}"
+
+export ROOT_LOG_LEVEL=${ROOT_LOG_LEVEL}
