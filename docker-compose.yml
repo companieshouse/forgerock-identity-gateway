@@ -48,7 +48,6 @@ services:
       - FIDC_REALM=${FIDC_REALM}
       - AGENT_SECRET_ID=${IG_AGENT_SECRET}
       - IG_JVM_ARGS=${IG_JVM_ARGS}
-      - SIGNING_KEY_SECRET_ID=${SIGNING_KEY_SECRET_ID}
     build:
       context: ./chs
       args:
