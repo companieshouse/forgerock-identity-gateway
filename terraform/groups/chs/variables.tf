@@ -133,7 +133,3 @@ variable "signing_key_secret" {
 variable "root_log_level" {
   type        = string
 }
-variable "signing_key_secret" {
-  type        = string
-  description = "Signing key secret for encrypting JWT for ERIC"
-}
