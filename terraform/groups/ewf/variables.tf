@@ -209,3 +209,9 @@ variable "ig_jvm_args" {
 variable "root_log_level" {
   type        = string
 }
+
+variable "test_access_enable" {
+  type        = bool
+  description = "Controls whether access from the Test subnets is required (true) or not (false)"
+  default     = false
+}

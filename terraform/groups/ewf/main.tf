@@ -31,6 +31,10 @@ data "vault_generic_secret" "external_cidrs" {
   path = "applications/heritage-${var.environment}-eu-west-2/forgerock/ewf/forgerock-identity-gateway"
 }
 
+data "vault_generic_secret" "test_cidrs" {
+  path = "aws-accounts/network/shared-services/test_cidr_ranges"
+}
+
 ###
 # Modules
 ###
