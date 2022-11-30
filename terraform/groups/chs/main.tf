@@ -105,5 +105,5 @@ module "ig" {
   tags                    = local.common_tags
   ig_jvm_args             = var.ig_jvm_args
   root_log_level          = var.root_log_level
-  signing_key_secret      = var.signing_key_secret
+  signing_key_secret      = data.vault_generic_secret.ig_secret.data["signing_key"]
 }
