@@ -13,6 +13,7 @@ data "template_file" "container_definitions" {
     agent_secret_id           = base64encode(var.agent_secret_id)
     ig_jvm_args               = var.ig_jvm_args
     root_log_level            = var.root_log_level
+    signing_key_secret        = var.signing_key_secret
   }
 }
 

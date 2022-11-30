@@ -24,6 +24,10 @@
         "value": "${ig_jvm_args}"
       },
       {
+        "name": "SIGNING_KEY_SECRET",
+        "value": "${signing_key_secret}"
+      },
+      {
         "name": "ROOT_LOG_LEVEL",
         "value": "${root_log_level}"
       }

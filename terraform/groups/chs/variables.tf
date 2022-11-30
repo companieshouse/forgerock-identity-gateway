@@ -1,3 +1,13 @@
+variable "vault_username" {
+  type        = string
+  description = "Username for connecting to Vault"
+}
+
+variable "vault_password" {
+  type        = string
+  description = "Password for connecting to Vault"
+}
+
 variable "region" {
   type        = string
   description = "AWS region for deployment"
@@ -115,6 +125,15 @@ variable "ig_jvm_args" {
   description = "Flags for IG JVM"
 }
 
+variable "signing_key_secret" {
+  type        = string
+  description = "Signing key secret for encrypting JWT for ERIC"
+}
+
 variable "root_log_level" {
   type        = string
+}
+variable "signing_key_secret" {
+  type        = string
+  description = "Signing key secret for encrypting JWT for ERIC"
 }
