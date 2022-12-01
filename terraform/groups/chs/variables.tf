@@ -1,9 +1,9 @@
-variable "vault_username" {
+variable "hashicorp_vault_username" {
   type        = string
   description = "Username for connecting to Vault"
 }
 
-variable "vault_password" {
+variable "hashicorp_vault_password" {
   type        = string
   description = "Password for connecting to Vault"
 }
@@ -123,11 +123,6 @@ variable "agent_secret_id" {
 variable "ig_jvm_args" {
   type        = string
   description = "Flags for IG JVM"
-}
-
-variable "signing_key_secret" {
-  type        = string
-  description = "Signing key secret for encrypting JWT for ERIC"
 }
 
 variable "root_log_level" {
