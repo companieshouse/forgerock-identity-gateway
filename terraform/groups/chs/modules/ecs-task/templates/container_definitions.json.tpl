@@ -30,14 +30,6 @@
       {
         "name": "ROOT_LOG_LEVEL",
         "value": "${root_log_level}"
-      },
-      {
-        "name": "VAULT_USERNAME",
-        "value": "${hashicorp-vault-username}"
-      },
-      {
-        "name": "VAULT_PASSWORD",
-        "value": "${hashicorp-vault-password}"
       }
     ],
     "portMappings": [

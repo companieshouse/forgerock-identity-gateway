@@ -19,9 +19,9 @@ provider "aws" {
 
 provider "vault" {
   auth_login {
-    path = "auth/userpass/login/${var.vault_username}"
+    path = "auth/userpass/login/${var.hashicorp_vault_username}"
     parameters = {
-      password = var.vault_password
+      password = var.hashicorp_vault_password
     }
   }
 }
