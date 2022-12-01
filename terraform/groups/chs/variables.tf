@@ -1,9 +1,9 @@
-variable "hashicorp_vault_username" {
+variable "vault_username" {
   type        = string
   description = "Username for connecting to Vault"
 }
 
-variable "hashicorp_vault_password" {
+variable "vault_password" {
   type        = string
   description = "Password for connecting to Vault"
 }
