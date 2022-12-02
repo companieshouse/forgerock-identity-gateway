@@ -30,6 +30,10 @@
       {
         "name": "ROOT_LOG_LEVEL",
         "value": "${root_log_level}"
+      },
+      {
+        "name": "IG_HOST",
+        "value": "${ig_host}"
       }
     ],
     "portMappings": [
