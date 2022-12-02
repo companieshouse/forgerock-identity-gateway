@@ -14,3 +14,4 @@ api_load_balancer = "api.company-information.service.gov.uk"
 create_external_lb = true
 ig_jvm_args = "-Xms256m -Xmx4096m -Xlog:gc*=warning:stdout -XX:+UseG1GC"
 root_log_level = "WARN"
+chs_ig_host = "chs.live.heritage.aws.internal"
