@@ -45,7 +45,7 @@ services:
       - reverseproxy
     environment:
       - API_LOAD_BALANCER=${API_LOAD_BALANCER}
-      - CHS_IG_HOST=${CHS_IG_HOST}
+      - DOMAIN_NAME=${DOMAIN_NAME}
       - FIDC_FQDN=${FIDC_FQDN}
       - FIDC_REALM=${FIDC_REALM}
       - AGENT_SECRET_ID=${IG_AGENT_SECRET}

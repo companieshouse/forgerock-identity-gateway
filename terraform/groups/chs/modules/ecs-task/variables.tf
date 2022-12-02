@@ -113,7 +113,7 @@ variable "signing_key_secret" {
   description = "Signing key secret for encrypting JWT for ERIC"
 }
 
-variable "chs_ig_host" {
+variable "domain_name" {
   type        = string
   description = "Hostname for IG CHS instance"
 }
