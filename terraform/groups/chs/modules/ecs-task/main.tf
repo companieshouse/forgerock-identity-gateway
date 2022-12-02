@@ -14,6 +14,7 @@ data "template_file" "container_definitions" {
     ig_jvm_args               = var.ig_jvm_args
     root_log_level            = var.root_log_level
     signing_key_secret        = var.signing_key_secret
+    chs_ig_host               = var.chs_ig_host
   }
 }
 
