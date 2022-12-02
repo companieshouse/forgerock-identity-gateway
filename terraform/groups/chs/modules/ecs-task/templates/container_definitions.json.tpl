@@ -30,10 +30,6 @@
       {
         "name": "ROOT_LOG_LEVEL",
         "value": "${root_log_level}"
-      },
-      {
-        "name": "CHS_IG_HOST",
-        "value": "${chs_ig_host}"
       }
     ],
     "portMappings": [

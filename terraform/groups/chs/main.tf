@@ -106,5 +106,5 @@ module "ig" {
   ig_jvm_args             = var.ig_jvm_args
   root_log_level          = var.root_log_level
   signing_key_secret      = data.vault_generic_secret.ig_secret.data["signing_key"]
-  chs_ig_host             = var.chs_ig_host
+  domain_name             = var.domain_name
 }

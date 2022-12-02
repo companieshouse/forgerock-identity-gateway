@@ -1,6 +1,6 @@
 {
   "name": "CHS API Keys",
-  "baseURI": "https://&{chs.ig.host}",
+  "baseURI": "https://&{domain.name}",
   "globalDecorators": {
     "capture": "all"
   },
