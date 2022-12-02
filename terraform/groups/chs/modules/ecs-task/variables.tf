@@ -112,3 +112,8 @@ variable "signing_key_secret" {
   type        = string
   description = "Signing key secret for encrypting JWT for ERIC"
 }
+
+variable "chs_ig_host" {
+  type        = string
+  description = "Hostname for IG CHS instance"
+}
