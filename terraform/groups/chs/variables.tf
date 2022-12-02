@@ -128,8 +128,3 @@ variable "ig_jvm_args" {
 variable "root_log_level" {
   type        = string
 }
-
-variable "chs_ig_host" {
-  type        = string
-  description = "Hostname for IG CHS instance"
-}
