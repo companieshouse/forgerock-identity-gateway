@@ -137,13 +137,11 @@
                   "type": "JwtBuilderFilter",
                   "config": {
                     "template": {
-                      "claims": "{${attributes.ericSubject},${attributes.ericIssuer},${attributes.ericExpiry}}"
-                    },
-                    "secretsProvider": "SecretsProvider-FIDC",
-                    "encryption": {
-                      "secretId": "signing.key.secret",
-                      "algorithm": "dir",
-                      "method": "A128CBC-HS256"
+                      "claims": {
+                        "Subject": "Passthrough token",
+                        "Issuer": "Companies-House-ERIC",
+                        "Expiry": "${contexts.oauth2.accessToken.expiresAt}"
+                      }
                     }
                   }
                 },
@@ -153,17 +151,15 @@
                   "config": {
                     "messageType": "REQUEST",
                     "remove": [
-                      "Authorization",
-                      "Location",
-                      "Host"
+                      "Authorization"
                     ],
                     "add": {
                       "Authorization": [ "Bearer eric.${contexts.jwtBuilder.value}"],
                       "ERIC-Authorised-User": [ "test@test.com" ],
-                      "ERIC-Authorised-Scope": [ "${contexts.oauth2.accessToken.scopes}" ],
-                      "ERIC-Authorised-Token-Permissions": [ "${contexts.oauth2.accessToken.info.token_permissions}" ],
+                      "ERIC-Authorised-Scope": [ "${contexts.oauth2.accessToken.scopes[0]}" ],
+                      "ERIC-Authorised-Token-Permissions": [ "${toString(contexts.oauth2.accessToken.info.token_permissions)}" ],
                       "ERIC-Authorised-Roles": [ "/admin/transaction-lookup" ],
-                      "ERIC-Application-ID": [ "${contexts.oauth2.accessToken.info.client-id}" ]
+                      "ERIC-Application-ID": [ "${toString(contexts.oauth2.accessToken.info.client-id)}" ]
                     }
                   }
                 }
