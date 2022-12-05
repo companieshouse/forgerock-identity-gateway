@@ -69,14 +69,14 @@ module "ig" {
   ecs_cluster_id          = module.ecs.cluster_id
   ecs_cluster_name        = var.service_name
   ecs_task_role_arn       = module.ecs.task_role_arn
-  lb_security_group_id   = module.external_lb.security_group_id
+  lb_security_group_id    = module.external_lb.security_group_id
   container_image_version = var.container_image_version
   ecr_url                 = var.ecr_url
   task_cpu                = var.task_cpu
   task_memory             = var.task_memory
   log_group_name          = "forgerock-monitoring"
   log_prefix              = "ig"
-  target_group_arns       = module.external_lb.target_group_arn
+  target_group_arn        = module.external_lb.target_group_arn
   autoscaling_min         = var.autoscaling_min
   autoscaling_max         = var.autoscaling_max
   target_cpu              = var.target_cpu
