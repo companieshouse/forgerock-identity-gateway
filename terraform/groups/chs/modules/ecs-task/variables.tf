@@ -54,8 +54,8 @@ variable "log_prefix" {
   type = string
 }
 
-variable "target_group_arns" {
-  type = list(string)
+variable "target_group_arn" {
+  type = string
 }
 
 variable "tags" {
