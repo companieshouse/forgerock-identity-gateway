@@ -88,7 +88,7 @@
                   "type": "OAuth2ResourceServerFilter",
                   "config": {
                     "scopes": [
-                      "https://identity.company-information.service.gov.uk/user.write-full"
+                      "https://api.companieshouse.gov.uk/company/admin.write-full"
                     ],
                     "requireHttps": false,
                     "realm": "alpha",
