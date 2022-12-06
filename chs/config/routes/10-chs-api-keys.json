@@ -45,14 +45,10 @@
       }
     },
     {
-      "name": "SystemAndEnvSecretStore-FIDC",
-      "type": "SystemAndEnvSecretStore"
-    },
-    {
       "name": "SecretKeyPropertyFormat-SigningKey",
       "type": "SecretKeyPropertyFormat",
       "config": {
-        "format": "BASE64",
+        "format": "PLAIN",
         "algorithm": "AES"
       }
     },
@@ -142,6 +138,11 @@
                         "Issuer": "Companies-House-ERIC",
                         "Expiry": "${contexts.oauth2.accessToken.expiresAt}"
                       }
+                    },
+                    "secretsProvider": "SecretsProvider-FIDC",
+                    "signature": {
+                      "secretId":  "signing.key.secret",
+                      "algorithm": "HS256"
                     }
                   }
                 },
