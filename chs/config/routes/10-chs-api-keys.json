@@ -159,7 +159,7 @@
                       "ERIC-Authorised-User": [ "test@test.com" ],
                       "ERIC-Authorised-Scope": [ "${contexts.oauth2.accessToken.scopes[0]}" ],
                       "ERIC-Authorised-Token-Permissions": [ "${toString(contexts.oauth2.accessToken.info.token_permissions)}" ],
-                      "ERIC-Authorised-Roles": [ "/admin/transaction-lookup" ],
+                      "ERIC-Authorised-Roles": [ "/admin/company" ],
                       "ERIC-Application-ID": [ "${toString(contexts.oauth2.accessToken.info.client-id)}" ]
                     }
                   }
