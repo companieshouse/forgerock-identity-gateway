@@ -26,8 +26,8 @@ variable "ecs_task_role_arn" {
   type = string
 }
 
-variable "lb_security_group_id" {
-  type = string
+variable "lb_security_group_ids" {
+  type = list(string)
 }
 
 variable "container_image_version" {
@@ -54,8 +54,8 @@ variable "log_prefix" {
   type = string
 }
 
-variable "target_group_arn" {
-  type = string
+variable "target_group_arns" {
+  type = list(string)
 }
 
 variable "tags" {

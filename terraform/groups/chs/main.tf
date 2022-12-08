@@ -44,6 +44,22 @@ module "ecs" {
   tags         = local.common_tags
 }
 
+module "internal_lb" {
+  source                = "./modules/loadbalancing"
+  service_name          = "forgerock-ig-internal"
+  internal              = true
+  vpc_id                = data.aws_vpc.vpc.id
+  ingress_cidr_blocks   = ["0.0.0.0/0"]
+  subnet_ids            = data.aws_subnet_ids.application_subnets.ids
+  target_port           = 8080
+  domain_name           = var.domain_name
+  create_route53_record = var.create_route53_record
+  route53_zone          = var.route53_zone
+  create_certificate    = var.create_certificate
+  certificate_domain    = var.certificate_domain
+  tags                  = local.common_tags
+}
+
 module "external_lb" {
   source                = "./modules/loadbalancing"
   service_name          = "forgerock-ig-external"
@@ -69,13 +85,14 @@ module "ig" {
   ecs_cluster_id          = module.ecs.cluster_id
   ecs_cluster_name        = var.service_name
   ecs_task_role_arn       = module.ecs.task_role_arn
-  lb_security_group_id    = module.external_lb.security_group_id
+  lb_security_group_ids   = var.create_external_lb ? [module.internal_lb.security_group_id, module.external_lb.0.security_group_id] : [module.internal_lb.security_group_id]
   container_image_version = var.container_image_version
   ecr_url                 = var.ecr_url
   task_cpu                = var.task_cpu
   task_memory             = var.task_memory
   log_group_name          = "forgerock-monitoring"
   log_prefix              = "ig"
+  target_group_arns       = var.create_external_lb ? [module.internal_lb.target_group_arn, module.external_lb.0.target_group_arn] : [module.internal_lb.target_group_arn]
   target_group_arn        = module.external_lb.target_group_arn
   autoscaling_min         = var.autoscaling_min
   autoscaling_max         = var.autoscaling_max
