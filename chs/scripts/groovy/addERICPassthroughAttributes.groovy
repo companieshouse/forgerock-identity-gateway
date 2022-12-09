@@ -1,6 +1,8 @@
 next.handle(context, request).thenOnResult(response -> {
     def requestUri = request.uri.toString()
 
+    logger.info("[CHLOG][ERICPASSTHROUGHHEADERS] Secret key : " + System.getenv('SIGNING_KEY_SECRET'))
+
     logger.info("[CHLOG][ERICPASSTHROUGHHEADERS] Request URI (Str) : " + requestUri)
     logger.info("[CHLOG][ERICPASSTHROUGHHEADERS] Request Headers = " + request.headers)
 
