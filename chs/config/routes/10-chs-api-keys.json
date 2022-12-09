@@ -48,27 +48,18 @@
       "name": "SecretKeyPropertyFormat-SigningKey",
       "type": "SecretKeyPropertyFormat",
       "config": {
-        "format": "PLAIN",
+        "format": "BASE64",
         "algorithm": "AES"
       }
     },
     {
-      "name": "SecretsProvider-FIDC",
-      "type": "SecretsProvider",
+      "name": "SecretStore-ENV",
+      "type": "SystemAndEnvSecretStore",
       "config": {
-        "stores": [
-          {
-            "type": "SystemAndEnvSecretStore",
-            "config": {
-              "mappings": [
-                {
-                  "secretId": "signing.key.secret",
-                  "format": "SecretKeyPropertyFormat-SigningKey"
-                }
-              ]
-            }
-          }
-        ]
+        "mappings": [{
+          "secretId": "signing.key.secret",
+          "format": "SecretKeyPropertyFormat-SigningKey"
+        }]
       }
     }
   ],
@@ -133,16 +124,37 @@
                   "type": "JwtBuilderFilter",
                   "config": {
                     "template": {
-                      "claims": {
-                        "Subject": "Passthrough token",
-                        "Issuer": "Companies-House-ERIC",
-                        "Expiry": "${contexts.oauth2.accessToken.expiresAt}"
-                      }
+                      "_id": "6391c77d3f43e430d5090321",
+                      "type": "oauth2",
+                      "EricPassthroughAuth": false,
+                      "iss": "Companies-House-ERIC",
+                      "sub": "Passthrough token",
+                      "exp": "${contexts.oauth2.accessToken.expiresAt}",
+                      "requested_scope": "https://api.companieshouse.gov.uk/company/admin.write-full",
+                      "token_permissions":{
+                        "company_accounts":"update",
+                        "company_auth_code":"update,delete",
+                        "company_confirmation_statement":"create,read,update",
+                        "company_number":"00006400",
+                        "company_promise_to_file":"update",
+                        "company_roa":"update",
+                        "company_status":"update",
+                        "company_transactions":"read",
+                        "user_profile":"read"
+                      },
+                      "user_details":{
+                        "forename":"",
+                        "surname":"",
+                        "email":"demo@ch.gov.uk",
+                        "user_id":"Y2VkZWVlMzhlZWFjY2M4MzQ3MT"
+                      },
+                      "client_id":"1234567890.apps.ch.gov.uk"
                     },
-                    "secretsProvider": "SecretsProvider-FIDC",
-                    "signature": {
+                    "secretsProvider": "SecretStore-ENV",
+                    "encryption": {
                       "secretId":  "signing.key.secret",
-                      "algorithm": "HS256"
+                      "algorithm": "dir",
+                      "method": "A128CBC-HS256"
                     }
                   }
                 },
@@ -155,12 +167,7 @@
                       "Authorization"
                     ],
                     "add": {
-                      "Authorization": [ "Bearer eric.${contexts.jwtBuilder.value}"],
-                      "ERIC-Authorised-User": [ "test@test.com" ],
-                      "ERIC-Authorised-Scope": [ "${contexts.oauth2.accessToken.scopes[0]}" ],
-                      "ERIC-Authorised-Token-Permissions": [ "${toString(contexts.oauth2.accessToken.info.token_permissions)}" ],
-                      "ERIC-Authorised-Roles": [ "/admin/company" ],
-                      "ERIC-Application-ID": [ "${toString(contexts.oauth2.accessToken.info.client-id)}" ]
+                      "Authorization": [ "Bearer eric.${contexts.jwtBuilder.value}" ]
                     }
                   }
                 }
