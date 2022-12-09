@@ -93,7 +93,6 @@ module "ig" {
   log_group_name          = "forgerock-monitoring"
   log_prefix              = "ig"
   target_group_arns       = var.create_external_lb ? [module.internal_lb.target_group_arn, module.external_lb.0.target_group_arn] : [module.internal_lb.target_group_arn]
-  target_group_arn        = module.external_lb.target_group_arn
   autoscaling_min         = var.autoscaling_min
   autoscaling_max         = var.autoscaling_max
   target_cpu              = var.target_cpu
