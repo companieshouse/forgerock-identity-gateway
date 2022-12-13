@@ -11,6 +11,6 @@ autoscaling_max = 4
 target_cpu = 50
 target_memory = 50
 api_load_balancer = "api.amido.aws.chdev.org"
-create_external_lb = false
+create_external_lb = true
 ig_jvm_args = "-Xms256m -Xmx2048m -Xlog:gc*=warning:stdout -XX:+UseG1GC"
 root_log_level = "ALL"
