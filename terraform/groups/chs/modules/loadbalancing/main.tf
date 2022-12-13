@@ -1,15 +1,15 @@
 data "aws_acm_certificate" "certificate" {
-  count  = var.create_certificate ? 0 : 1
+  count  = var.create_certificate && var.internal == false ? 0 : 1
   domain = var.certificate_domain
 }
 
 data "aws_route53_zone" "domain" {
-  count = var.create_route53_record ? 1 : 0
+  count = var.create_route53_record && var.internal == false ? 1 : 0
   name  = var.route53_zone
 }
 
 resource "aws_acm_certificate" "certificate" {
-  count             = var.create_certificate ? 1 : 0
+  count             = var.create_certificate && var.internal == false ? 1 : 0
   domain_name       = var.domain_name
   validation_method = "DNS"
 
@@ -17,7 +17,7 @@ resource "aws_acm_certificate" "certificate" {
 }
 
 resource "aws_route53_record" "certificate_validation" {
-  count   = var.create_certificate ? 1 : 0
+  count   = var.create_certificate && var.internal == false ? 1 : 0
   name    = element(aws_acm_certificate.certificate.0.domain_validation_options.*.resource_record_name, 0)
   type    = element(aws_acm_certificate.certificate.0.domain_validation_options.*.resource_record_type, 0)
   zone_id = data.aws_route53_zone.domain.0.id
@@ -26,13 +26,13 @@ resource "aws_route53_record" "certificate_validation" {
 }
 
 resource "aws_acm_certificate_validation" "certificate" {
-  count                   = var.create_certificate ? 1 : 0
+  count                   = var.create_certificate && var.internal == false ? 1 : 0
   certificate_arn         = aws_acm_certificate.certificate.0.arn
   validation_record_fqdns = [aws_route53_record.certificate_validation.0.fqdn]
 }
 
 resource "aws_route53_record" "lb" {
-  count   = var.create_route53_record ? 1 : 0
+  count   = var.create_route53_record && var.internal == false ? 1 : 0
   name    = var.domain_name
   zone_id = data.aws_route53_zone.domain.0.id
   type    = "A"
@@ -74,7 +74,7 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.main.arn
   port              = 443
   protocol          = "HTTPS"
-  certificate_arn   = var.create_certificate ? aws_acm_certificate_validation.certificate.0.certificate_arn : data.aws_acm_certificate.certificate.0.arn
+  certificate_arn   = var.create_certificate && var.internal == false ? aws_acm_certificate_validation.certificate.0.certificate_arn : data.aws_acm_certificate.certificate.0.arn
 
   default_action {
     target_group_arn = aws_lb_target_group.main.arn
