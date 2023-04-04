@@ -80,7 +80,7 @@ ecr_url                  = "{REPLACE_WITH_ECR_URL}"
 container_image_version  = "webfiling-1.0.0"
 ```
 
-The `terraform-runner` can be ran from the root of the project using the following commands:
+The `terraform-runner` can be ran from the root of the project using the following commands :
 ```
 # Check the Terraform plan output
 terraform-runner -g identity-gateway -p development-eu-west-2 -e development -t terraform -c plan
