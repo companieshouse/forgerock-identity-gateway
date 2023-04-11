@@ -117,3 +117,7 @@ variable "domain_name" {
   type        = string
   description = "Hostname for IG CHS instance"
 }
+
+variable "alerting_email_address" {
+  type = string
+}
