@@ -215,3 +215,7 @@ variable "test_access_enable" {
   description = "Controls whether access from the Test subnets is required (true) or not (false)"
   default     = false
 }
+
+variable "alerting_email_address" {
+  type = string
+}
