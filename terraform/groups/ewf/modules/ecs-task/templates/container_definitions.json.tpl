@@ -39,10 +39,6 @@
         "name": "UI_URL",
         "value": "${ui_url}"
       },
-      {
-        "name": "LOGIN_PATH",
-        "value": "${login_path}"
-      },
      {
         "name": "LOGOUT_PATH",
         "value": "${logout_path}"

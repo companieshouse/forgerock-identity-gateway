@@ -87,7 +87,6 @@ module "ig" {
   oidc_client_id                 = var.oidc_client_id
   oidc_client_secret             = var.oidc_client_secret
   ui_url                         = var.ui_url
-  login_path                     = var.login_path
   logout_path                    = var.logout_path
   error_path                     = var.error_path
   manage_path                    = var.manage_path
