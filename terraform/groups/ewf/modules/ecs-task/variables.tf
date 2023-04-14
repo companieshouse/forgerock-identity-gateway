@@ -163,3 +163,7 @@ variable "ig_jvm_args" {
 variable "root_log_level" {
   type = string
 }
+
+variable "alerting_email_address" {
+  type = string
+}
