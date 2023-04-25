@@ -73,7 +73,7 @@ next.handle(context, request).thenOnResult(response -> {
 
         logger.info("[CHLOG][AUTHREDIRECT] Entered Redirect /am/oauth2/authorize.* block")
 
-        def newUri = routeArgAuthUri;
+        def newUri = routeArgAuthUri + routeArgLoginPath;
 
         if (routeArgLogoutPath.equals(session["gotoTarget"])) {
 
