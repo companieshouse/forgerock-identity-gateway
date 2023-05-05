@@ -118,12 +118,6 @@ variable "ui_url" {
   type = string
 }
 
-variable "login_path" {
-  type        = string
-  description = "Path to login page"
-  default     = "/account/login/"
-}
-
 variable "logout_path" {
   type        = string
   description = "Path to logout page"
