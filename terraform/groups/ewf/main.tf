@@ -103,4 +103,5 @@ module "ig" {
   tags                           = local.common_tags
   ig_jvm_args                    = var.ig_jvm_args
   root_log_level                 = var.root_log_level
+  alerting_email_address         = var.alerting_email_address
 }

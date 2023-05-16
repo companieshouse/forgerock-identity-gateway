@@ -106,4 +106,5 @@ module "ig" {
   root_log_level          = var.root_log_level
   signing_key_secret      = data.vault_generic_secret.ig_secret.data["signing_key"]
   domain_name             = var.domain_name
+  alerting_email_address  = var.alerting_email_address
 }
