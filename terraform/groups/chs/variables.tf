@@ -132,3 +132,4 @@ variable "root_log_level" {
 variable "alerting_email_address" {
   type = string
 }
+
