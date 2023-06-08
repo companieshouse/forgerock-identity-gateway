@@ -94,6 +94,10 @@ variable "ui_url" {
   type = string
 }
 
+variable "login_path" {
+  type = string
+}
+
 variable "logout_path" {
   type = string
 }
