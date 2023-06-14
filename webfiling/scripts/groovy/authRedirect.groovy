@@ -63,7 +63,7 @@ next.handle(context, request).thenOnResult(response -> {
             response.headers.add("Location", location)
 
         }
-
+ 
         logger.info("[CHLOG][AUTHREDIRECT] Session gotoTarget = " + session["gotoTarget"])
     }
 
@@ -164,8 +164,17 @@ next.handle(context, request).thenOnResult(response -> {
         }
 
         // Redirect to landing page using login journey
+        logger.info("routeArgLoginJourney=>>>>>>>1 " + routeArgLoginJourney)
+        logger.info("newUri=>>>>>>>2 " + newUri)
+
         newUri += "?realm=/" + routeArgRealm + "&service=" + routeArgLoginJourney +
                 "&authIndexType=service&authIndexValue=" + routeArgLoginJourney
+
+        def newUriParam = newUri.split("authIndexValue=")[1]
+
+        newUri = newUriParam=="CHWebFiling-Login" && routeArgLoginJourney=="CHWebFiling-Login" ? newUri.split('account/login')[0] : newUri
+        
+        logger.info("newUri=>>>>>>>3 " + newUri)
 
         logger.info("[CHLOG][AUTHREDIRECT] Session Goto Target = " + session["gotoTarget"])
 
@@ -196,6 +205,7 @@ next.handle(context, request).thenOnResult(response -> {
         }
 
         response.headers.remove("Location")
+        logger.info("newUri=>>>>>>>4 " + newUri)
         response.headers.add("Location", newUri)
 
     } else {
