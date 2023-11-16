@@ -50,3 +50,7 @@ variable "tags" {
     Team           = string
   })
 }
+
+variable "alb_ssl_policy" {
+  type    = string
+}
