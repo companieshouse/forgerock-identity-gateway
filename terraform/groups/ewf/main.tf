@@ -48,6 +48,7 @@ module "ecs" {
 module "lb" {
   source                = "./modules/loadbalancing"
   service_name          = "forgerock-ig"
+  alb_ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
   vpc_id                = data.aws_vpc.vpc.id
   internal              = var.internal_access_only
   ingress_cidr_blocks   = local.ingress_cidr_blocks
