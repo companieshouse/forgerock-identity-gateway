@@ -110,3 +110,23 @@ module "ig" {
   root_log_level                 = var.root_log_level
   alerting_email_address         = var.alerting_email_address
 }
+
+resource "aws_security_group_rule" "iboss_80" {
+
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = local.iboss_cidrs
+  security_group_id = module.lb.security_group_id
+}
+
+resource "aws_security_group_rule" "iboss_443" {
+
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = local.iboss_cidrs
+  security_group_id = module.lb.security_group_id
+}
