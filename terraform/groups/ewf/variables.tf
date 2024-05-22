@@ -216,6 +216,11 @@ variable "test_access_enable" {
   default     = false
 }
 
+variable "iboss_access_enable" {
+  type        = bool
+  description = "Controls whether access from the iboss access is required (true) or not (false)"
+  default     = false
+}
 variable "alerting_email_address" {
   type = string
 }
