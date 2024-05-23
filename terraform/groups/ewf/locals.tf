@@ -11,5 +11,4 @@ locals {
   subnet_ids          = var.internal_access_only ? data.aws_subnet_ids.data_subnets.ids : data.aws_subnet_ids.public_subnets.ids
 
   iboss_cidr_blocks = jsondecode(data.vault_generic_secret.iboss_cidrs.data_json)
-  iboss_cidrs       = tolist(local.iboss_cidr_blocks["iboss_cidrs"])
 }
