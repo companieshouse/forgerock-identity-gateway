@@ -27,6 +27,10 @@ data "vault_generic_secret" "internal_cidrs" {
   path = "aws-accounts/network/internal_cidr_ranges"
 }
 
+data "vault_generic_secret" "iboss_cidrs" {
+  path = "aws-accounts/network/iboss"
+}
+
 data "vault_generic_secret" "external_cidrs" {
   path = "applications/heritage-${var.environment}-eu-west-2/forgerock/ewf/forgerock-identity-gateway"
 }
@@ -105,4 +109,26 @@ module "ig" {
   ig_jvm_args                    = var.ig_jvm_args
   root_log_level                 = var.root_log_level
   alerting_email_address         = var.alerting_email_address
+}
+
+resource "aws_security_group_rule" "iboss_80" {
+  for_each = toset(local.iboss_cidr_blocks["iboss_cidrs"])
+ 
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = [each.value]
+  security_group_id = module.lb.security_group_id
+}
+
+resource "aws_security_group_rule" "iboss_443" {
+  for_each = toset(local.iboss_cidr_blocks["iboss_cidrs"])
+ 
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = [each.value]
+  security_group_id = module.lb.security_group_id
 }

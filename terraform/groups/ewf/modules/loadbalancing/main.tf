@@ -114,6 +114,7 @@ resource "aws_security_group" "lb" {
   vpc_id      = var.vpc_id
 
   ingress {
+    description = ""
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -121,6 +122,7 @@ resource "aws_security_group" "lb" {
   }
 
   ingress {
+    description = ""
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
