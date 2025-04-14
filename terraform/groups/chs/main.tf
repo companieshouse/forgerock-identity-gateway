@@ -7,14 +7,14 @@ data "aws_vpc" "vpc" {
   }
 }
 
-data "aws_subnets" "data_subnets" {
+data "aws_subnets" "application_subnets" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.vpc.id]
   }
 }
 
-data "aws_subnets" "data_subnets" {
+data "aws_subnets" "public_subnets" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.vpc.id]
@@ -51,7 +51,7 @@ module "internal_lb" {
   internal              = true
   vpc_id                = data.aws_vpc.vpc.id
   ingress_cidr_blocks   = ["0.0.0.0/0"]
-  subnet_ids            = data.aws_subnets.data_subnets.ids
+  subnet_ids            = data.aws_subnets.application_subnets.ids
   target_port           = 8080
   domain_name           = var.domain_name
   create_route53_record = var.create_route53_record
@@ -83,7 +83,7 @@ module "ig" {
   region                  = var.region
   service_name            = "chs"
   vpc_id                  = data.aws_vpc.vpc.id
-  subnet_ids              = data.aws_subnets.data_subnets.ids
+  subnet_ids              = data.aws_subnets.application_subnets.ids
   ecs_cluster_id          = module.ecs.cluster_id
   ecs_cluster_name        = var.service_name
   ecs_task_role_arn       = module.ecs.task_role_arn
