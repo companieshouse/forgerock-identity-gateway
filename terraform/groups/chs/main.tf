@@ -9,8 +9,8 @@ data "aws_vpc" "vpc" {
 
 data "aws_subnets" "application_subnets" {
   filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.vpc.id]
+    name   = "tag:Name"
+    values = ["*-applications-*"]
   }
 }
 
@@ -68,7 +68,7 @@ module "external_lb" {
   internal              = false
   vpc_id                = data.aws_vpc.vpc.id
   ingress_cidr_blocks   = local.public_allow_cidr_blocks
-  subnet_ids            = data.aws_subnet_ids.public_subnets.ids
+  subnet_ids            = data.aws_subnet.public_subnets.ids
   target_port           = 8080
   domain_name           = var.domain_name
   create_route53_record = var.create_route53_record
