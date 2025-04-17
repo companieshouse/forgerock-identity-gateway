@@ -77,7 +77,7 @@ module "ig" {
   region                         = var.region
   service_name                   = "identity-gateway"
   vpc_id                         = data.aws_vpc.vpc.id
-  subnet_ids                     = data.aws_subnets.data_subnets.ids
+  subnet_ids                     = data.aws_subnets.application_subnets.ids
   ecs_cluster_id                 = module.ecs.cluster_id
   ecs_cluster_name               = var.service_name
   ecs_task_role_arn              = module.ecs.task_role_arn
