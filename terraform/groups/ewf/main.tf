@@ -14,7 +14,7 @@ data "aws_subnets" "application_subnets" {
   }
    filter {
     name   = "tag:Name"
-     values = ["*-applications-*"]
+     values = ["*-application-*"]
   }
 }
 
