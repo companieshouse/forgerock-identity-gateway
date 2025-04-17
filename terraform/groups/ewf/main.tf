@@ -7,16 +7,22 @@ data "aws_vpc" "vpc" {
   }
 }
 
-data "aws_subnet_ids" "data_subnets" {
-  vpc_id = data.aws_vpc.vpc.id
+data "aws_subnets" "application_subnets" {
   filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.vpc.id]
+  }
+   filter {
     name   = "tag:Name"
-    values = ["*-application-*"]
+     values = ["*-application-*"]
   }
 }
 
-data "aws_subnet_ids" "public_subnets" {
-  vpc_id = data.aws_vpc.vpc.id
+data "aws_subnets" "public_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.vpc.id]
+  }
   filter {
     name   = "tag:Name"
     values = ["*-public-*"]
@@ -71,7 +77,7 @@ module "ig" {
   region                         = var.region
   service_name                   = "identity-gateway"
   vpc_id                         = data.aws_vpc.vpc.id
-  subnet_ids                     = data.aws_subnet_ids.data_subnets.ids
+  subnet_ids                     = data.aws_subnets.application_subnets.ids
   ecs_cluster_id                 = module.ecs.cluster_id
   ecs_cluster_name               = var.service_name
   ecs_task_role_arn              = module.ecs.task_role_arn
