@@ -1,0 +1,47 @@
+{
+  "name": "Private Beta Web Filing",
+  "baseURI": "https://&{application.host}",
+  "heap": [
+    {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler",
+      "capture": [
+        "request",
+        "response"
+      ],
+      "config": {
+        "tls": {
+          "type": "ClientTlsOptions",
+          "config": {
+            "trustManager": {
+              "type": "TrustAllManager"
+            }
+          }
+        },
+        "hostnameVerifier": "ALLOW_ALL"
+      }
+    }
+  ],
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "betaRewriteHost.groovy",
+            "args": {
+              "hostPrefix": "&{application.host.prefix}",
+              "betaHostPrefix": "&{application.beta.host.prefix}",
+              "applicationHost": "&{application.host}",
+              "applicationBetaHost": "&{application.beta.host}"
+            }
+          }
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    }
+  },
+  "condition": "${request.uri.host == '&{application.beta.host}'}"
+}

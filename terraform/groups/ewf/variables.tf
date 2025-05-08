@@ -164,6 +164,15 @@ variable "application_legacy_host_prefix" {
   description = "Host name prefix for legacy access to WebFiling login page"
 }
 
+variable "application_beta_host" {
+  type        = string
+  description = "Host name for access to private beta WebFiling login page"
+}
+
+variable "application_beta_host_prefix" {
+  type        = string
+  description = "Host name prefix for access to private beta WebFiling login page"
+}
 variable "application_host_prefix" {
   type        = string
   description = "Host name prefix for access to FIDC WebFiling login page"

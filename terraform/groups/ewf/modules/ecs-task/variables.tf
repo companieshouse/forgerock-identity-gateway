@@ -126,6 +126,14 @@ variable "application_legacy_host_prefix" {
   type = string
 }
 
+variable "application_beta_host" {
+  type = string
+}
+
+variable "application_beta_host_prefix" {
+  type = string
+}
+
 variable "application_host_prefix" {
   type = string
 }

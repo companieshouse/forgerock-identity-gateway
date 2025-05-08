@@ -1,7 +1,7 @@
 {
   "name": "Web Filing",
   "baseURI": "https://&{application.host}",
-  "condition": "${request.uri.host != '&{application.legacy.host}'}",
+  "condition": "${request.uri.host != '&{application.legacy.host}' and request.uri.host != '&{application.beta.host}'}",
   "globalDecorators": {
     "timer": true,
     "capture": "all"

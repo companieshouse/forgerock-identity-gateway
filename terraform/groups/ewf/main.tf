@@ -106,6 +106,8 @@ module "ig" {
   webfiling_comp                 = var.webfiling_comp
   application_legacy_host        = var.application_legacy_host
   application_legacy_host_prefix = var.application_legacy_host_prefix
+  application_beta_host          = var.application_beta_host
+  application_beta_host_prefix   = var.application_beta_host_prefix
   application_host_prefix        = var.application_host_prefix
   autoscaling_min                = var.autoscaling_min
   autoscaling_max                = var.autoscaling_max

@@ -72,6 +72,14 @@
         "value": "${application_legacy_host_prefix}"
       },
       {
+        "name": "APPLICATION_BETA_HOST",
+        "value": "${application_beta_host}"
+      },
+      {
+        "name": "APPLICATION_BETA_HOST_PREFIX",
+        "value": "${application_beta_host_prefix}"
+      },
+      {
         "name": "APPLICATION_HOST_PREFIX",
         "value": "${application_host_prefix}"
       },
