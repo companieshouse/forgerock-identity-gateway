@@ -51,8 +51,15 @@ resource "aws_lb" "main" {
   internal                         = var.internal
   subnets                          = var.subnet_ids
   security_groups                  = [aws_security_group.lb.id]
+  enable_deletion_protection       = "true"
 
-  tags = var.tags
+  access_logs {
+    bucket  = var.elb_access_logs_bucket_name
+    prefix  = var.elb_access_logs_prefix
+    enabled = true
+  }
+  
+  tags                             = var.tags
 }
 
 resource "aws_lb_listener" "http" {

@@ -54,3 +54,13 @@ variable "tags" {
 variable "alb_ssl_policy" {
   type    = string
 }
+
+variable "elb_access_logs_bucket_name" {
+  description = "Access logs target bucket name"
+  type    = string
+}
+
+variable "elb_access_logs_prefix" {
+  description = "Prefix to be used for elb access logging"  
+  type    = string
+}

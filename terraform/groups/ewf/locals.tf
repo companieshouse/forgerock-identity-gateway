@@ -11,4 +11,8 @@ locals {
   subnet_ids          = var.internal_access_only ? data.aws_subnets.application_subnets.ids : data.aws_subnets.public_subnets.ids
 
   iboss_cidr_blocks = jsondecode(data.vault_generic_secret.iboss_cidrs.data_json)
+
+  security_s3_data            = data.vault_generic_secret.security_s3_buckets.data
+  elb_access_logs_prefix      = "elb-access-logs"
+  elb_access_logs_bucket_name = local.security_s3_data["elb-access-logs-bucket-name"]
 }

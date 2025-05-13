@@ -45,6 +45,10 @@ data "vault_generic_secret" "test_cidrs" {
   path = "aws-accounts/network/shared-services/test_cidr_ranges"
 }
 
+data "vault_generic_secret" "security_s3_buckets" {
+  path = "aws-accounts/security/s3"
+}
+
 ###
 # Modules
 ###
@@ -69,7 +73,10 @@ module "lb" {
   route53_zone          = var.route53_zone
   create_certificate    = var.create_certificate
   certificate_domain    = var.certificate_domain
-  tags                  = local.common_tags
+  elb_access_logs_bucket_name = local.elb_access_logs_bucket_name
+  elb_access_logs_prefix      = local.elb_access_logs_prefix
+
+  tags = local.common_tags
 }
 
 module "ig" {
