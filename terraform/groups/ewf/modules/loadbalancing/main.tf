@@ -54,8 +54,8 @@ resource "aws_lb" "main" {
   enable_deletion_protection       = "true"
 
   access_logs {
-    bucket  = local.elb_access_logs_bucket_name
-    prefix  = local.elb_access_logs_prefix
+    bucket  = var.elb_access_logs_bucket_name
+    prefix  = var.elb_access_logs_prefix
     enabled = true
   }
   
