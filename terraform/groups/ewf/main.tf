@@ -117,26 +117,22 @@ module "ig" {
   alerting_email_address         = var.alerting_email_address
 }
 
-resource "aws_security_group_rule" "iboss_80" {
-  for_each = toset(local.iboss_cidr_blocks["iboss_cidrs"])
- 
-  description       = "added manually - iboss vpn"
+resource "aws_security_group_rule" "vpn_80" {
+  description       = "added manually - IPO vpn"
   type              = "ingress"
   from_port         = 80
   to_port           = 80
   protocol          = "tcp"
-  cidr_blocks       = [each.value]
+  cidr_blocks       = ["10.172.20.0/22"]
   security_group_id = module.lb.security_group_id
 }
 
-resource "aws_security_group_rule" "iboss_443" {
-  for_each = toset(local.iboss_cidr_blocks["iboss_cidrs"])
- 
-  description       = "added manually - iboss vpn"
+resource "aws_security_group_rule" "vpn_443" { 
+  description       = "added manually - IPO vpn"
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = [each.value]
+  cidr_blocks       = ["10.172.20.0.22"]
   security_group_id = module.lb.security_group_id
 }
