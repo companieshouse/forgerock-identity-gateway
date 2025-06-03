@@ -155,6 +155,6 @@ resource "aws_security_group_rule" "vpn_443" {
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = ["10.172.20.0.22"]
+  cidr_blocks       = ["10.172.20.0/22"]
   security_group_id = module.lb.security_group_id
 }
