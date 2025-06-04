@@ -12,9 +12,9 @@ data "aws_subnets" "application_subnets" {
     name   = "vpc-id"
     values = [data.aws_vpc.vpc.id]
   }
-   filter {
+  filter {
     name   = "tag:Name"
-     values = ["*-application-*"]
+    values = ["*-application-*"]
   }
 }
 
@@ -60,19 +60,19 @@ module "ecs" {
 }
 
 module "lb" {
-  source                = "./modules/loadbalancing"
-  service_name          = "forgerock-ig"
-  alb_ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  vpc_id                = data.aws_vpc.vpc.id
-  internal              = var.internal_access_only
-  ingress_cidr_blocks   = local.ingress_cidr_blocks
-  subnet_ids            = local.subnet_ids
-  target_port           = 8080
-  domain_name           = var.domain_name
-  create_route53_record = var.create_route53_record
-  route53_zone          = var.route53_zone
-  create_certificate    = var.create_certificate
-  certificate_domain    = var.certificate_domain
+  source                      = "./modules/loadbalancing"
+  service_name                = "forgerock-ig"
+  alb_ssl_policy              = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  vpc_id                      = data.aws_vpc.vpc.id
+  internal                    = var.internal_access_only
+  ingress_cidr_blocks         = local.ingress_cidr_blocks
+  subnet_ids                  = local.subnet_ids
+  target_port                 = 8080
+  domain_name                 = var.domain_name
+  create_route53_record       = var.create_route53_record
+  route53_zone                = var.route53_zone
+  create_certificate          = var.create_certificate
+  certificate_domain          = var.certificate_domain
   elb_access_logs_bucket_name = local.elb_access_logs_bucket_name
   elb_access_logs_prefix      = local.elb_access_logs_prefix
 
@@ -124,44 +124,47 @@ module "ig" {
   alerting_email_address         = var.alerting_email_address
 }
 
-resource "aws_security_group_rule" "iboss_80" {
-  for_each = toset(local.iboss_cidr_blocks["iboss_cidrs"])
+resource "aws_vpc_security_group_ingress_rule" "iboss_80" {
+  for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
   description = "added manually - iboss vpn"
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  cidr_blocks = [each.value]
-security_group_id = module.lb.security_group_id
+
+  security_group_id = module.lb.security_group_id
+
+  cidr_ipv4   = [each.value]
+  from_port   = 80
+  to_port     = 80
+  ip_protocol = "tcp"
 }
 
-resource "aws_security_group_rule" "iboss_443" {
-  for_each = toset(local.iboss_cidr_blocks["iboss_cidrs"])
+resource "aws_vpc_security_group_ingress_rule" "iboss_443" {
+  for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
   description = "added manually - iboss vpn"
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  cidr_blocks = [each.value]
-security_group_id = module.lb.security_group_id
+
+  security_group_id = module.lb.security_group_id
+
+  cidr_ipv4   = [each.value]
+  from_port   = 443
+  to_port     = 443
+  ip_protocol = "tcp"
 }
 
-resource "aws_security_group_rule" "vpn_80" {
-  description       = "added manually - IPO vpn"
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  cidr_blocks       = ["10.172.20.0/22"]
-  security_group_id = module.lb.security_group_id
-}
+resource "aws_vpc_security_group_ingress_rule" "vpn_80" {
+  description = "added manually - iboss vpn"
 
-resource "aws_security_group_rule" "vpn_443" { 
-  description       = "added manually - IPO vpn"
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  cidr_blocks       = ["10.172.20.0/22"]
   security_group_id = module.lb.security_group_id
+
+  cidr_ipv4   = ["10.172.20.0/22"]
+  from_port   = 80
+  to_port     = 80
+  ip_protocol = "tcp"
+}
+resource "aws_vpc_security_group_ingress_rule" "vpn_443" {
+  description = "added manually - IPO vpn"
+
+  security_group_id = module.lb.security_group_id
+
+  cidr_ipv4   = ["10.172.20.0/22"]
+  from_port   = 443
+  to_port     = 443
+  ip_protocol = "tcp"
 }
