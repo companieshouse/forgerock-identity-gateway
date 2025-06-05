@@ -207,7 +207,7 @@ variable "ig_jvm_args" {
 }
 
 variable "root_log_level" {
-  type        = string
+  type = string
 }
 
 variable "test_access_enable" {
