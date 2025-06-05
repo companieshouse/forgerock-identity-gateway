@@ -130,7 +130,7 @@ resource "aws_vpc_security_group_ingress_rule" "iboss_80" {
 
   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = [each.value]
+  cidr_ipv4   = each.value
   from_port   = 80
   to_port     = 80
   ip_protocol = "tcp"
@@ -142,7 +142,7 @@ resource "aws_vpc_security_group_ingress_rule" "iboss_443" {
 
   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = [each.value]
+  cidr_ipv4   = each.value
   from_port   = 443
   to_port     = 443
   ip_protocol = "tcp"
@@ -153,7 +153,7 @@ resource "aws_vpc_security_group_ingress_rule" "vpn_80" {
 
   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = ["10.172.20.0/22"]
+  cidr_ipv4   = "10.172.20.0/22"
   from_port   = 80
   to_port     = 80
   ip_protocol = "tcp"
@@ -163,7 +163,7 @@ resource "aws_vpc_security_group_ingress_rule" "vpn_443" {
 
   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = ["10.172.20.0/22"]
+  cidr_ipv4   = "10.172.20.0/22"
   from_port   = 443
   to_port     = 443
   ip_protocol = "tcp"
