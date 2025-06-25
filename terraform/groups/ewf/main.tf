@@ -124,47 +124,51 @@ module "ig" {
   alerting_email_address         = var.alerting_email_address
 }
 
-resource "aws_vpc_security_group_ingress_rule" "iboss_80" {
+resource "aws_security_group_rule" "iboss_80" {
   for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
   description = "added manually - iboss vpn"
 
   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = each.value
+  cidr_blocks = each.value
   from_port   = 80
   to_port     = 80
-  ip_protocol = "tcp"
+  protocol    = "tcp"
+  type        = "ingress"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "iboss_443" {
+resource "aws_security_group_rule" "iboss_443" {
   for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
   description = "added manually - iboss vpn"
 
   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = each.value
+  cidr_blocks = each.value
   from_port   = 443
   to_port     = 443
-  ip_protocol = "tcp"
+  protocol    = "tcp"
+  type        = "ingress"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "vpn_80" {
+resource "aws_security_group_rule" "vpn_80" {
   description = "added manually - iboss vpn"
 
   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = "10.172.20.0/22"
+  cidr_blocks = "10.172.20.0/22"
   from_port   = 80
   to_port     = 80
-  ip_protocol = "tcp"
+  protocol    = "tcp"
+  type        = "ingress"
 }
-resource "aws_vpc_security_group_ingress_rule" "vpn_443" {
+resource "aws_security_group_rule" "vpn_443" {
   description = "added manually - IPO vpn"
 
   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = "10.172.20.0/22"
+  cidr_blocks = "10.172.20.0/22"
   from_port   = 443
   to_port     = 443
-  ip_protocol = "tcp"
+  protocol    = "tcp"
+  type        = "ingress"
 }
