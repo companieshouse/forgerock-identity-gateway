@@ -1,6 +1,6 @@
 data "aws_acm_certificate" "certificate" {
-  count  = var.create_certificate ? 0 : 1
-  domain = var.certificate_domain
+  count       = var.create_certificate ? 0 : 1
+  domain      = var.certificate_domain
   most_recent = true
 }
 
@@ -58,8 +58,8 @@ resource "aws_lb" "main" {
     prefix  = var.elb_access_logs_prefix
     enabled = true
   }
-  
-  tags                             = var.tags
+
+  tags = var.tags
 }
 
 resource "aws_lb_listener" "http" {
@@ -130,12 +130,12 @@ resource "aws_vpc_security_group_egress_rule" "all" {
 
   from_port   = 0
   to_port     = 0
-  ip_protocol    = "tcp"
+  ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "all_80" {
-  for_each    = toset(var.ingress_cidr_blocks)
+  for_each = toset(var.ingress_cidr_blocks)
 
   security_group_id = aws_security_group.lb.id
 
@@ -146,7 +146,7 @@ resource "aws_vpc_security_group_ingress_rule" "all_80" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "all_443" {
-  for_each    = toset(var.ingress_cidr_blocks)
+  for_each = toset(var.ingress_cidr_blocks)
 
   security_group_id = aws_security_group.lb.id
 
