@@ -1,6 +1,6 @@
 data "aws_acm_certificate" "certificate" {
-  count  = var.create_certificate ? 0 : 1
-  domain = var.certificate_domain
+  count       = var.create_certificate ? 0 : 1
+  domain      = var.certificate_domain
   most_recent = true
 }
 
@@ -58,8 +58,8 @@ resource "aws_lb" "main" {
     prefix  = var.elb_access_logs_prefix
     enabled = true
   }
-  
-  tags                             = var.tags
+
+  tags = var.tags
 }
 
 resource "aws_lb_listener" "http" {
@@ -117,32 +117,41 @@ resource "aws_lb_target_group" "main" {
 
 resource "aws_security_group" "lb" {
   description = "Restricts access to the load balancer"
-  name        = "${var.service_name}-lb"
+  name        = "${var.service_name}-sg"
   vpc_id      = var.vpc_id
 
-  ingress {
-    description = ""
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = var.ingress_cidr_blocks
-  }
-
-  ingress {
-    description = ""
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = var.ingress_cidr_blocks
-  }
-
-  egress {
-    description = "Allow outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = var.tags
+}
+
+resource "aws_vpc_security_group_egress_rule" "all" {
+  description = "Allow outbound traffic"
+
+  security_group_id = aws_security_group.lb.id
+
+  from_port   = 0
+  to_port     = 0
+  ip_protocol = "tcp"
+  cidr_ipv4   = "0.0.0.0/0"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "all_80" {
+  for_each = toset(var.ingress_cidr_blocks)
+
+  security_group_id = aws_security_group.lb.id
+
+  cidr_ipv4   = each.value
+  from_port   = 80
+  to_port     = 80
+  ip_protocol = "tcp"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "all_443" {
+  for_each = toset(var.ingress_cidr_blocks)
+
+  security_group_id = aws_security_group.lb.id
+
+  cidr_ipv4   = each.value
+  from_port   = 443
+  to_port     = 443
+  ip_protocol = "tcp"
 }
