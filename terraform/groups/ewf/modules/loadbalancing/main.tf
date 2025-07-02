@@ -120,6 +120,10 @@ resource "aws_security_group" "lb" {
   name        = "${var.service_name}-sg"
   vpc_id      = var.vpc_id
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tags = var.tags
 }
 
