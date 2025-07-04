@@ -115,27 +115,10 @@ resource "aws_lb_target_group" "main" {
   tags = var.tags
 }
 
-# Old security group - to be deleted
-resource "aws_security_group" "lb" {
-  description = "Restricts access to the load balancer"
-  name        = "${var.service_name}-lb"
-  vpc_id      = var.vpc_id
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  tags = var.tags
-}
-
 resource "aws_security_group" "main" {
   description = "Restricts access to the load balancer"
   name        = "${var.service_name}-lb-sg"
   vpc_id      = var.vpc_id
-
-  lifecycle {
-    create_before_destroy = true
-  }
 
   tags = var.tags
 }
