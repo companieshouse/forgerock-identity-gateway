@@ -149,8 +149,8 @@ resource "aws_vpc_security_group_ingress_rule" "iboss_443" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "vpn_80" {
-  description = "added manually - iboss vpn"
-
+  count             = contains(local.iboss_cidr_blocks, "10.172.20.0/22") ? 1 : 0
+  description       = "added manually - iboss vpn"
   security_group_id = module.lb.security_group_id
 
   cidr_ipv4   = "10.172.20.0/22"
@@ -159,8 +159,8 @@ resource "aws_vpc_security_group_ingress_rule" "vpn_80" {
   ip_protocol = "tcp"
 }
 resource "aws_vpc_security_group_ingress_rule" "vpn_443" {
-  description = "added manually - IPO vpn"
-
+  count             = contains(local.iboss_cidr_blocks, "10.172.20.0/22") ? 1 : 0
+  description       = "added manually - IPO vpn"
   security_group_id = module.lb.security_group_id
 
   cidr_ipv4   = "10.172.20.0/22"
