@@ -130,7 +130,7 @@ resource "aws_security_group" "lb" {
 
 resource "aws_security_group" "main" {
   description = "Restricts access to the load balancer"
-  name        = "${var.service_name}-sg"
+  name        = "${var.service_name}-lb-sg"
   vpc_id      = var.vpc_id
 
   lifecycle {
