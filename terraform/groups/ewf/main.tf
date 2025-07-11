@@ -126,7 +126,7 @@ module "ig" {
 
 resource "aws_vpc_security_group_ingress_rule" "iboss_80" {
   for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
-  description = "iboss vpn"
+  description = "added manually - iboss vpn"
 
   security_group_id = module.lb.security_group_id
 
@@ -138,7 +138,7 @@ resource "aws_vpc_security_group_ingress_rule" "iboss_80" {
 
 resource "aws_vpc_security_group_ingress_rule" "iboss_443" {
   for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
-  description = "iboss vpn"
+  description = "added manually - iboss vpn"
 
   security_group_id = module.lb.security_group_id
 

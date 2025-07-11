@@ -50,7 +50,7 @@ resource "aws_lb" "main" {
   enable_cross_zone_load_balancing = "true"
   internal                         = var.internal
   subnets                          = var.subnet_ids
-  security_groups                  = [aws_security_group.lb.id]
+  security_groups                  = [aws_security_group.main.id]
   enable_deletion_protection       = "true"
 
   access_logs {
@@ -115,14 +115,19 @@ resource "aws_lb_target_group" "main" {
   tags = var.tags
 }
 
+# Old security group - to be deleted
 resource "aws_security_group" "lb" {
   description = "Restricts access to the load balancer"
   name        = "${var.service_name}-lb"
   vpc_id      = var.vpc_id
 
-  lifecycle {
-    create_before_destroy = false
-  }
+  tags = var.tags
+}
+
+resource "aws_security_group" "main" {
+  description = "Restricts access to the load balancer"
+  name        = "${var.service_name}-lb-sg"
+  vpc_id      = var.vpc_id
 
   tags = var.tags
 }
@@ -130,7 +135,7 @@ resource "aws_security_group" "lb" {
 resource "aws_vpc_security_group_egress_rule" "all" {
   description = "Allow outbound traffic"
 
-  security_group_id = aws_security_group.lb.id
+  security_group_id = aws_security_group.main.id
 
   ip_protocol = "-1"
   cidr_ipv4   = "0.0.0.0/0"
@@ -139,7 +144,7 @@ resource "aws_vpc_security_group_egress_rule" "all" {
 resource "aws_vpc_security_group_ingress_rule" "all_80" {
   for_each = toset(var.ingress_cidr_blocks)
 
-  security_group_id = aws_security_group.lb.id
+  security_group_id = aws_security_group.main.id
 
   cidr_ipv4   = each.value
   from_port   = 80
@@ -150,7 +155,7 @@ resource "aws_vpc_security_group_ingress_rule" "all_80" {
 resource "aws_vpc_security_group_ingress_rule" "all_443" {
   for_each = toset(var.ingress_cidr_blocks)
 
-  security_group_id = aws_security_group.lb.id
+  security_group_id = aws_security_group.main.id
 
   cidr_ipv4   = each.value
   from_port   = 443
