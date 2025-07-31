@@ -98,7 +98,7 @@ resource "aws_vpc_security_group_ingress_rule" "iboss_443" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_from_shared_services_management" {
-  count = contains(local.test_environments, var.environment) ? 1 : 0
+  count = var.test_access_enable ? 1 : 0
 
   security_group_id = module.lb.security_group_id
   from_port         = 443
