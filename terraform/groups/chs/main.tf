@@ -34,9 +34,9 @@ data "aws_subnets" "public_subnets" {
   }
 }
 
-data "vault_generic_secret" "ig_secret" {
-  path = "applications/heritage-${var.environment}-eu-west-2/forgerock/ewf/forgerock-identity-gateway"
-}
+# data "vault_generic_secret" "ig_secret" {
+#   path = "applications/heritage-${var.environment}-eu-west-2/forgerock/ewf/forgerock-identity-gateway"
+# }
 
 ###
 # Modules
