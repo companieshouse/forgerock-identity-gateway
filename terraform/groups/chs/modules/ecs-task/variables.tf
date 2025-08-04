@@ -100,7 +100,7 @@ variable "agent_secret_id" {
 }
 
 variable "ig_jvm_args" {
-  type = string
+  type        = string
   description = "Flags for IG JVM"
 }
 
