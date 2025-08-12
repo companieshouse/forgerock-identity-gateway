@@ -10,6 +10,11 @@ terraform {
       source  = "hashicorp/vault"
       version = ">= 2.0.0"
     }
+
+    template = {
+      source = "hashicorp/template"
+      version = "2.2.0"
+    }
   }
 }
 
@@ -25,3 +30,5 @@ provider "vault" {
     }
   }
 }
+
+provider "template" {}
