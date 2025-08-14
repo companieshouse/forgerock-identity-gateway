@@ -25,8 +25,7 @@ resource "aws_ecs_task_definition" "ig" {
   tags = var.tags
 }
 
-resource "aws_ecs_service" "ig" {
-  depends_on = [ var.ecs_cluster_id ]
+resource "aws_ecs_service" "ig" {  
   name            = var.service_name
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.ig.arn
