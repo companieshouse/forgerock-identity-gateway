@@ -17,5 +17,5 @@ internal_access_cidrs = [
   "10.254.3.0/24"
 ]
 ig_jvm_args = "-Xms256m -Xmx2048m -Xlog:gc*=warning:stdout -XX:+UseG1GC"
-root_log_level = "WARN"
+root_log_level = "DEBUG"
 test_access_enable = true
