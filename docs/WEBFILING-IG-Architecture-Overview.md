@@ -30,17 +30,15 @@ It mediates authentication, session bridging, routing, language propagation, com
 ## 3. High-Level Component Diagram
 ```mermaid
 flowchart LR
-    Browser(Browser Client)
-    IG[WebFiling IG
-    (Routing + Filters + Scripts)]
-    Legacy[Legacy WebFiling
-    (Form Auth & Company Data)]
-    FIDC[ForgeRock Identity Cloud
-    (OIDC/Journeys)]
-    Payments[Payments Service]
-    SCRS[SCRS Incorporation]
-    XBRL[iXBRL Validator]
-    Static[Static Assets]
+    %% Simplified node labels to avoid newline parse errors on GitHub
+    Browser([Browser Client])
+    IG([WebFiling IG (Routing + Filters + Scripts)])
+    Legacy([Legacy WebFiling (Form Auth & Company Data)])
+    FIDC([ForgeRock Identity Cloud (OIDC Journeys)])
+    Payments([Payments Service])
+    SCRS([SCRS Incorporation])
+    XBRL([iXBRL Validator])
+    Static([Static Assets])
 
     Browser <--> IG
     IG <--> FIDC
