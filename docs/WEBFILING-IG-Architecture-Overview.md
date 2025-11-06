@@ -30,11 +30,11 @@ It mediates authentication, session bridging, routing, language propagation, com
 ## 3. High-Level Component Diagram
 ```mermaid
 flowchart LR
-    %% Simplified node labels to avoid newline parse errors on GitHub
+    %% Simplified for GitHub Mermaid: no nested parentheses or plus signs
     Browser([Browser Client])
-    IG([WebFiling IG (Routing + Filters + Scripts)])
-    Legacy([Legacy WebFiling (Form Auth & Company Data)])
-    FIDC([ForgeRock Identity Cloud (OIDC Journeys)])
+    IG([WebFiling IG Routing Filters Scripts])
+    Legacy([Legacy WebFiling Form Auth & Data])
+    FIDC([Identity Cloud OIDC Journeys])
     Payments([Payments Service])
     SCRS([SCRS Incorporation])
     XBRL([iXBRL Validator])
