@@ -1,42 +1,42 @@
 ###
 # Data lookups
 ###
-# data "aws_vpc" "vpc" {
-#   tags = {
-#     Name = var.vpc_name
-#   }
-# }
+data "aws_vpc" "vpc" {
+  tags = {
+    Name = var.vpc_name
+  }
+}
 
-# data "aws_subnets" "application_subnets" {
-#   filter {
-#     name   = "vpc-id"
-#     values = [data.aws_vpc.vpc.id]
-#   }
-#   filter {
-#     name   = "tag:Name"
-#     values = ["*-applications-*"]
-#   }
-# }
+data "aws_subnets" "application_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.vpc.id]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["*-applications-*"]
+  }
+}
 
-# data "aws_subnets" "public_subnets" {
-#   filter {
-#     name   = "vpc-id"
-#     values = [data.aws_vpc.vpc.id]
-#   }
-#   filter {
-#     name   = "tag:Name"
-#     values = ["*-public-*"]
-#   }
+data "aws_subnets" "public_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.vpc.id]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["*-public-*"]
+  }
 
-#   filter {
-#     name   = "tag:Environment"
-#     values = [var.environment]
-#   }
-# }
+  filter {
+    name   = "tag:Environment"
+    values = [var.environment]
+  }
+}
 
-# data "vault_generic_secret" "ig_secret" {
-#   path = "applications/heritage-${var.environment}-eu-west-2/forgerock/ewf/forgerock-identity-gateway"
-# }
+data "vault_generic_secret" "ig_secret" {
+  path = "applications/heritage-${var.environment}-eu-west-2/forgerock/ewf/forgerock-identity-gateway"
+}
 
 ##
 # Modules
