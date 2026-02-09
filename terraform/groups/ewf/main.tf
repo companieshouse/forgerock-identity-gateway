@@ -73,37 +73,37 @@
 #   alerting_email_address         = var.alerting_email_address
 # }
 
-resource "aws_vpc_security_group_ingress_rule" "iboss_80" {
-  for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
-  description = "added manually - iboss vpn"
+# resource "aws_vpc_security_group_ingress_rule" "iboss_80" {
+#   for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
+#   description = "added manually - iboss vpn"
 
-  security_group_id = module.lb.security_group_id
+#   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = each.value
-  from_port   = 80
-  to_port     = 80
-  ip_protocol = "tcp"
-}
+#   cidr_ipv4   = each.value
+#   from_port   = 80
+#   to_port     = 80
+#   ip_protocol = "tcp"
+# }
 
-resource "aws_vpc_security_group_ingress_rule" "iboss_443" {
-  for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
-  description = "added manually - iboss vpn"
+# resource "aws_vpc_security_group_ingress_rule" "iboss_443" {
+#   for_each    = toset(local.iboss_cidr_blocks["iboss_cidrs"])
+#   description = "added manually - iboss vpn"
 
-  security_group_id = module.lb.security_group_id
+#   security_group_id = module.lb.security_group_id
 
-  cidr_ipv4   = each.value
-  from_port   = 443
-  to_port     = 443
-  ip_protocol = "tcp"
-}
+#   cidr_ipv4   = each.value
+#   from_port   = 443
+#   to_port     = 443
+#   ip_protocol = "tcp"
+# }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_from_shared_services_management" {
-  count = var.test_access_enable ? 1 : 0
+# resource "aws_vpc_security_group_ingress_rule" "allow_from_shared_services_management" {
+#   count = var.test_access_enable ? 1 : 0
 
-  security_group_id = module.lb.security_group_id
-  from_port         = 443
-  to_port           = 443
-  ip_protocol       = "tcp"
-  prefix_list_id    = data.aws_ec2_managed_prefix_list.shared_services_management.id
-  description       = "Allow HTTPS from the shared services management prefix list."
-}
+#   security_group_id = module.lb.security_group_id
+#   from_port         = 443
+#   to_port           = 443
+#   ip_protocol       = "tcp"
+#   prefix_list_id    = data.aws_ec2_managed_prefix_list.shared_services_management.id
+#   description       = "Allow HTTPS from the shared services management prefix list."
+# }
